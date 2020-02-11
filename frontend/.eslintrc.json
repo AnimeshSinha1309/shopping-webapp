@@ -4,7 +4,11 @@
         "es6": true,
         "webextensions": true
     },
-    "extends": "airbnb-base",
+    "extends": [
+        "react-app",
+        "airbnb",
+        "plugin:jsx-a11y/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
