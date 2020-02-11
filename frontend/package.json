@@ -6,13 +6,17 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "eslint": "^6.8.0",
+    "eslint-config-react-app": "^5.2.0",
+    "express": "^4.17.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "webpack",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -30,5 +34,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-react": "^7.18.3",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^4.0.0-beta.2"
   }
 }
