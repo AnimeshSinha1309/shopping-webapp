@@ -5,9 +5,8 @@
         "webextensions": true
     },
     "extends": [
-        "react-app",
-        "airbnb",
-        "plugin:jsx-a11y/recommended"
+        "airbnb-base",
+        "plugin:react/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -15,7 +14,10 @@
     },
     "parserOptions": {
         "ecmaVersion": 2018,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "rules": {
         "quotes": [
@@ -59,6 +61,8 @@
                 "code": 100
             }
         ],
-        "no-continue": "off"
+        "no-continue": "off",
+        "linebreak-style": "off",
+        "class-methods-use-this": "off"
     }
 }

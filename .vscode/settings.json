@@ -1,3 +1,9 @@
 {
-    "eslint.nodePath": "frontend/node_modules"
+    "eslint.nodePath": "frontend/node_modules",
+    "eslint.alwaysShowStatus": true,
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
+    "eslint.workingDirectories": [
+        "frontend"
+    ]
 }
