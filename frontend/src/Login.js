@@ -90,8 +90,8 @@ class Modal extends Component {
                                     <div className="text-center form-sm mt-2">
                                         <button className="btn btn-info">Sign up <i className="fas fa-sign-in ml-1"></i></button>
                                     </div>
-
                                 </div>
+
                                 <div className="modal-footer">
                                     <div className="options text-right">
                                         <p className="pt-1">Already have an account? <a href="#" className="blue-text">Log In</a></p>
