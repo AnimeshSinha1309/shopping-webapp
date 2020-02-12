@@ -1,6 +1,41 @@
 // from https://mdbootstrap.com/docs/jquery/modals/forms/
 
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+class Textbox extends Component {
+    render() {
+        const cls = `md-form form-sm ${this.props.cls}`,
+            icon = (this.props.type === "password" ? "envelope" : "lock");
+
+        return (
+            <div className={cls}>
+                <i className={`fas fa-${icon} prefix`}></i>
+                <input type={this.props.type} id={this.props.uid} className="form-control form-control-sm validate" />
+                <label data-error="wrong" data-success="right" htmlFor={this.props.uid}>Your {this.props.type}</label>
+            </div>
+        );
+    }
+}
+
+class Password extends Component {
+    render() {
+        return (<Textbox cls="mb-4" type="password" {...this.props}></Textbox>);
+    }
+}
+
+class Email extends Component {
+    render() {
+        return (<Textbox cls="mb-5" type="email" {...this.props}></Textbox>);
+    }
+}
+
+Textbox.propTypes = {
+    uid: PropTypes.string,
+    type: PropTypes.string,
+    cls: PropTypes.string,
+};
+
 
 class Modal extends Component {
     render() {
@@ -25,17 +60,9 @@ class Modal extends Component {
                             <div className="tab-pane fade in show active" id="panel7" role="tabpanel">
 
                                 <div className="modal-body mb-1">
-                                    <div className="md-form form-sm mb-5">
-                                        <i className="fas fa-envelope prefix"></i>
-                                        <input type="email" id="modalLRInput10" className="form-control form-control-sm validate" />
-                                        <label data-error="wrong" data-success="right" htmlFor="modalLRInput10">Your email</label>
-                                    </div>
+                                    <Email uid="modalLRInput10"></Email>
+                                    <Password uid="modalLRInput11"></Password>
 
-                                    <div className="md-form form-sm mb-4">
-                                        <i className="fas fa-lock prefix"></i>
-                                        <input type="password" id="modalLRInput11" className="form-control form-control-sm validate" />
-                                        <label data-error="wrong" data-success="right" htmlFor="modalLRInput11">Your password</label>
-                                    </div>
                                     <div className="text-center mt-2">
                                         <button className="btn btn-info">Log in <i className="fas fa-sign-in ml-1"></i></button>
                                     </div>
@@ -45,24 +72,14 @@ class Modal extends Component {
                                         <p>Not a member? <a href="#" className="blue-text">Sign Up</a></p>
                                         <p>Forgot <a href="#" className="blue-text">Password?</a></p>
                                     </div>
-                                    <button type="button" className="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
                                 </div>
 
                             </div>
 
                             <div className="tab-pane fade" id="panel8" role="tabpanel">
                                 <div className="modal-body">
-                                    <div className="md-form form-sm mb-5">
-                                        <i className="fas fa-envelope prefix"></i>
-                                        <input type="email" id="modalLRInput12" className="form-control form-control-sm validate" />
-                                        <label data-error="wrong" data-success="right" htmlFor="modalLRInput12">Your email</label>
-                                    </div>
-
-                                    <div className="md-form form-sm mb-5">
-                                        <i className="fas fa-lock prefix"></i>
-                                        <input type="password" id="modalLRInput13" className="form-control form-control-sm validate" />
-                                        <label data-error="wrong" data-success="right" htmlFor="modalLRInput13">Your password</label>
-                                    </div>
+                                    <Email uid="modalLRInput12"></Email>
+                                    <Password uid="modalLRInput13"></Password>
 
                                     <div className="md-form form-sm mb-4">
                                         <i className="fas fa-lock prefix"></i>
@@ -79,7 +96,6 @@ class Modal extends Component {
                                     <div className="options text-right">
                                         <p className="pt-1">Already have an account? <a href="#" className="blue-text">Log In</a></p>
                                     </div>
-                                    <button type="button" className="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
