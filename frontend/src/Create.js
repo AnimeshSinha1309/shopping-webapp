@@ -17,6 +17,8 @@ class CreateModal extends Component {
                     <input type="number" id="quantity" className="form-control" />
                     <label htmlFor="name">Quantity of bundle</label>
                 </div>
+
+                <button className="btn btn-primary" type="submit">Create product</button>
             </form>
         );
     }
