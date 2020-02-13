@@ -20,6 +20,6 @@ function genSchema(add) {
 }
 
 const Vendor = model("Vendor", genSchema()),
-    Customer = model("Customer", genSchema({ orders: { type: Array, required: true } }));
+    Customer = model("Customer", genSchema({ orders: [{ type: Schema.Types.ObjectId, required: true, ref: "Order" }] }));
 
 export default { Customer, Vendor };
