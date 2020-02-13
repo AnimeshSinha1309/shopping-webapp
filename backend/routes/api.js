@@ -2,6 +2,8 @@
 // use this for mongoose
 /* eslint-disable no-unused-vars */
 
+// refer here http://expressjs.com/en/api.html
+
 const express = require("express"),
     router = express.Router();
 
@@ -11,7 +13,9 @@ router.get("/", (req, res, next) => {
 
 // get list of products by a vendor
 router.get("/products", (req, res, next) => {
-    res.send("---");
+    const { vendor } = req.params;
+
+    // query mongodb backend
 });
 
 // create a new product by vendor
