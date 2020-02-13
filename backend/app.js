@@ -22,14 +22,6 @@ mongoose.connect(config.mongoURI, { useNewUrlParser: true })
     .then(() => console.log("MongoDB connection: success"))
     .catch(err => console.log(err));
 
-const db = mongoose.connection;
-
-db.on("err", console.error.bind(console, "connection error"));
-
-db.once("open", () => {
-
-});
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
