@@ -7,13 +7,14 @@
 const express = require("express"),
     router = express.Router();
 
+
 router.get("/", (req, res, next) => {
     res.send("API is working properly");
 });
 
 // get list of products by a vendor
 router.get("/products", (req, res, next) => {
-    const { vendor } = req.params;
+    const { vendorEmail } = req.params;
 
     // query mongodb backend
 });

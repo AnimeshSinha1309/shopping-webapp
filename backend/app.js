@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const createError = require("http-errors"),
     express = require("express"),
+    mongoose = require("mongoose"),
     path = require("path"),
     cookieParser = require("cookie-parser"),
     logger = require("morgan"),
@@ -12,7 +13,20 @@ const createError = require("http-errors"),
     usersRouter = require("./routes/users"),
     apiRouter = require("./routes/api");
 
-const app = express();
+const app = express(),
+    dbName = "test";
+
+// this port number is determined by looking at
+// mongod's output`
+mongoose.connect(`mongodb://localhost:27017/${dbName}`);
+
+const db = mongoose.connection;
+
+db.on("err", console.error.bind(console, "connection error"));
+
+db.once("open", () => {
+
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

@@ -1,7 +1,7 @@
 // https://www.tutorialkart.com/nodejs/mongoose/insert-document-to-mongodb/
 
 const mongoose = require("mongoose"),
-    Product = require("../models/Product");
+    { Customer } = require("../models/User");
 
 // this is required, otherwise .save doesn't work
 const dbName = "test";
@@ -19,10 +19,11 @@ db.once("open", () => {
 
     // product model is already imported
     // create a new instance of it
-    const prod1 = new Product({ name: "Icecreams", price: "1000", quantity: 1000 });
+    const cust = new Customer({ email: "d@c.com", password: "10000", orders: [] });
 
     // save this to the database
-    prod1.save((err, product) => {
-        if (err) { console.error(err); } else { console.log(`${product.name} saved to collection`); }
+    // eslint-disable-next-line no-shadow
+    cust.save((err, obj) => {
+        if (err) { console.error(err); } else { console.log(`${obj.name} saved to collection`); }
     });
 });

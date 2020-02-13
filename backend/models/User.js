@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+const { model, Schema } = require("mongoose");
 
 // Schema
 function genSchema(add) {
@@ -22,4 +22,4 @@ function genSchema(add) {
 const Vendor = model("Vendor", genSchema()),
     Customer = model("Customer", genSchema({ orders: [{ type: Schema.Types.ObjectId, required: true, ref: "Order" }] }));
 
-export default { Customer, Vendor };
+module.exports = { Customer, Vendor };
