@@ -12,6 +12,10 @@ function genSchema(add) {
             type: String,
             required: true,
         },
+        name: {
+            type: String,
+            required: true,
+        },
     });
 
     if (add) { schema.add(add); }
