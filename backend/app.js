@@ -4,6 +4,7 @@ const createError = require("http-errors"),
     mongoose = require("mongoose"),
     path = require("path"),
     cookieParser = require("cookie-parser"),
+    bodyParser = require("body-parser"),
     logger = require("morgan"),
     // need this module to be able to make a request
     // from one localhost port onto another
@@ -11,14 +12,14 @@ const createError = require("http-errors"),
 
     indexRouter = require("./routes/index"),
     usersRouter = require("./routes/users"),
-    apiRouter = require("./routes/api");
+    apiRouter = require("./routes/api"),
+    config = require("./config/keys");
 
-const app = express(),
-    dbName = "test";
+const app = express();
 
-// this port number is determined by looking at
-// mongod's output`
-mongoose.connect(`mongodb://localhost:27017/${dbName}`);
+mongoose.connect(config.mongoURI, { useNewUrlParser: true })
+    .then(() => console.log("MongoDB connection: success"))
+    .catch(err => console.log(err));
 
 const db = mongoose.connection;
 
@@ -38,6 +39,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
