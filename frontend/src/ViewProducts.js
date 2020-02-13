@@ -39,9 +39,16 @@ class ProductList extends Component {
     }
 
     render() {
-        const products = this.getProducts();
+        const products = this.getProducts(),
+            filterBtn = <input type="checkbox" value="filter-ready" />,
+            productList = (products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>));
 
-        return (products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>));
+        return (
+            <React.Fragment>
+                {filterBtn}
+                {productList}
+            </React.Fragment>
+        );
     }
 }
 
