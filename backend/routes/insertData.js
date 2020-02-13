@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 // https://www.tutorialkart.com/nodejs/mongoose/insert-document-to-mongodb/
 
 const mongoose = require("mongoose"),
-    { Customer } = require("../models/User");
+    { Customer, Vendor } = require("../models/User");
 
 // this is required, otherwise .save doesn't work
 const dbName = "test";
@@ -19,11 +20,13 @@ db.once("open", () => {
 
     // product model is already imported
     // create a new instance of it
-    const cust = new Customer({ email: "d@c.com", password: "10000", orders: [] });
+    // const cust = new Customer({ email: "d@c.com", password: "10000", orders: [] });
 
+    const callback = (err, obj) => {
+        if (err) { console.error(err); } else { console.log(obj, "updated"); }
+    };
     // save this to the database
     // eslint-disable-next-line no-shadow
-    cust.save((err, obj) => {
-        if (err) { console.error(err); } else { console.log(`${obj.name} saved to collection`); }
-    });
+    // Vendor.updateOne({ email: "d@c.com" }, { name: "rockstar" }, callback);
+    // cust.save();
 });

@@ -5,6 +5,7 @@
  * 1. Everytime you add a new API route, do not forget to restart the server.
  * 2. https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
  *  use this for mongoose
+ * 3. mongodb doesn't support joins https://stackoverflow.com/q/19937524/
  */
 
 // refer here http://expressjs.com/en/api.html
@@ -20,11 +21,12 @@ router.get("/", (req, res, next) => {
 });
 
 // get list of products by a vendor
+// req.params gets the :id things in the route url
+// req.query gets the ?a=b things in the main url
 router.get("/products", (req, res, next) => {
-    const { vendorName } = req.params;
+    const { productName } = req.query;
 
-    // query mongodb backend
-    Product.find({}, (error, products) => {
+    Product.find({ name: new RegExp(productName) }, (error, products) => {
         if (error) {
             res.send(error);
         }
