@@ -43,8 +43,11 @@ router.post("/create", (req, res, next) => {
 router.get("/search", (req, res, next) => {
 });
 
-// get status of product
-router.get("/status", (req, res, next) => {
+// get status of all my orders
+router.get("/orders", (req, res, next) => {
+    Order.find({}, () => {
+
+    });
 });
 
 // get vendor list

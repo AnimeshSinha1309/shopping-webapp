@@ -21,6 +21,7 @@ db.once("open", () => {
     // product model is already imported
     // create a new instance of it
     // const cust = new Customer({ email: "d@c.com", password: "10000", orders: [] });
+    // cust.save();
 
     const callback = (err, obj) => {
         if (err) { console.error(err); } else { console.log(obj, "updated"); }
@@ -28,5 +29,4 @@ db.once("open", () => {
     // save this to the database
     // eslint-disable-next-line no-shadow
     // Vendor.updateOne({ email: "d@c.com" }, { name: "rockstar" }, callback);
-    // cust.save();
 });
