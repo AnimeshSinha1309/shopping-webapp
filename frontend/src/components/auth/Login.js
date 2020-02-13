@@ -11,7 +11,7 @@ class Textbox extends Component {
         return (
             <div className={cls}>
                 <i className={`fas fa-${icon} prefix`}></i>
-                <input onChange={this.props.onChange} type={this.props.type} id={this.props.uid} className="form-control form-control-sm validate" />
+                <input data-type={this.props.datatype} onChange={this.props.onChange} type={this.props.type} id={this.props.uid} className="form-control form-control-sm validate" />
                 <label data-error="wrong" data-success="right" htmlFor={this.props.uid}>Your {this.props.type}</label>
             </div>
         );
@@ -20,13 +20,19 @@ class Textbox extends Component {
 
 class Password extends Component {
     render() {
-        return (<Textbox cls="mb-4" type="password" {...this.props}></Textbox>);
+        return (<Textbox cls="mb-4" type="password" datatype="password" {...this.props}></Textbox>);
     }
 }
 
 class Email extends Component {
     render() {
-        return (<Textbox cls="mb-5" type="email" {...this.props}></Textbox>);
+        return (<Textbox cls="mb-4" type="email" datatype="email" {...this.props}></Textbox>);
+    }
+}
+
+class Name extends Component {
+    render() {
+        return (<Textbox cls="mb-5" type="text" datatype="name" {...this.props}></Textbox>);
     }
 }
 
@@ -35,15 +41,16 @@ Textbox.propTypes = {
     type: PropTypes.string,
     cls: PropTypes.string,
     onChange: PropTypes.func,
+    datatype: PropTypes.string,
 };
 
 
 class Modal extends Component {
     onChange(e) {
-        this.setState({ [e.target.id]: e.target.value });
+        this.setState({ [e.target.dataset.type]: e.target.value });
     }
 
-    onSubmit(e) {
+    onRegister(e) {
         e.preventDefault();
         const newUser = {
             name: this.state.name,
@@ -55,7 +62,21 @@ class Modal extends Component {
         console.log(newUser);
     }
 
+    onLogin(e) {
+        e.preventDefault();
+        const newUser = {
+            email: this.state.email,
+            password: this.state.password,
+        };
+
+        console.log(newUser);
+    }
+
     render() {
+        const registerHandler = this.onRegister.bind(this),
+            loginHandler = this.onLogin.bind(this),
+            onChangeHandler = this.onChange.bind(this);
+
         return (
             <div className="modal-dialog cascading-modal" role="document">
                 <div className="modal-content">
@@ -77,12 +98,14 @@ class Modal extends Component {
                             <div className="tab-pane fade in show active" id="panel7" role="tabpanel">
 
                                 <div className="modal-body mb-1">
-                                    <Email uid="modalLRInput10" onChange={this.onChange.bind(this)} ></Email>
-                                    <Password uid="modalLRInput11" onChange={this.onChange.bind(this)}></Password>
+                                    <form onSubmit={registerHandler}>
+                                        <Email uid="email" onChange={onChangeHandler} ></Email>
+                                        <Password uid="password" onChange={onChangeHandler}></Password>
 
-                                    <div className="text-center mt-2">
-                                        <button className="btn btn-info" onSubmit={this.onSubmit}>Log in <i className="fas fa-sign-in ml-1"></i></button>
-                                    </div>
+                                        <div className="text-center mt-2">
+                                            <button className="btn btn-info">Log in <i className="fas fa-sign-in ml-1"></i></button>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div className="modal-footer">
                                     <div className="options text-center text-md-right mt-1">
@@ -95,18 +118,21 @@ class Modal extends Component {
 
                             <div className="tab-pane fade" id="panel8" role="tabpanel">
                                 <div className="modal-body">
-                                    <Email uid="modalLRInput12" onChange={this.onChange.bind(this)}></Email>
-                                    <Password uid="modalLRInput13" onChange={this.onChange.bind(this)}></Password>
+                                    <form onSubmit={loginHandler}>
+                                        <Name onChange={onChangeHandler} ></Name>
+                                        <Email onChange={onChangeHandler}></Email>
+                                        <Password onChange={onChangeHandler}></Password>
 
-                                    <div className="md-form form-sm mb-4">
-                                        <i className="fas fa-lock prefix"></i>
-                                        <input type="password" id="modalLRInput14" onChange={this.onChange.bind(this)} className="form-control form-control-sm validate" />
-                                        <label data-error="wrong" data-success="right" htmlFor="modalLRInput14">Repeat password</label>
-                                    </div>
+                                        <div className="md-form form-sm mb-4">
+                                            <i className="fas fa-lock prefix"></i>
+                                            <input data-type="password2" type="password" id="modalLRInput14" onChange={onChangeHandler} className="form-control form-control-sm validate" />
+                                            <label data-error="wrong" data-success="right" htmlFor="modalLRInput14">Repeat password</label>
+                                        </div>
 
-                                    <div className="text-center form-sm mt-2">
-                                        <button className="btn btn-info">Sign up <i className="fas fa-sign-in ml-1" onSubmit={this.onSubmit}></i></button>
-                                    </div>
+                                        <div className="text-center form-sm mt-2">
+                                            <button className="btn btn-info">Sign up <i className="fas fa-sign-in ml-1"></i></button>
+                                        </div>
+                                    </form>
                                 </div>
 
                                 <div className="modal-footer">
