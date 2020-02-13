@@ -27,21 +27,27 @@ ProductListing.propTypes = {
     remaining: Number,
 };
 
+// TODO
+// eslint-disable-next-line no-unused-vars
+function getProducts(onlyReadyProds = false) {
+    const prod = [];
+
+    // each element in prod array should be an object
+    // of name, status, quantity, quantity-remaining
+
+    return prod;
+}
+
+function getProductList(onlyReadyProds = false) {
+    const products = getProducts(onlyReadyProds);
+
+    return products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>);
+}
+
 class ProductList extends Component {
-    // TODO
-    getProducts() {
-        const prod = [];
-
-        // each element in prod array should be an object
-        // of name, status, quantity, quantity-remaining
-
-        return prod;
-    }
-
     render() {
-        const products = this.getProducts(),
-            filterBtn = <input type="checkbox" value="filter-ready" />,
-            productList = (products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>));
+        const filterBtn = <input type="checkbox" value="filter-ready" />,
+            productList = getProductList();
 
         return (
             <React.Fragment>
@@ -52,4 +58,14 @@ class ProductList extends Component {
     }
 }
 
-export default ProductList;
+class DispatchedProducts extends Component {
+    render() {
+        return (
+            <React.Fragment>
+                {getProductList(true)}
+            </React.Fragment>
+        );
+    }
+}
+
+export default { ProductList, DispatchedProducts };
