@@ -5,6 +5,7 @@ const createError = require("http-errors"),
     path = require("path"),
     cookieParser = require("cookie-parser"),
     bodyParser = require("body-parser"),
+    passport = require("passport"),
     logger = require("morgan"),
     // need this module to be able to make a request
     // from one localhost port onto another
@@ -41,6 +42,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+require("./config/passport")(passport);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

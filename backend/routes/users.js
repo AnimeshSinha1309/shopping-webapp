@@ -11,7 +11,9 @@ const express = require("express"),
     { Customer, Vendor } = require("../models/User");
 
 const ERROR_CODE = 400,
-    SALT_ROUNDS = 10;
+    NOT_FOUND_CODE = 404,
+    SALT_ROUNDS = 10,
+    ONE_YEAR_SECONDS = 86400 * 365;
 
 router.post("/register", (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -56,11 +58,49 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
 
-
     if (!isValid) {
         res.status(ERROR_CODE).json(errors);
         return;
     }
+    const { email, password } = req.body,
+        isVendor = req.body.type === "vendor",
+        model = isVendor ? Vendor : Customer;
 
-    console.log("TOOD");
+    // Find user by email
+    model.findOne({ email }).then((user) => {
+        if (!user) {
+            res.status(NOT_FOUND_CODE).json({ emailnotfound: "Email not found" });
+            return;
+        }
+
+        // Check password
+        bcrypt.compare(password, user.password).then((isMatch) => {
+            if (isMatch) {
+                const jwtPayload = {
+                    id: user.id,
+                    name: user.name,
+                };
+
+                jwt.sign(
+                    jwtPayload,
+                    keys.secretOrKey,
+                    {
+                        expiresIn: ONE_YEAR_SECONDS,
+                    },
+                    (err, token) => {
+                        res.json({
+                            success: true,
+                            token: `Bearer ${token}`,
+                        });
+                    },
+                );
+            } else {
+                res.status(ERROR_CODE)
+                    .json({ passwordincorrect: "Password incorrect" });
+            }
+        });
+    });
 });
+
+
+module.exports = router;
