@@ -3,8 +3,9 @@
 /* eslint-disable no-unused-vars */
 
 // refer here http://expressjs.com/en/api.html
-
 const express = require("express"),
+    Order = require("../models/Order"),
+    { Vendor } = require("../models/User"),
     router = express.Router();
 
 
@@ -29,6 +30,17 @@ router.get("/search", (req, res, next) => {
 
 // get status of product
 router.get("/status", (req, res, next) => {
+});
+
+// get vendor list
+router.get("/vendors", (req, res, next) => {
+    Vendor.find({}, (error, vendor) => {
+        if (error) {
+            res.send(error);
+        }
+
+        res.json(vendor);
+    });
 });
 
 module.exports = router;
