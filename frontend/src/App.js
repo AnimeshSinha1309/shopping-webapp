@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import Modal from "./Login";
+import Modal from "./components/auth/Login";
 import CreateModal from "./Create";
 
 class App extends Component {
