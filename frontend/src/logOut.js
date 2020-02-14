@@ -3,7 +3,7 @@ import { logoutUser } from "./actions/authActions";
 
 class LogOutBtn extends Component {
     handleOnClick() {
-        logoutUser();
+        logoutUser(() => window.location.reload());
     }
 
     render() {

@@ -63,11 +63,8 @@ class Modal extends Component {
         };
 
         registerUser(newUser, (status) => {
-            if (status.type === GET_ERRORS) { console.log("failed", status); } else {
-                // this history object is from react-router
-                // re-direct to login on successful register
-                // how ??
-                console.log("success", status);
+            if (status.type === GET_ERRORS) { console.log("failed", status); } else if (window.confirm("Successfully registered, now please login!")) {
+                window.location.reload();
             }
         });
     }
@@ -80,7 +77,9 @@ class Modal extends Component {
         };
 
         loginUser(userCreds, history, (status = {}) => {
-            if (status.type === GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
+            if (status.type === GET_ERRORS) { console.log("failed", status); } else {
+                window.location.reload();
+            }
         });
     }
 
