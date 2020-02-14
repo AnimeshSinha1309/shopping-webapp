@@ -56,6 +56,35 @@ router.post("/register", (req, res) => {
     });
 });
 
+function onUserFound(type, password, user, res) {
+    bcrypt.compare(password, user.password).then((isMatch) => {
+        if (isMatch) {
+            const jwtPayload = {
+                id: user.id,
+                name: user.name,
+                usertype: type,
+            };
+
+            jwt.sign(
+                jwtPayload,
+                keys.secretOrKey,
+                {
+                    expiresIn: ONE_YEAR_SECONDS,
+                },
+                (err, token) => {
+                    res.json({
+                        success: true,
+                        token: `Bearer ${token}`,
+                    });
+                },
+            );
+        } else {
+            res.status(ERROR_CODE)
+                .json({ passwordincorrect: "Password incorrect" });
+        }
+    });
+}
+
 router.post("/login", (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
 
@@ -64,43 +93,20 @@ router.post("/login", (req, res) => {
         return;
     }
 
-    const { email, password } = req.body,
-        isVendor = req.body.type === "vendor",
-        model = isVendor ? Vendor : Customer;
+    const { email, password } = req.body;
 
-    // Find user by email
-    model.findOne({ email }).then((user) => {
+
+    // manually search through both models
+    Vendor.findOne({ email }).then((user) => {
         if (!user) {
-            res.status(NOT_FOUND_CODE).json({ emailnotfound: "Email not found" });
-            return;
+            Customer.findOne({ email }).then((user2) => {
+                if (user2) { onUserFound(USER_TYPE.customer, password, user2, res); } else {
+                    res.status(NOT_FOUND_CODE).json({ emailnotfound: "Email not found" });
+                }
+            });
+        } else {
+            onUserFound(USER_TYPE.vendor, password, user, res);
         }
-
-        // Check password
-        bcrypt.compare(password, user.password).then((isMatch) => {
-            if (isMatch) {
-                const jwtPayload = {
-                    id: user.id,
-                    name: user.name,
-                };
-
-                jwt.sign(
-                    jwtPayload,
-                    keys.secretOrKey,
-                    {
-                        expiresIn: ONE_YEAR_SECONDS,
-                    },
-                    (err, token) => {
-                        res.json({
-                            success: true,
-                            token: `Bearer ${token}`,
-                        });
-                    },
-                );
-            } else {
-                res.status(ERROR_CODE)
-                    .json({ passwordincorrect: "Password incorrect" });
-            }
-        });
     });
 });
 

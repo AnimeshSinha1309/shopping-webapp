@@ -6,12 +6,11 @@ import CreateModal from "./Create";
 import Modal from "./components/auth/Login";
 import NotFound from "./404";
 import history from "./history";
-import { getLoggedInUser } from "./utils/getLoggedInUser";
 import { LogOutBtn } from "./logOut";
+import { Welcome } from "./Welcome";
+import { currentUser } from "./config/data";
 
-
-const currentUser = getLoggedInUser(),
-    welcomeElm = currentUser ? () => <h1>Hi {currentUser}</h1> : Modal,
+const welcomeElm = currentUser ? Welcome : Modal,
     logOutBtn = currentUser ? <LogOutBtn></LogOutBtn> : <span></span>,
     routing = (<Router history={history}>
         <div>

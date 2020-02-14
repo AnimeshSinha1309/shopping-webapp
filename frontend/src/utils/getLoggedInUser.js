@@ -1,10 +1,16 @@
 import { USER_KEY } from "../config/settings";
 
-function getLoggedInUser() {
+function getCurrentUserObj() {
     const lsObject = localStorage[USER_KEY] && JSON.parse(localStorage[USER_KEY]),
         isLoggedIn = lsObject && lsObject.name && lsObject.name.length > 0;
 
-    return isLoggedIn ? lsObject.name : "";
+    return isLoggedIn ? lsObject : null;
 }
 
-export { getLoggedInUser };
+function getLoggedInUserName() {
+    const lsObject = getCurrentUserObj();
+
+    return lsObject ? lsObject.name : "";
+}
+
+export { getLoggedInUserName, getCurrentUserObj };
