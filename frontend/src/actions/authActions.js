@@ -60,5 +60,5 @@ export function logoutUser(callback) {
     deleteAuthToken();
 
     setCurrentUser({});
-    callback();
+    if (callback) { callback(); }
 }

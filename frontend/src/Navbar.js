@@ -7,9 +7,12 @@ import Modal from "./components/auth/Login";
 import NotFound from "./404";
 import history from "./history";
 import { getLoggedInUser } from "./utils/getLoggedInUser";
+import { LogOutBtn } from "./logOut";
+
 
 const currentUser = getLoggedInUser(),
-    welcomeElm = currentUser ? <div className="navbar-text">Hi { currentUser}</div> : <div></div>,
+    welcomeElm = currentUser ? () => <h1>Hi {currentUser}</h1> : Modal,
+    logOutBtn = currentUser ? <LogOutBtn></LogOutBtn> : <span></span>,
     routing = (<Router history={history}>
         <div>
             <div className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,12 +35,12 @@ const currentUser = getLoggedInUser(),
                             <Link className="nav-link" to="/about">About</Link>
                         </li>
                     </ul>
-                    {welcomeElm}
+                    {logOutBtn}
                 </div>
             </div>
             {/* switch helps us specify a default case if no route path matches */}
             <Switch>
-                <Route path="/" exact component={Modal}></Route>
+                <Route path="/" exact component={welcomeElm}></Route>
                 <Route path="/create" exact component={CreateModal}></Route>
                 <Route component={NotFound}></Route>
             </Switch>
