@@ -5,17 +5,16 @@ import jwt_decode from "jwt-decode";
 import { setAuthToken, deleteAuthToken } from "../utils/authTokenManip";
 import {
     GET_ERRORS,
-    SET_CURRENT_USER,
     USER_LOADING,
 } from "./types";
-import config from "../config/settings";
+import { USER_KEY, PORT } from "../config/settings";
 
-export const setCurrentUser = decoded => ({
-    type: SET_CURRENT_USER,
-    payload: decoded,
-});
 
-const endpoint = `http://localhost:${config.PORT}/users`;
+function setCurrentUser(decoded) {
+    localStorage[USER_KEY] = JSON.stringify(decoded);
+}
+
+const endpoint = `http://localhost:${PORT}/users`;
 
 export const registerUser = (userData, callback) => {
     axios
@@ -37,12 +36,16 @@ export function loginUser(userData, history, callback) {
             setAuthToken(token);
 
             const decoded = jwt_decode(token);
-            callback(setCurrentUser(decoded));
+            setCurrentUser(decoded);
+            callback();
         })
-        .catch(err => (callback ? callback({
-            type: GET_ERRORS,
-            payload: err.response.data,
-        }) : undefined));
+        .catch((err) => {
+            console.log(err);
+            return callback ? callback({
+                type: GET_ERRORS,
+                payload: err.response.data,
+            }) : undefined;
+        });
 }
 
 export function setUserLoading(callback) {
@@ -56,5 +59,6 @@ export function logoutUser(callback) {
 
     deleteAuthToken();
 
-    callback(setCurrentUser({}));
+    setCurrentUser({});
+    callback();
 }

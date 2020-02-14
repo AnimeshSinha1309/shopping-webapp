@@ -1,5 +1,6 @@
 // this is duplicated in backend
 
-const PORT = "9001";
+const PORT = "9001",
+    USER_KEY = "current_user";
 
-export default PORT;
+export { PORT, USER_KEY };

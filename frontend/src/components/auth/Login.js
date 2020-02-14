@@ -79,7 +79,7 @@ class Modal extends Component {
             password: this.state.password,
         };
 
-        loginUser(userCreds, history, (status) => {
+        loginUser(userCreds, history, (status = {}) => {
             if (status.type === GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
         });
     }
