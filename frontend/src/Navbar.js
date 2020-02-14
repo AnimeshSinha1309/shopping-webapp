@@ -1,7 +1,10 @@
 import React from "react";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import {
+    Route, Link, BrowserRouter as Router, Switch,
+} from "react-router-dom";
 import CreateModal from "./Create";
 import Modal from "./components/auth/Login";
+import NotFound from "./404";
 
 const routing = (<Router>
     <div>
@@ -27,8 +30,12 @@ const routing = (<Router>
                 </ul>
             </div>
         </div>
-        <Route path="/" exact component={Modal}></Route>
-        <Route path="/create" exact component={CreateModal}></Route>
+        {/* switch helps us specify a default case if no route path matches */}
+        <Switch>
+            <Route path="/" exact component={Modal}></Route>
+            <Route path="/create" exact component={CreateModal}></Route>
+            <Route component={NotFound}></Route>
+        </Switch>
     </div>
 </Router>);
 
