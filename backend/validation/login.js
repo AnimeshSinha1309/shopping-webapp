@@ -10,6 +10,7 @@ function validateLoginInput(data) {
     for (const field of Object.keys(fields)) {
         if (!data[field]) {
             errors[field] = `${fields[field]} field is required`;
+            data[field] = "";
         }
     }
 

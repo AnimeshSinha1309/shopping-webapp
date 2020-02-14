@@ -106,7 +106,7 @@ class Modal extends Component {
                             <div className="tab-pane fade in show active" id="panel7" role="tabpanel">
 
                                 <div className="modal-body mb-1">
-                                    <form onSubmit={registerHandler}>
+                                    <form onSubmit={loginHandler}>
                                         <Email uid="email" onChange={onChangeHandler} ></Email>
                                         <Password uid="password" onChange={onChangeHandler}></Password>
 
@@ -126,7 +126,7 @@ class Modal extends Component {
 
                             <div className="tab-pane fade" id="panel8" role="tabpanel">
                                 <div className="modal-body">
-                                    <form onSubmit={loginHandler}>
+                                    <form onSubmit={registerHandler}>
                                         <Name onChange={onChangeHandler} ></Name>
                                         <Email onChange={onChangeHandler}></Email>
                                         <Password onChange={onChangeHandler}></Password>

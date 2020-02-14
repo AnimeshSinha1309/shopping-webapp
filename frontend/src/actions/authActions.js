@@ -25,10 +25,10 @@ export const registerUser = (userData, history, callback) => {
         .catch(err => (callback ? callback({
             type: GET_ERRORS,
             payload: err.response.data,
-        }) : console.log(err, err.response)));
+        }) : undefined));
 };
 
-export function loginUser(userData, callback) {
+export function loginUser(userData, history, callback) {
     axios
         .post(`${endpoint}/login`, userData)
         .then((res) => {
@@ -43,7 +43,7 @@ export function loginUser(userData, callback) {
         .catch(err => (callback ? callback({
             type: GET_ERRORS,
             payload: err.response.data,
-        }) : console.log(err)));
+        }) : undefined));
 }
 
 export function setUserLoading(callback) {
