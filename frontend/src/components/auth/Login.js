@@ -64,7 +64,7 @@ class Modal extends Component {
 
         // this.props.history seems to be automatically set
         registerUser(newUser, history, (status) => {
-            if (status.type === types.GET_ERRORS) { console.log("failed", e); } else { console.log("success", status); }
+            if (status.type === types.GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
         });
     }
 
@@ -76,7 +76,7 @@ class Modal extends Component {
         };
 
         loginUser(userCreds, history, (status) => {
-            if (status.type === types.GET_ERRORS) { console.log("failed", e); } else { console.log("success", status); }
+            if (status.type === types.GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
         });
     }
 

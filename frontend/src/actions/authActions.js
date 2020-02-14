@@ -25,7 +25,7 @@ export const registerUser = (userData, history, callback) => {
         .catch(err => (callback ? callback({
             type: GET_ERRORS,
             payload: err.response.data,
-        }) : console.log(err)));
+        }) : console.log(err, err.response)));
 };
 
 export function loginUser(userData, callback) {

@@ -11,7 +11,6 @@ const createError = require("http-errors"),
     // from one localhost port onto another
     cors = require("cors"),
 
-    indexRouter = require("./routes/index"),
     usersRouter = require("./routes/users"),
     apiRouter = require("./routes/api"),
     config = require("./config/keys");
@@ -37,7 +36,6 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
-app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);
 

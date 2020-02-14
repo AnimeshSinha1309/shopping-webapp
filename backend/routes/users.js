@@ -62,6 +62,7 @@ router.post("/login", (req, res) => {
         res.status(ERROR_CODE).json(errors);
         return;
     }
+
     const { email, password } = req.body,
         isVendor = req.body.type === "vendor",
         model = isVendor ? Vendor : Customer;
