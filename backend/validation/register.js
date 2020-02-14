@@ -4,7 +4,7 @@ const validator = require("validator"),
 function validateRegisterInput(data) {
     const errors = {},
         fields = {
-            name: "Name", email: "Email", password: "Password", password2: "Confirm password",
+            name: "Name", email: "Email", password: "Password", password2: "Confirm password", usertype: "User type",
         };
 
     // initialize to empty string if undefined
@@ -12,6 +12,8 @@ function validateRegisterInput(data) {
         if (!data[field]) {
             errors[field] = `${fields[field]} field is required`;
             data[field] = "";
+        } else if (field === "usertype" && data[field] !== "0" && data[field] !== "1") {
+            errors.usertype = "User type must be either vendor or customer";
         }
     }
 

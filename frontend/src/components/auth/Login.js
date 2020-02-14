@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { registerUser, loginUser } from "../../actions/authActions";
 import history from "../../history";
 import { GET_ERRORS } from "../../actions/types";
+import { USER_TYPE } from "../../config/settings";
+import "./Login.css";
 
 class Textbox extends Component {
     render() {
@@ -15,11 +17,19 @@ class Textbox extends Component {
             <div className={cls}>
                 <i className={`fas fa-${icon} prefix`}></i>
                 <input data-type={this.props.datatype} onChange={this.props.onChange} type={this.props.type} id={this.props.uid} className="form-control form-control-sm validate" />
-                <label data-error="wrong" data-success="right" htmlFor={this.props.uid}>Your {this.props.type}</label>
+                <label data-error="wrong" data-success="right" htmlFor={this.props.uid}>Your {this.props.datatype}</label>
             </div>
         );
     }
 }
+
+Textbox.propTypes = {
+    uid: PropTypes.string,
+    type: PropTypes.string,
+    cls: PropTypes.string,
+    onChange: PropTypes.func,
+    datatype: PropTypes.string,
+};
 
 class Password extends Component {
     render() {
@@ -39,14 +49,25 @@ class Name extends Component {
     }
 }
 
-Textbox.propTypes = {
-    uid: PropTypes.string,
-    type: PropTypes.string,
-    cls: PropTypes.string,
-    onChange: PropTypes.func,
-    datatype: PropTypes.string,
-};
+class Radio extends Component {
+    render() {
+        return (
+            <div className="md-form form-sm mb-4 radio-input-container">
+                <i className="fas fa-user-friends prefix"></i>
+                <div>
+                    <label><input data-type="usertype" type="radio" value={USER_TYPE.vendor} name="type" onClick={this.props.onChangeHandler} className="validate" />Vendor</label>
+                </div>
+                <div>
+                    <label><input data-type="usertype" type="radio" value={USER_TYPE.customer} name="type" onClick={this.props.onChangeHandler} className="validate" />Customer</label>
+                </div>
+            </div>
+        );
+    }
+}
 
+Radio.propTypes = {
+    onChangeHandler: PropTypes.func,
+};
 
 class Modal extends Component {
     onChange(e) {
@@ -55,13 +76,12 @@ class Modal extends Component {
 
     onRegister(e) {
         e.preventDefault();
-        const newUser = {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            password2: this.state.password2,
-        };
+        const fields = ["name", "email", "password", "password2", "usertype"],
+            newUser = {};
 
+        for (const field of fields) {
+            newUser[field] = this.state[field];
+        }
         registerUser(newUser, (status) => {
             if (status.type === GET_ERRORS) { console.log("failed", status); } else if (window.confirm("Successfully registered, now please login!")) {
                 window.location.reload();
@@ -138,6 +158,9 @@ class Modal extends Component {
                                             <input data-type="password2" type="password" id="confirmPasswordInp" onChange={onChangeHandler} className="form-control form-control-sm validate" />
                                             <label data-error="wrong" data-success="right" htmlFor="confirmPasswordInp">Repeat password</label>
                                         </div>
+
+                                        <Radio onChangeHandler={onChangeHandler}></Radio>
+
 
                                         <div className="text-center form-sm mt-2">
                                             <button className="btn btn-info">Sign up <i className="fas fa-sign-in ml-1"></i></button>

@@ -8,7 +8,8 @@ const express = require("express"),
     validateRegisterInput = require("../validation/register"),
     validateLoginInput = require("../validation/login"),
     // Load User model
-    { Customer, Vendor } = require("../models/User");
+    { Customer, Vendor } = require("../models/User"),
+    { USER_TYPE } = require("../config/config");
 
 const ERROR_CODE = 400,
     NOT_FOUND_CODE = 404,
@@ -23,7 +24,7 @@ router.post("/register", (req, res) => {
         return;
     }
 
-    const isVendor = req.body.type === "vendor",
+    const isVendor = req.body.usertype === USER_TYPE.vendor,
         model = isVendor ? Vendor : Customer;
 
     model.findOne({ email: req.body.email }).then((user) => {

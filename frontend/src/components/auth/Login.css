@@ -1,0 +1,27 @@
+.radio-input-container{
+    height: 50px;
+}
+
+.radio-input-container div {
+    width: 35%;
+    height: 60px;
+    position: relative;
+}
+
+.radio-input-container div input{
+    margin: 1%;
+}
+
+.radio-input-container div label{
+    width: 100%;
+}
+
+.radio-input-container div:nth-of-type(1){
+    margin-left: 10%;
+    float: left;
+}
+
+.radio-input-container div:nth-of-type(2){
+    float: right;
+}
+
