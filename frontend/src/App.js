@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
-import Modal from "./components/auth/Login";
-import CreateModal from "./Create";
+
 
 class App extends Component {
     render() {
         return (
             <React.Fragment>
-                <p className="App-intro">;{this.state.apiResponse}</p>
-
-                <Modal></Modal>
-                <CreateModal></CreateModal>
             </React.Fragment>
         );
     }
@@ -27,7 +22,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.callAPI();
+        // this.callAPI();
     }
 }
 
