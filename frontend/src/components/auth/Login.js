@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerUser, loginUser } from "../../actions/authActions";
 
 class Textbox extends Component {
     render() {
@@ -59,17 +60,17 @@ class Modal extends Component {
             password2: this.state.password2,
         };
 
-        console.log(newUser);
+        registerUser(newUser);
     }
 
     onLogin(e) {
         e.preventDefault();
-        const newUser = {
+        const userCreds = {
             email: this.state.email,
             password: this.state.password,
         };
 
-        console.log(newUser);
+        loginUser(userCreds);
     }
 
     render() {
