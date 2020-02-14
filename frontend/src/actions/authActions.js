@@ -14,22 +14,23 @@ export const setCurrentUser = decoded => ({
     payload: decoded,
 });
 
-export const registerUser = (userData, history) => (dispatch) => {
+const endpoint = "http://localhost:9000/users";
+
+export const registerUser = (userData, history, callback) => {
     axios
-        .post("/api/users/register", userData)
+        .post(`${endpoint}/register`, userData)
         // this history object is from react-router
         // re-direct to login on successful register
         .then(() => history.push("/login"))
-        // TODO: what's this dispatch?!
-        .catch(err => dispatch({
+        .catch(err => (callback ? callback({
             type: GET_ERRORS,
             payload: err.response.data,
-        }));
+        }) : console.log(err)));
 };
 
-export const loginUser = userData => (dispatch) => {
+export function loginUser(userData, callback) {
     axios
-        .post("/api/users/login", userData)
+        .post(`${endpoint}/login`, userData)
         .then((res) => {
             const { token } = res.data;
             localStorage.setItem("jwtToken", token);
@@ -37,22 +38,24 @@ export const loginUser = userData => (dispatch) => {
             setAuthToken(token);
 
             const decoded = jwt_decode(token);
-            dispatch(setCurrentUser(decoded));
+            callback(setCurrentUser(decoded));
         })
-        .catch(err => dispatch({
+        .catch(err => (callback ? callback({
             type: GET_ERRORS,
             payload: err.response.data,
-        }));
-};
+        }) : console.log(err)));
+}
 
-export const setUserLoading = () => ({
-    type: USER_LOADING,
-});
+export function setUserLoading(callback) {
+    callback({
+        type: USER_LOADING,
+    });
+}
 
-export const logoutUser = () => (dispatch) => {
+export function logoutUser(callback) {
     localStorage.removeItem("jwtToken");
 
     deleteAuthToken();
 
-    dispatch(setCurrentUser({}));
-};
+    callback(setCurrentUser({}));
+}

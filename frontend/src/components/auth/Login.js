@@ -3,6 +3,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerUser, loginUser } from "../../actions/authActions";
+import history from "../../history";
+import types from "../../actions/types";
 
 class Textbox extends Component {
     render() {
@@ -60,7 +62,10 @@ class Modal extends Component {
             password2: this.state.password2,
         };
 
-        registerUser(newUser);
+        // this.props.history seems to be automatically set
+        registerUser(newUser, history, (status) => {
+            if (status.type === types.GET_ERRORS) { console.log("failed", e); } else { console.log("success", status); }
+        });
     }
 
     onLogin(e) {
@@ -70,7 +75,9 @@ class Modal extends Component {
             password: this.state.password,
         };
 
-        loginUser(userCreds);
+        loginUser(userCreds, history, (status) => {
+            if (status.type === types.GET_ERRORS) { console.log("failed", e); } else { console.log("success", status); }
+        });
     }
 
     render() {

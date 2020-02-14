@@ -20,7 +20,7 @@ router.get("/", (req, res, next) => {
     res.send("API is working properly");
 });
 
-// get list of products by a vendor
+// get list of products, searchable by their name
 // req.params gets the :id things in the route url
 // req.query gets the ?a=b things in the main url
 router.get("/products", (req, res, next) => {
