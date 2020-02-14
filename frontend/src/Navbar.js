@@ -5,8 +5,9 @@ import {
 import CreateModal from "./Create";
 import Modal from "./components/auth/Login";
 import NotFound from "./404";
+import history from "./history";
 
-const routing = (<Router>
+const routing = (<Router history={history}>
     <div>
         <div className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a className="navbar-brand" href="index.html">Shopping webapp</a>

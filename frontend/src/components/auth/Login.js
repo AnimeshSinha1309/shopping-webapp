@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerUser, loginUser } from "../../actions/authActions";
 import history from "../../history";
-import types from "../../actions/types";
+import { GET_ERRORS } from "../../actions/types";
 
 class Textbox extends Component {
     render() {
@@ -62,9 +62,13 @@ class Modal extends Component {
             password2: this.state.password2,
         };
 
-        // this.props.history seems to be automatically set
-        registerUser(newUser, history, (status) => {
-            if (status.type === types.GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
+        registerUser(newUser, (status) => {
+            if (status.type === GET_ERRORS) { console.log("failed", status); } else {
+                // this history object is from react-router
+                // re-direct to login on successful register
+                // how ??
+                console.log("success", status);
+            }
         });
     }
 
@@ -76,7 +80,7 @@ class Modal extends Component {
         };
 
         loginUser(userCreds, history, (status) => {
-            if (status.type === types.GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
+            if (status.type === GET_ERRORS) { console.log("failed", status); } else { console.log("success", status); }
         });
     }
 
@@ -121,7 +125,6 @@ class Modal extends Component {
                                         <p>Forgot <a href="#" className="blue-text">Password?</a></p>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div className="tab-pane fade" id="panel8" role="tabpanel">
@@ -133,8 +136,8 @@ class Modal extends Component {
 
                                         <div className="md-form form-sm mb-4">
                                             <i className="fas fa-lock prefix"></i>
-                                            <input data-type="password2" type="password" id="modalLRInput14" onChange={onChangeHandler} className="form-control form-control-sm validate" />
-                                            <label data-error="wrong" data-success="right" htmlFor="modalLRInput14">Repeat password</label>
+                                            <input data-type="password2" type="password" id="confirmPasswordInp" onChange={onChangeHandler} className="form-control form-control-sm validate" />
+                                            <label data-error="wrong" data-success="right" htmlFor="confirmPasswordInp">Repeat password</label>
                                         </div>
 
                                         <div className="text-center form-sm mt-2">

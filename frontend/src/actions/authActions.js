@@ -8,20 +8,19 @@ import {
     SET_CURRENT_USER,
     USER_LOADING,
 } from "./types";
+import config from "../config/settings";
 
 export const setCurrentUser = decoded => ({
     type: SET_CURRENT_USER,
     payload: decoded,
 });
 
-const endpoint = "http://localhost:9000/users";
+const endpoint = `http://localhost:${config.PORT}/users`;
 
-export const registerUser = (userData, history, callback) => {
+export const registerUser = (userData, callback) => {
     axios
         .post(`${endpoint}/register`, userData)
-        // this history object is from react-router
-        // re-direct to login on successful register
-        .then(() => history.push("/login"))
+        .then(callback)
         .catch(err => (callback ? callback({
             type: GET_ERRORS,
             payload: err.response.data,
