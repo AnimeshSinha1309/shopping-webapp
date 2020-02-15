@@ -1,30 +1,34 @@
 import React, { Component } from "react";
+import {
+    Button, Form, FormGroup, Label, Input,
+} from "reactstrap";
+import axios from "axios";
 import { isVendor } from "./config/data";
 // import PropTypes from "prop-types";
 
 class CreateModal extends Component {
+    onSubmit() {
+        axios.post();
+    }
+
     render() {
         if (!isVendor) {
             return (<h1>Sorry, only vendors can create a product</h1>);
         }
 
         return (
-            <form>
-                <div className="md-form form-group mt-5">
-                    <input type="text" id="name" className="form-control" />
-                    <label htmlFor="name">Name of product</label>
-                </div>
-                <div className="md-form form-group mt-5">
-                    <input type="number" id="price" className="form-control" />
-                    <label htmlFor="name">Price of bundle</label>
-                </div>
-                <div className="md-form form-group mt-5">
-                    <input type="number" id="quantity" className="form-control" />
-                    <label htmlFor="name">Quantity of bundle</label>
-                </div>
-
-                <button className="btn btn-primary" type="submit">Create product</button>
-            </form>
+            <Form onSubmit={this.onSubmit}>
+                <FormGroup>
+                    <Label><Input type="text" id="name" placeholder="My awesome product" />Name of product</Label>
+                </FormGroup>
+                <FormGroup>
+                    <Label><Input type="number" id="price" placeholder="100" />Price of product</Label>
+                </FormGroup>
+                <FormGroup>
+                    <Label><Input type="number" id="quantity" placeholder="1" />Quantity of product</Label>
+                </FormGroup>
+                <Button>Create product</Button>
+            </Form>
         );
     }
 }
