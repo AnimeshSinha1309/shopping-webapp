@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import { isVendor } from "./config/data";
 // import PropTypes from "prop-types";
 
 class CreateModal extends Component {
     render() {
+        if (!isVendor) {
+            return (<h1>Sorry, only vendors can create a product</h1>);
+        }
+
         return (
             <form>
                 <div className="md-form form-group mt-5">

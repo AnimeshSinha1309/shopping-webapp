@@ -3,7 +3,7 @@
 const PORT = "9000",
     USER_KEY = "current_user",
     USER_TYPE = {
-        vendor: 0, customer: 1,
+        vendor: "0", customer: "1",
     },
     USER_TYPE_REV = { };
 

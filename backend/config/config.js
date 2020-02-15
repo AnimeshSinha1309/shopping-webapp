@@ -1,5 +1,5 @@
 const USER_TYPE = {
-        vendor: 0, customer: 1,
+        vendor: "0", customer: "1",
     },
     USER_TYPE_REV = { };
 
