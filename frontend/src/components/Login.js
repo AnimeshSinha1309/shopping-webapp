@@ -2,10 +2,10 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerUser, loginUser } from "../../actions/authActions";
-import history from "../../history";
-import { GET_ERRORS } from "../../actions/types";
-import { USER_TYPE } from "../../config/settings";
+import { registerUser, loginUser } from "../actions/authActions";
+import history from "../history";
+import { GET_ERRORS } from "../actions/types";
+import { USER_TYPE } from "../config/settings";
 import "./Login.css";
 
 class Textbox extends Component {

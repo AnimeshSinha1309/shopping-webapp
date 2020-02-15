@@ -3,6 +3,7 @@ const express = require("express"),
     router = express.Router(),
     bcrypt = require("bcryptjs"),
     jwt = require("jsonwebtoken"),
+    HttpStatus = require("http-status-codes"),
     keys = require("../config/keys"),
     // Load input validation
     validateRegisterInput = require("../validation/register"),
@@ -11,16 +12,14 @@ const express = require("express"),
     { Customer, Vendor } = require("../models/User"),
     { USER_TYPE } = require("../config/config");
 
-const ERROR_CODE = 400,
-    NOT_FOUND_CODE = 404,
-    SALT_ROUNDS = 10,
+const SALT_ROUNDS = 10,
     ONE_YEAR_SECONDS = 86400 * 365;
 
 router.post("/register", (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
 
     if (!isValid) {
-        res.status(ERROR_CODE).json(errors);
+        res.status(HttpStatus.BAD_REQUEST).json(errors);
         return;
     }
 
@@ -29,7 +28,7 @@ router.post("/register", (req, res) => {
 
     model.findOne({ email: req.body.email }).then((user) => {
         if (user) {
-            res.status(ERROR_CODE).json({ email: "Email already exists" });
+            res.status(HttpStatus.BAD_REQUEST).json({ email: "Email already exists" });
             return;
         }
 
@@ -79,7 +78,7 @@ function onUserFound(type, password, user, res) {
                 },
             );
         } else {
-            res.status(ERROR_CODE)
+            res.status(HttpStatus.BAD_REQUEST)
                 .json({ passwordincorrect: "Password incorrect" });
         }
     });
@@ -89,7 +88,7 @@ router.post("/login", (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
 
     if (!isValid) {
-        res.status(ERROR_CODE).json(errors);
+        res.status(HttpStatus.BAD_REQUEST).json(errors);
         return;
     }
 
@@ -101,7 +100,7 @@ router.post("/login", (req, res) => {
         if (!user) {
             Customer.findOne({ email }).then((user2) => {
                 if (user2) { onUserFound(USER_TYPE.customer, password, user2, res); } else {
-                    res.status(NOT_FOUND_CODE).json({ emailnotfound: "Email not found" });
+                    res.status(HttpStatus.NOT_FOUND).json({ emailnotfound: "Email not found" });
                 }
             });
         } else {

@@ -35,10 +35,6 @@ router.get("/products", (req, res, next) => {
     });
 });
 
-// create a new product by vendor
-router.post("/create", (req, res, next) => {
-});
-
 // search for products
 router.get("/search", (req, res, next) => {
 });

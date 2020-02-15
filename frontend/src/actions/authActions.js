@@ -7,18 +7,17 @@ import {
     GET_ERRORS,
     USER_LOADING,
 } from "./types";
-import { USER_KEY, PORT } from "../config/settings";
+import { USER_KEY, endpoint } from "../config/settings";
 
+const userEndpoint = `${endpoint}/users`;
 
 function setCurrentUser(decoded) {
     localStorage[USER_KEY] = JSON.stringify(decoded);
 }
 
-const endpoint = `http://localhost:${PORT}/users`;
-
 export const registerUser = (userData, callback) => {
     axios
-        .post(`${endpoint}/register`, userData)
+        .post(`${userEndpoint}/register`, userData)
         .then(callback)
         .catch(err => (callback ? callback({
             type: GET_ERRORS,
@@ -28,7 +27,7 @@ export const registerUser = (userData, callback) => {
 
 export function loginUser(userData, history, callback) {
     axios
-        .post(`${endpoint}/login`, userData)
+        .post(`${userEndpoint}/login`, userData)
         .then((res) => {
             const { token } = res.data;
             localStorage.setItem("jwtToken", token);

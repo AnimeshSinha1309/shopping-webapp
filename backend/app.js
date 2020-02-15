@@ -5,12 +5,14 @@ const createError = require("http-errors"),
     path = require("path"),
     cookieParser = require("cookie-parser"),
     bodyParser = require("body-parser"),
+    HttpStatus = require("http-status-codes"),
     passport = require("passport"),
     logger = require("morgan"),
     // need this module to be able to make a request
     // from one localhost port onto another
     cors = require("cors"),
 
+    vendorsRouter = require("./routes/vendors"),
     usersRouter = require("./routes/users"),
     apiRouter = require("./routes/api"),
     config = require("./config/keys");
@@ -36,12 +38,13 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
+app.use("/vendors", vendorsRouter);
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    next(createError(404));
+    next(createError(HttpStatus.NOT_FOUND));
 });
 
 // error handler
@@ -51,7 +54,7 @@ app.use((err, req, res, next) => {
     res.locals.error = req.app.get("env") === "development" ? err : {};
 
     // render the error page
-    res.status(err.status || 500);
+    res.status(err.status || HttpStatus.INTERNAL_SERVER_ERROR);
     res.render("error");
 });
 

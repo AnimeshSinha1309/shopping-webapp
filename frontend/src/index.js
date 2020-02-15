@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
-import routing from "./Navbar";
+import routing from "./components/Navbar";
 
 // routing setup from here
 // https://codeburst.io/getting-started-with-react-router-5c978f70df91

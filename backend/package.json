@@ -15,6 +15,7 @@
     "eslint-plugin-import": "^2.20.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "http-status-codes": "^1.4.0",
     "is-empty": "^1.2.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
@@ -22,6 +23,7 @@
     "morgan": "~1.9.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "react-router": "^5.1.2",
     "validator": "^12.2.0"
   },
   "devDependencies": {

@@ -6,6 +6,7 @@
     "@fortawesome/fontawesome-free": "^5.12.1",
     "axios": "^0.19.2",
     "history": "^4.10.1",
+    "http-status-codes": "^1.4.0",
     "jwt-decode": "^2.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
