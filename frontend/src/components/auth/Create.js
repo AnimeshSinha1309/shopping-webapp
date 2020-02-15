@@ -3,7 +3,7 @@ import {
     Button, Form, FormGroup, Label, Input,
 } from "reactstrap";
 import axios from "axios";
-import { isVendor } from "./config/data";
+import { isVendor } from "../../config/data";
 // import PropTypes from "prop-types";
 
 class CreateModal extends Component {

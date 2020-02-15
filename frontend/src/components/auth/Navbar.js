@@ -3,15 +3,15 @@ import {
     Route, Link, Router, Switch,
 } from "react-router-dom";
 import CreateModal from "./Create";
-import Modal from "./components/auth/Login";
+import Modal from "./Login";
 import NotFound from "./404";
-import history from "./history";
-import { LogOutBtn } from "./logOut";
-import { Welcome } from "./Welcome";
-import { currentUser, isVendor } from "./config/data";
-import { CustomerNav, VendorNav } from "./UserSpecificNav";
+import history from "../../history";
+import { LogOutBtn } from "../../logOut";
+import { Welcome } from "../../Welcome";
+import { currentUser, isVendor } from "../../config/data";
+import { CustomerNav, VendorNav } from "../../UserSpecificNav";
 import About from "./About";
-import { ProductList, DispatchReadyProducts, DispatchedProducts } from "./ViewProducts";
+import { ProductList, DispatchReadyProducts, DispatchedProducts } from "../../ViewProducts";
 
 let welcomeElm,
     logOutBtn,

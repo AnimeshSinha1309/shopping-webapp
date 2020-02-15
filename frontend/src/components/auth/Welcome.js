@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { currentUserObj } from "./config/data";
-import { USER_TYPE_REV } from "./config/settings";
+import { currentUserObj } from "../../config/data";
+import { USER_TYPE_REV } from "../../config/settings";
 
 class Welcome extends Component {
     render() {
