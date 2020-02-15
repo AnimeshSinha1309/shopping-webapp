@@ -40,7 +40,7 @@ class CreateModal extends Component {
                     <Label>Price of product<Input onChange={this.onChange.bind(this)} type="number" id="price" /></Label>
                 </FormGroup>
                 <FormGroup>
-                    <Label>Quantity of product<Input onChange={this.onChange.bind(this)} type="number" id="quantity" /></Label>
+                    <Label>Quantity of product<Input onChange={this.onChange.bind(this)} type="number" id="quantity" min={1} max={1000} /></Label>
                 </FormGroup>
                 <Button>Create product</Button>
             </Form>
