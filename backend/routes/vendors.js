@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 const express = require("express"),
     router = express.Router(),
+    jwt = require("jsonwebtoken"),
     HttpStatus = require("http-status-codes"),
+    keys = require("../config/keys"),
     { validateProduct } = require("../validation/product"),
     Product = require("../models/Product");
 
@@ -21,13 +23,30 @@ router.post("/create-product", (req, res, next) => {
 });
 
 router.get("/product-list", (req, res, next) => {
-    const prod = [];
-    // each element in prod array should be an object
-    // of name, status, quantity, quantity-remaining
+    let prod = [],
+        // each element in prod array should be an object
+        // of name, status, quantity, quantity-remaining
+        token = req.headers.authorization;
 
-    // make sure to authenticate the current user
-    console.log(req.headers, req.body, req.protocol, req.params, req.query);
-    // req.headers.authorization;
+    // TODO: refactor this
+    if (!token) {
+        res.status(HttpStatus.BAD_REQUEST).json({ error: "Missing authorization" });
+        return;
+    }
+
+    // need to split out the Bearer part
+    [, token] = token.split(" ");
+
+    jwt.verify(token, keys.secretOrKey, (err, result) => {
+        if (err) {
+            res.status(HttpStatus.BAD_REQUEST).json({ error: err });
+            return;
+        }
+
+        const { vendorId } = result;
+
+        Product.find({});
+    });
 });
 
 module.exports = router;

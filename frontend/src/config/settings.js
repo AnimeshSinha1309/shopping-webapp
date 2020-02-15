@@ -3,6 +3,7 @@
 const PORT = "9000",
     endpoint = `http://localhost:${PORT}`,
     USER_KEY = "current_user",
+    JWT_KEY = "jwtToken",
     USER_TYPE = {
         vendor: "0", customer: "1",
     },
@@ -12,5 +13,5 @@ for (const key of Object.keys(USER_TYPE)) { USER_TYPE_REV[USER_TYPE[key]] = key;
 
 
 export {
-    PORT, USER_KEY, USER_TYPE, USER_TYPE_REV, endpoint,
+    PORT, USER_KEY, USER_TYPE, USER_TYPE_REV, endpoint, JWT_KEY,
 };

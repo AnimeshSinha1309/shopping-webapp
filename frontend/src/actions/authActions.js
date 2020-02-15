@@ -7,7 +7,7 @@ import {
     GET_ERRORS,
     USER_LOADING,
 } from "./types";
-import { USER_KEY, endpoint } from "../config/settings";
+import { USER_KEY, endpoint, JWT_KEY } from "../config/settings";
 
 const userEndpoint = `${endpoint}/users`;
 
@@ -30,7 +30,7 @@ export function loginUser(userData, history, callback) {
         .post(`${userEndpoint}/login`, userData)
         .then((res) => {
             const { token } = res.data;
-            localStorage.setItem("jwtToken", token);
+            localStorage.setItem(JWT_KEY, token);
 
             setAuthToken(token);
 
@@ -54,7 +54,7 @@ export function setUserLoading(callback) {
 }
 
 export function logoutUser(callback) {
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem(JWT_KEY);
 
     deleteAuthToken();
 
