@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require("express"),
     router = express.Router(),
     HttpStatus = require("http-status-codes"),
@@ -17,6 +18,16 @@ router.post("/create-product", (req, res, next) => {
     prod.save()
         .then(response => res.json(response))
         .catch(err => res.json(HttpStatus.BAD_REQUEST).send(err));
+});
+
+router.get("/product-list", (req, res, next) => {
+    const prod = [];
+    // each element in prod array should be an object
+    // of name, status, quantity, quantity-remaining
+
+    // make sure to authenticate the current user
+    console.log(req.headers, req.body, req.protocol, req.params, req.query);
+    // req.headers.authorization;
 });
 
 module.exports = router;

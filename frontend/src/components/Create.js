@@ -3,7 +3,7 @@ import {
     Button, Form, FormGroup, Label, Input,
 } from "reactstrap";
 
-import { createProduct } from "../actions/createProduct";
+import { createProduct } from "../actions/productActions";
 import { isVendor } from "../config/data";
 // import PropTypes from "prop-types";
 

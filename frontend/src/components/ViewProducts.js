@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getProductList } from "../actions/productActions";
 
 class ProductListing extends Component {
     render() {
@@ -27,27 +28,12 @@ ProductListing.propTypes = {
     remaining: Number,
 };
 
-// TODO
-// eslint-disable-next-line no-unused-vars
-function getProducts(onlyReadyProds = false) {
-    const prod = [];
-
-    // each element in prod array should be an object
-    // of name, status, quantity, quantity-remaining
-
-    return prod;
-}
-
-function getProductList(onlyReadyProds = false) {
-    const products = getProducts(onlyReadyProds);
-
-    return products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>);
-}
 
 class ProductList extends Component {
     render() {
         const filterBtn = <input type="checkbox" value="filter-ready" />,
-            productList = getProductList();
+            products = getProductList(),
+            productList = products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>);
 
         return (
             <React.Fragment>

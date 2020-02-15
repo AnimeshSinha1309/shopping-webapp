@@ -9,3 +9,10 @@ export function createProduct(data, callback) {
         .then(callback)
         .catch(err => callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
 }
+
+export function getProductList(callback) {
+    axios
+        .get(`${vendorEndpoint}/product-list`)
+        .then(callback)
+        .catch(err => callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
+}

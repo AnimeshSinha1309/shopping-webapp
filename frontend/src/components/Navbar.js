@@ -11,7 +11,7 @@ import history from "../history";
 import { LogOutBtn } from "../logOut";
 import { Welcome } from "./Welcome";
 import About from "./About";
-import { ProductList, DispatchReadyProducts, DispatchedProducts } from "../ViewProducts";
+import { ProductList, DispatchReadyProducts, DispatchedProducts } from "./ViewProducts";
 
 let welcomeElm,
     logOutBtn,
