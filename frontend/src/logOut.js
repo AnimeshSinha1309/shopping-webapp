@@ -7,7 +7,7 @@ class LogOutBtn extends Component {
     }
 
     render() {
-        return (<div className="navbar-text" ><a href="#" onClick={this.handleOnClick.bind(this)}> Log Out</a></div>);
+        return (<li className="navbar-text"><a href="#" onClick={this.handleOnClick.bind(this)}> Log Out</a></li>);
     }
 }
 

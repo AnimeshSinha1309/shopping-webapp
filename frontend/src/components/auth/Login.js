@@ -98,6 +98,8 @@ class Modal extends Component {
 
         loginUser(userCreds, history, (status = {}) => {
             if (status.type === GET_ERRORS) { console.log("failed", status); } else {
+                // doesn't work
+                // history.push("/");
                 window.location.reload();
             }
         });

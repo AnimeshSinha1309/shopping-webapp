@@ -58,6 +58,15 @@ class ProductList extends Component {
     }
 }
 
+class DispatchReadyProducts extends Component {
+    render() {
+        return (
+            <React.Fragment>
+            </React.Fragment>
+        );
+    }
+}
+
 class DispatchedProducts extends Component {
     render() {
         return (
@@ -68,4 +77,4 @@ class DispatchedProducts extends Component {
     }
 }
 
-export default { ProductList, DispatchedProducts };
+export { ProductList, DispatchedProducts, DispatchReadyProducts };

@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    Route, Link, BrowserRouter as Router, Switch,
+    Route, Link, Router, Switch,
 } from "react-router-dom";
 import CreateModal from "./Create";
 import Modal from "./components/auth/Login";
@@ -10,6 +10,8 @@ import { LogOutBtn } from "./logOut";
 import { Welcome } from "./Welcome";
 import { currentUser, isVendor } from "./config/data";
 import { CustomerNav, VendorNav } from "./UserSpecificNav";
+import About from "./About";
+import { ProductList, DispatchReadyProducts, DispatchedProducts } from "./ViewProducts";
 
 let welcomeElm,
     logOutBtn,
@@ -18,7 +20,7 @@ let welcomeElm,
 if (currentUser) {
     welcomeElm = Welcome;
     logOutBtn = <LogOutBtn></LogOutBtn>;
-    navbarBtns = isVendor ? VendorNav : CustomerNav;
+    navbarBtns = isVendor ? <VendorNav></VendorNav> : <CustomerNav></CustomerNav>;
 } else {
     welcomeElm = Modal;
     logOutBtn = <span></span>;
@@ -41,17 +43,29 @@ const routing = (<Router history={history}>
                         <Link className="nav-link" to="/">Home</Link>
                     </li>
                     {navbarBtns}
-                    <li className="nav-item">
+                </ul>
+                <ul>
+                    <li className="navbar-text">
                         <Link className="nav-link" to="/about">About</Link>
                     </li>
+                    {logOutBtn}
                 </ul>
-                {logOutBtn}
             </div>
         </div>
         {/* switch helps us specify a default case if no route path matches */}
         <Switch>
             <Route path="/" exact component={welcomeElm}></Route>
+
+            {/* Vendor routes */}
             <Route path="/create" exact component={CreateModal}></Route>
+            <Route path="/view-products" exact component={ProductList}></Route>
+            <Route path="/view-dispatch-ready" exact component={DispatchReadyProducts}></Route>
+            <Route path="/view-dispatched" exact component={DispatchedProducts}></Route>
+
+            {/* Customer routes */}
+
+
+            <Route path="/about" exact component={About}></Route>
             <Route component={NotFound}></Route>
         </Switch>
     </div>
