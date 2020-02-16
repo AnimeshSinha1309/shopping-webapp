@@ -140,6 +140,7 @@ class Modal extends Component {
                                         </div>
                                     </form>
                                 </div>
+
                                 <div className="modal-footer">
                                     <div className="options text-center text-md-right mt-1">
                                         <p>Not a member? <a href="#" className="blue-text">Sign Up</a></p>
