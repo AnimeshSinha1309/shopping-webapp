@@ -5,7 +5,12 @@ class CustomerNav extends Component {
     render() {
         return (
             <React.Fragment>
-
+                <li className="nav-item">
+                    <Link className="nav-link" to="/search">Search</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/view-orders">View my orders</Link>
+                </li>
             </React.Fragment>
         );
     }
