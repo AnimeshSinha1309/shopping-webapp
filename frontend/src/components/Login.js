@@ -164,7 +164,6 @@ class Modal extends Component {
 
                                         <Radio onChangeHandler={onChangeHandler}></Radio>
 
-
                                         <div className="text-center form-sm mt-2">
                                             <button className="btn btn-info">Sign up <i className="fas fa-sign-in ml-1"></i></button>
                                         </div>

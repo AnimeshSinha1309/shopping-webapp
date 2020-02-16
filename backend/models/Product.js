@@ -15,8 +15,8 @@ const productSchema = new Schema({
             required: true,
         },
         vendor: {
-            type: Schema.Types.ObjectId,
-            ref: "Vendor",
+            type: String,
+            required: true,
         },
     }),
     Product = model("Product", productSchema);

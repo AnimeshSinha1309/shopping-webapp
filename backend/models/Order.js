@@ -1,13 +1,16 @@
 const { model, Schema } = require("mongoose"),
     // Schema
+    // since foreign key relations ("ref") in mongoose/nosql are messed up
+    // you can't really query by foreign key
+    // so just store the ID values as strings
     orderSchema = new Schema({
         customer: {
-            type: Schema.Types.ObjectId,
-            ref: "Customer",
+            type: String,
+            required: true,
         },
         product: {
-            type: Schema.Types.ObjectId,
-            ref: "Product",
+            type: String,
+            required: true,
         },
         count: {
             type: Number,
