@@ -29,8 +29,7 @@ ProductListing.propTypes = {
     remaining: Number,
 };
 
-
-class ProductList extends Component {
+class GeneralProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +40,7 @@ class ProductList extends Component {
     componentDidMount() {
         // const filterBtn = <input type="checkbox" value="filter-ready" />;
 
-        getProductList((products) => {
+        getProductList(this.state.type, (products) => {
             this.setState({ table: makeTableFromObjectArray(products) });
         });
     }
@@ -58,21 +57,25 @@ class ProductList extends Component {
     }
 }
 
-class DispatchReadyProducts extends Component {
-    render() {
-        return (
-            <React.Fragment>
-            </React.Fragment>
-        );
+
+class ProductList extends GeneralProductList {
+    constructor(props) {
+        super(props);
+        this.state.type = 0;
     }
 }
 
-class DispatchedProducts extends Component {
-    render() {
-        return (
-            <React.Fragment>
-            </React.Fragment>
-        );
+class DispatchReadyProducts extends GeneralProductList {
+    constructor(props) {
+        super(props);
+        this.state.type = 1;
+    }
+}
+
+class DispatchedProducts extends GeneralProductList {
+    constructor(props) {
+        super(props);
+        this.state.type = 2;
     }
 }
 

@@ -4,12 +4,12 @@ const express = require("express"),
     HttpStatus = require("http-status-codes"),
     { validateProduct } = require("../validation/product"),
     Product = require("../models/Product"),
-    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
-    { extractFields } = require("../utils/helper");
+    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth");
 
 // create a new product by vendor
 // eslint-disable-next-line no-unused-vars
 const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, data) => {
+        data.status = 0; // initialize product state to 0
         const prod = new Product(data);
 
         prod.save()
@@ -23,9 +23,7 @@ const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, da
 router.post("/create-product", createProdFunc);
 
 router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => {
-    const prod = [],
-        // each elm in prod array should be name, price, qty and qty remaining
-        { id: vendorId } = jwtResult;
+    const { id: vendorId } = jwtResult;
 
     Product.find({ vendor: vendorId }, (err, res) => {
         if (err) {
@@ -33,7 +31,7 @@ router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => 
             return;
         }
 
-        routerRes.json(res.map(extractFields));
+        routerRes.json(res);
     });
 }));
 

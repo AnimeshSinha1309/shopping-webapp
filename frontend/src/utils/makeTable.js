@@ -2,6 +2,10 @@ import React from "react";
 import { Table } from "reactstrap";
 
 function makeTableFromObjectArray(data) {
+    if (data.length === 0) {
+        return <h3>The list is empty</h3>;
+    }
+
     const rows = [],
         keys = Object.keys(data[0]),
         headerRow = <tr key={123}>{

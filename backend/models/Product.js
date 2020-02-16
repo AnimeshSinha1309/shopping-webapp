@@ -17,6 +17,9 @@ const productSchema = new Schema({
         quantityRem: {
             type: Number,
         },
+        status: {
+            type: Number,
+        },
         vendor: {
             type: String,
             required: true,
