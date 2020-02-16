@@ -4,16 +4,24 @@ import { endpoint, JWT_KEY } from "../config/settings";
 
 const vendorEndpoint = `${endpoint}/vendors`;
 
+function vendorPost(specificEndpoint, data) {
+    return axios.post(`${vendorEndpoint}${specificEndpoint}`, data, { headers: { Authorization: localStorage[JWT_KEY] } });
+}
+
+function vendorGet(specificEndpoint, data) {
+    return axios.get(`${vendorEndpoint}${specificEndpoint}`, { headers: { Authorization: localStorage[JWT_KEY] } });
+}
+
 export function createProduct(data, callback) {
-    axios.post(`${vendorEndpoint}/create-product`, data, { headers: { Authorization: localStorage[JWT_KEY] } })
+    vendorPost("/create-product", data)
         .then(callback)
-        .catch((err) => { console.log(err); });// callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
+        .catch((err) => { console.log(err.response.data); });
 }
 
 export function getProductList(callback) {
-    // TODO: refactor
-    axios
-        .get(`${vendorEndpoint}/product-list`, { headers: { Authorization: localStorage[JWT_KEY] } })
-        .then(callback)
+    vendorGet("/product-list")
+        .then((resp) => {
+            callback(resp.data);
+        })
         .catch(err => callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
 }

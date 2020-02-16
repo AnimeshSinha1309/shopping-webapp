@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { getProductList } from "../actions/productActions";
+import { makeTableFromObjectArray } from "../utils/makeTable";
 
 class ProductListing extends Component {
     render() {
@@ -30,17 +31,30 @@ ProductListing.propTypes = {
 
 
 class ProductList extends Component {
-    render() {
-        const filterBtn = <input type="checkbox" value="filter-ready" />,
-            products = getProductList(),
-            productList = products.map((elm, key) => <ProductListing {...elm} key={key}></ProductListing>);
+    constructor(props) {
+        super(props);
+        this.state = {
+            table: null,
+        };
+    }
 
-        return (
-            <React.Fragment>
-                {filterBtn}
-                {productList}
-            </React.Fragment>
-        );
+    componentDidMount() {
+        // const filterBtn = <input type="checkbox" value="filter-ready" />;
+
+        getProductList((products) => {
+            this.setState({ table: makeTableFromObjectArray(products) });
+        });
+    }
+
+    /**
+     * Asynchronous render function
+     */
+    render() {
+        if (this.state.table) {
+            return this.state.table;
+        }
+
+        return (<div>Loading...</div>);
     }
 }
 
@@ -57,7 +71,6 @@ class DispatchedProducts extends Component {
     render() {
         return (
             <React.Fragment>
-                {getProductList(true)}
             </React.Fragment>
         );
     }

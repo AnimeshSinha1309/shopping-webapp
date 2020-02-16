@@ -12,12 +12,11 @@ function checkValidationAndRedirect(validator, func) {
         const data = req.body,
             validation = validator(data);
 
-        if (!validation.isValid) { res.status(HttpStatus.BAD_REQUEST).json(validation.errors); return; }
+        if (!validation.isValid) { res.status(HttpStatus.BAD_REQUEST).json({ error: validation.errors }); return; }
 
         func(res, data);
     };
 }
-
 
 function checkAuthAndRedirect(func) {
     return function (req, res) {
@@ -34,14 +33,17 @@ function checkAuthAndRedirect(func) {
 
         jwt.verify(token, keys.secretOrKey, (err, result) => {
             if (err) {
+                console.log(err);
                 res.status(HttpStatus.BAD_REQUEST).json({ error: err });
                 return;
             }
 
             // in post requests, also add the received id into the request body
-            // if (req.body) {
-            //     req.body.id = result.id;
-            // }
+            if (req.body) {
+                // set both, can use whatever they need
+                req.body.vendor = result.id;
+                req.body.customer = result.id;
+            }
 
             func(req, res, result);
         });

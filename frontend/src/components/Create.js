@@ -19,6 +19,7 @@ class CreateModal extends Component {
             name: this.state.name,
             price: this.state.price,
             quantity: this.state.quantity,
+            quantityRem: this.state.quantity,
         };
 
         createProduct(data, (res) => {

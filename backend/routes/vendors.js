@@ -4,7 +4,8 @@ const express = require("express"),
     HttpStatus = require("http-status-codes"),
     { validateProduct } = require("../validation/product"),
     Product = require("../models/Product"),
-    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth");
+    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
+    { extractFields } = require("../utils/helper");
 
 // create a new product by vendor
 // eslint-disable-next-line no-unused-vars
@@ -25,8 +26,15 @@ router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => 
     const prod = [],
         // each elm in prod array should be name, price, qty and qty remaining
         { id: vendorId } = jwtResult;
-    console.log(vendorId);
-    Product.find({ vendor: vendorId }, (err, res) => { console.log(err, res); });
+
+    Product.find({ vendor: vendorId }, (err, res) => {
+        if (err) {
+            routerRes.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+            return;
+        }
+
+        routerRes.json(res.map(extractFields));
+    });
 }));
 
 module.exports = router;
