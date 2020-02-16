@@ -19,7 +19,10 @@ const createError = require("http-errors"),
 
 const app = express();
 
-mongoose.connect(config.mongoURI, { useNewUrlParser: true })
+mongoose.connect(config.mongoURI, {
+    // these flags help suppress startup warnings
+    useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true,
+})
     .then(() => console.log("MongoDB connection: success"))
     .catch(err => console.log(err));
 
