@@ -2,7 +2,6 @@
 import axios from "axios";
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
-import { setAuthToken, deleteAuthToken } from "../utils/authTokenManip";
 import {
     GET_ERRORS,
     USER_LOADING,
@@ -32,8 +31,6 @@ export function loginUser(userData, history, callback) {
             const { token } = res.data;
             localStorage.setItem(JWT_KEY, token);
 
-            setAuthToken(token);
-
             const decoded = jwt_decode(token);
             setCurrentUser(decoded);
             callback();
@@ -55,8 +52,6 @@ export function setUserLoading(callback) {
 
 export function logoutUser(callback) {
     localStorage.removeItem(JWT_KEY);
-
-    deleteAuthToken();
 
     setCurrentUser({});
     if (callback) { callback(); }

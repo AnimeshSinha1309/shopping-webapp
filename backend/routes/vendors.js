@@ -1,52 +1,32 @@
 /* eslint-disable no-unused-vars */
 const express = require("express"),
     router = express.Router(),
-    jwt = require("jsonwebtoken"),
     HttpStatus = require("http-status-codes"),
-    keys = require("../config/keys"),
     { validateProduct } = require("../validation/product"),
-    Product = require("../models/Product");
+    Product = require("../models/Product"),
+    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth");
 
 // create a new product by vendor
 // eslint-disable-next-line no-unused-vars
-router.post("/create-product", (req, res, next) => {
-    const data = req.body,
-        validation = validateProduct(data);
+const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, data) => {
+        const prod = new Product(data);
 
-    if (!validation.isValid) { res.status(HttpStatus.BAD_REQUEST).json(validation.errors); }
+        prod.save()
+            .then((response) => {
+                routerRes.json(response);
+            })
+            .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
+    }),
+    createProdFunc = checkAuthAndRedirect(validatorFunc);
 
-    const prod = new Product(data);
+router.post("/create-product", createProdFunc);
 
-    prod.save()
-        .then(response => res.json(response))
-        .catch(err => res.json(HttpStatus.BAD_REQUEST).send(err));
-});
-
-router.get("/product-list", (req, res, next) => {
-    let prod = [],
-        // each element in prod array should be an object
-        // of name, status, quantity, quantity-remaining
-        token = req.headers.authorization;
-
-    // TODO: refactor this
-    if (!token) {
-        res.status(HttpStatus.BAD_REQUEST).json({ error: "Missing authorization" });
-        return;
-    }
-
-    // need to split out the Bearer part
-    [, token] = token.split(" ");
-
-    jwt.verify(token, keys.secretOrKey, (err, result) => {
-        if (err) {
-            res.status(HttpStatus.BAD_REQUEST).json({ error: err });
-            return;
-        }
-
-        const { vendorId } = result;
-
-        Product.find({});
-    });
-});
+router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => {
+    const prod = [],
+        // each elm in prod array should be name, price, qty and qty remaining
+        { id: vendorId } = jwtResult;
+    console.log(vendorId);
+    Product.find({ vendor: vendorId }, (err, res) => { console.log(err, res); });
+}));
 
 module.exports = router;

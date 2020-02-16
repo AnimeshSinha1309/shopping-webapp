@@ -5,9 +5,9 @@ import { endpoint, JWT_KEY } from "../config/settings";
 const vendorEndpoint = `${endpoint}/vendors`;
 
 export function createProduct(data, callback) {
-    axios.post(`${vendorEndpoint}/create-product`, data)
+    axios.post(`${vendorEndpoint}/create-product`, data, { headers: { Authorization: localStorage[JWT_KEY] } })
         .then(callback)
-        .catch(err => callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
+        .catch((err) => { console.log(err); });// callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
 }
 
 export function getProductList(callback) {
