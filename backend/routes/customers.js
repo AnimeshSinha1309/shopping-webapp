@@ -42,4 +42,13 @@ router.post("/search", checkAuthAndRedirect((req, res) => {
     });
 }));
 
+router.get("/view-orders", checkAuthAndRedirect((req, res) => {
+    Order
+        .find({ customer: req.body.customer })
+        .then((orders) => {
+            res.status(HttpStatus.OK).json(orders);
+        })
+        .catch(err => res.status(HttpStatus.BAD_REQUEST).json(err));
+}));
+
 module.exports = router;

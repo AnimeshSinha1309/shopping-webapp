@@ -14,6 +14,7 @@ import { ProductList, DispatchReadyProducts, DispatchedProducts } from "./ViewPr
 import { Search } from "./Search";
 import { USER_TYPE } from "../config/settings";
 import { HomePage } from "./HomePage";
+import { OrderList } from "./OrderList";
 
 let logOutBtn,
     navbarBtns;
@@ -90,7 +91,7 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
 
                 {/* Customer routes */}
                 <CustomerAuth path="/search" component={Search}></CustomerAuth>
-                <CustomerAuth path="/view-orders" component={ProductList}></CustomerAuth>
+                <CustomerAuth path="/view-orders" component={OrderList}></CustomerAuth>
 
                 <Route path="/about" exact component={About}></Route>
                 <Route component={NotFound}></Route>

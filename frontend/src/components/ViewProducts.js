@@ -54,7 +54,9 @@ class GeneralProductList extends Component {
         // const filterBtn = <input type="checkbox" value="filter-ready" />;
 
         getProductList(this.state.type, (products) => {
-            this.setState({ table: makeTableFromObjectArray(products, this.onClick.bind(this), this.state.type === 1) });
+            const btnText = this.state.type === 1 ? "Dispatch" : "";
+
+            this.setState({ table: makeTableFromObjectArray(products, this.onClick.bind(this), btnText) });
         });
     }
 
