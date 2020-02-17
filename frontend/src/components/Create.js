@@ -22,7 +22,7 @@ class CreateModal extends Component {
         };
 
         createProduct(data, () => {
-            this.props.history.push("/view-placed");
+            this.props.history.push("/view-waiting");
         });
     }
 

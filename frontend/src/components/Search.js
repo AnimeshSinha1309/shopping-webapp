@@ -47,7 +47,8 @@ class Search extends Component {
         const elm = document.getElementById("searchquery");
 
         searchProduct(elm.value, (productlist) => {
-            productlist = filterFields(productlist);
+            // confidence added by mongoose-fuzzy-search
+            productlist = filterFields(productlist, ["confidenceScore"]);
             const table = makeTableFromObjectArray(productlist, this.onOrderClick.bind(this), this.buttonName);
 
             this.setState({ productlist: table });
@@ -57,10 +58,12 @@ class Search extends Component {
     render() {
         return (
             <div>
+                <h1>Search for products on the marketplace!</h1>
                 <Form onSubmit={this.onQuery.bind(this)}>
                     <Input type="text" placeholder="Enter seach query" id="searchquery"></Input>
                     <Button type="submit">Search</Button>
                 </Form>
+                <p><i>Search results sorted by closest match, uses fuzzy matching on product name</i></p>
                 <div>
                     {this.state.productlist}
                 </div>
