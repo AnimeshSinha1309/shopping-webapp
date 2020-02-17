@@ -15,7 +15,6 @@ import { Search } from "./Search";
 import { USER_TYPE } from "../config/settings";
 import { HomePage } from "./HomePage";
 
-const welcomeElm = HomePage;
 let logOutBtn,
     navbarBtns;
 
@@ -35,7 +34,7 @@ if (currentUser) {
 function requireAuth(requiredUserType) {
     class AuthRequired extends Component {
         render() {
-            if (!currentUser || Number(currentUserObj.usertype) !== requiredUserType) {
+            if (!currentUser || Number(currentUserObj.usertype) !== Number(requiredUserType)) {
                 return <Redirect to={`/?required=${requiredUserType}`}></Redirect>;
             }
             return <Route path={this.props.path} exact component={this.props.component} />;
@@ -43,7 +42,7 @@ function requireAuth(requiredUserType) {
     }
 
     AuthRequired.propTypes = {
-        path: String,
+        path: PropTypes.string,
         component: PropTypes.elementType,
     };
 
@@ -79,20 +78,19 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
             </div>
             {/* switch helps us specify a default case if no route path matches */}
             <Switch>
-                <Route path="/" exact component={welcomeElm}></Route>
-                <Route path="/?required=:id" exact component={welcomeElm}></Route>
+                <Route path="/" exact component={HomePage}></Route>
+                <Route path="/?required=:id" exact component={HomePage}></Route>
 
                 {/* Vendor routes */}
                 <VendorAuth path="/create" component={CreateModal}></VendorAuth>
                 {/* <Route path="/create" exact component={CreateModal} onEnter={vendorAuth}></Route> */}
-                <Route path="/view-products" exact component={ProductList} onEnter={VendorAuth}></Route>
-                <Route path="/view-dispatch-ready" exact component={DispatchReadyProducts}onEnter={VendorAuth}></Route>
-                <Route path="/view-dispatched" exact component={DispatchedProducts}onEnter={VendorAuth}></Route>
+                <VendorAuth path="/view-products" component={ProductList}></VendorAuth>
+                <VendorAuth path="/view-dispatch-ready" component={DispatchReadyProducts}></VendorAuth>
+                <VendorAuth path="/view-dispatched" component={DispatchedProducts}></VendorAuth>
 
                 {/* Customer routes */}
                 <CustomerAuth path="/search" component={Search}></CustomerAuth>
-                {/* <Route path="/search" exact component={Search} onEnter={customerAuth}></Route> */}
-                <Route path="/view-orders" exact component={ProductList} onEnter={CustomerAuth}></Route>
+                <CustomerAuth path="/view-orders" component={ProductList}></CustomerAuth>
 
                 <Route path="/about" exact component={About}></Route>
                 <Route component={NotFound}></Route>
