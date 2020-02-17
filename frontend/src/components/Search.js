@@ -20,8 +20,8 @@ class Search extends Component {
         if (node.tagName === "BUTTON" && node.innerHTML === this.buttonName) {
             const tr = node.parentElement.parentElement,
                 { id } = tr.dataset,
-                min = 1,
-                max = 100; // TODO: from quantity rem
+                max = Number(tr.dataset.max),
+                min = 1;
 
             while (true) {
                 const input = window.prompt(`Enter quantity between ${min} and ${max}`);
