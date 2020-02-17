@@ -10,7 +10,12 @@ const express = require("express"),
 // create a new product by vendor
 // eslint-disable-next-line no-unused-vars
 const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, data) => {
-        data.status = 0; // initialize product state to 0
+        data.quantityRem = data.quantity;
+        data.status = PRODUCT_STATUS_REV.WAITING;
+        data.image = {
+            data: data.imageData,
+            type: "image/png",
+        };
         const prod = new Product(data);
 
         prod.save()

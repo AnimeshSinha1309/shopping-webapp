@@ -19,7 +19,9 @@ const productSchema = new Schema({
     },
     quantityRem: {
         type: Number,
+        required: true,
     },
+    image: { data: Buffer, contentType: String },
     status: {
         type: Number,
     },

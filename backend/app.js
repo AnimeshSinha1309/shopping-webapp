@@ -37,8 +37,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+// have tried several ways, nothing works
+// default limit is 100kb
+// https://stackoverflow.com/q/31967138/2181238
+// https://stackoverflow.com/a/60244742/2181238
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ type: "image/png", limit: "2gb" }));
+// app.use(bodyParser());
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
