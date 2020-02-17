@@ -14,7 +14,7 @@ const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, da
         data.status = PRODUCT_STATUS_REV.WAITING;
         data.image = {
             data: data.imageData,
-            type: "image/png",
+            contentType: "image/png",
         };
         const prod = new Product(data);
 
@@ -27,7 +27,6 @@ const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, da
     createProdFunc = checkAuthAndRedirect(validatorFunc);
 
 router.post("/create-product", createProdFunc);
-
 
 const dispatcher = checkValidationAndRedirect(validateDispatchProduct, (routerRes, data) => {
     const { productId } = data;

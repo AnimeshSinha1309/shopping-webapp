@@ -20,7 +20,17 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
         const rowElms = [];
 
         for (const key of keys) {
-            rowElms.push(<td key={index++}>{obj[key]}</td>);
+            let elm = obj[key];
+            if (key === "image") {
+                if (elm.data) {
+                    const imageData = elm.data.data.map(x => String.fromCharCode(x)).join("");
+
+                    elm = <img src={imageData}></img>;
+                } else {
+                    elm = "NA";
+                }
+            }
+            rowElms.push(<td key={index++}>{elm}</td>);
         }
 
         if (renderButton) { rowElms.push(<td key={index++}><Button>{renderButton}</Button></td>); }
