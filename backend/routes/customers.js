@@ -9,7 +9,7 @@ const express = require("express"),
     Product = require("../models/Product"),
     Order = require("../models/Order"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
-    { PRODUCT_STATUS } = require("../config/config");
+    { PRODUCT_STATUS, PRODUCT_STATUS_REV } = require("../config/config");
 
 // create a new order by customer
 const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data) => {
@@ -32,7 +32,8 @@ router.post("/create-order", createOrderFunc);
 router.post("/search", checkAuthAndRedirect((req, res) => {
     const { productName } = req.body;
 
-    Product.find({ name: new RegExp(productName), status: 0 }).then((products) => {
+    Product.fuzzySearch(productName).then((products) => {
+        products = products.filter(x => x.status === PRODUCT_STATUS_REV.WAITING);
         const resProds = [];
 
         if (products.length === 0) {

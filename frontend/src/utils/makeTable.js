@@ -7,7 +7,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
     }
 
     let keys = Object.keys(data[0]);
-    keys = keys.filter(x => x !== "_id");
+    keys = keys.filter(x => x !== "_id" && x !== "id");
 
     const rows = [],
         headerRow = <tr key={123}>{
