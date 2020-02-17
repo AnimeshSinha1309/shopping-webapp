@@ -7,14 +7,24 @@ const jwt = require("jsonwebtoken"),
  * @param {Function} validator takes data as argument and returns validation
  * @param {Function} func takes valid data and routerRes as argument
  */
-function checkValidationAndRedirect(validator, func) {
+function checkValidationAndRedirect(validator, func, cbType = false) {
     return function (req, res) {
-        const data = req.body,
-            validation = validator(data);
+        const data = req.body;
+        if (!cbType) {
+            const validation = validator(data);
 
-        if (!validation.isValid) { res.status(HttpStatus.BAD_REQUEST).json({ error: validation.errors }); return; }
+            if (!validation.isValid) { res.status(HttpStatus.BAD_REQUEST).json({ error: validation.errors }); return; }
 
-        func(res, data);
+            func(res, data);
+        } else {
+            validator(data, ({ errors, isValid }) => {
+                if (isValid) {
+                    func(res, data);
+                } else {
+                    res.status(HttpStatus.BAD_REQUEST).json({ errors });
+                }
+            });
+        }
     };
 }
 

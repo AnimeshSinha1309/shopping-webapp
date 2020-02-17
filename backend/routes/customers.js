@@ -19,7 +19,7 @@ const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data
                 routerRes.json(response);
             })
             .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
-    }),
+    }, true),
     createOrderFunc = checkAuthAndRedirect(validatorFunc);
 
 router.post("/create-order", createOrderFunc);
