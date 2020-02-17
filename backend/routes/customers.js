@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 const express = require("express"),
     router = express.Router(),
@@ -46,7 +47,30 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
     Order
         .find({ customer: req.body.customer })
         .then((orders) => {
-            res.status(HttpStatus.OK).json(orders);
+            const resOrders = [];
+
+            orders.forEach((order) => {
+                const { product: productID } = order;
+
+                Product.findById(productID).then((product) => {
+                    order._doc.status = product.status;
+                    order._doc.quantityRem = product.quantityRem;
+
+                    order.product = product.name;
+                    order.customer = undefined;
+                    const { vendor: vendorID } = product;
+
+                    Vendor.findById(vendorID).then((vend) => {
+                        order._doc.vendor = vend.name;
+
+                        resOrders.push(order);
+
+                        if (resOrders.length === orders.length) {
+                            res.status(HttpStatus.OK).json(resOrders);
+                        }
+                    });
+                });
+            });
         })
         .catch(err => res.status(HttpStatus.BAD_REQUEST).json(err));
 }));
