@@ -25,7 +25,9 @@ class Search extends Component {
 
             while (true) {
                 const input = window.prompt(`Enter quantity between ${min} and ${max}`);
+
                 if (input === null) { break; }
+
                 const quantity = Number(input);
 
                 if (quantity >= min && quantity <= max) {

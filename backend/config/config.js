@@ -12,7 +12,9 @@ const USER_TYPE = {
     };
 
 for (const key of Object.keys(USER_TYPE)) { USER_TYPE_REV[USER_TYPE[key]] = key; }
-for (const key of Object.keys(PRODUCT_STATUS)) { PRODUCT_STATUS_REV[PRODUCT_STATUS[key]] = key; }
+for (const key of Object.keys(PRODUCT_STATUS)) {
+    PRODUCT_STATUS_REV[PRODUCT_STATUS[key].toUpperCase()] = Number(key);
+}
 
 module.exports = {
     MIN_PASSWORD_LEN: 6,

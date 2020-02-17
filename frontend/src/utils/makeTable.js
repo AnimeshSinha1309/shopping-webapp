@@ -26,7 +26,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
         if (renderButton) { rowElms.push(<td key={index++}><Button>{renderButton}</Button></td>); }
 
         // eslint-disable-next-line no-underscore-dangle
-        const elmRow = <tr key={index++} data-id={obj._id} data-max={obj.quantityRem}>{rowElms}</tr>;
+        const elmRow = <tr key={index++} data-id={obj._id} data-max={obj.quantityRem} data-name={obj.name}>{rowElms}</tr>;
 
         rows.push(elmRow);
     }

@@ -10,7 +10,7 @@ import NotFound from "./404";
 import history from "../history";
 import { LogOutBtn } from "../logOut";
 import About from "./About";
-import { ProductList, DispatchReadyProducts, DispatchedProducts } from "./ViewProducts";
+import { WaitingProductList, DispatchReadyProducts, DispatchedProducts } from "./ViewProducts";
 import { Search } from "./Search";
 import { USER_TYPE } from "../config/settings";
 import { HomePage } from "./HomePage";
@@ -85,8 +85,8 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
                 {/* Vendor routes */}
                 <VendorAuth path="/create" component={CreateModal}></VendorAuth>
                 {/* <Route path="/create" exact component={CreateModal} onEnter={vendorAuth}></Route> */}
-                <VendorAuth path="/view-products" component={ProductList}></VendorAuth>
-                <VendorAuth path="/view-dispatch-ready" component={DispatchReadyProducts}></VendorAuth>
+                <VendorAuth path="/view-waiting" component={WaitingProductList}></VendorAuth>
+                <VendorAuth path="/view-placed" component={DispatchReadyProducts}></VendorAuth>
                 <VendorAuth path="/view-dispatched" component={DispatchedProducts}></VendorAuth>
 
                 {/* Customer routes */}

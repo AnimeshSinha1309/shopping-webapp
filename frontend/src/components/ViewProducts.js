@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getProductList } from "../actions/productActions";
+import { getProductList, dispatchProduct } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { PRODUCT_STATUS_REV } from "../config/settings";
 
@@ -46,7 +46,14 @@ class GeneralProductList extends Component {
         const node = ev.target;
 
         if (node.tagName === "BUTTON" && node.innerHTML === "Dispatch") {
-            console.log("TODO");
+            const tr = node.parentElement.parentElement,
+                { id, name } = tr.dataset;
+
+            if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
+                dispatchProduct(id, () => {
+                    window.location.href = "/view-dispatched";
+                });
+            }
         }
     }
 
@@ -74,26 +81,26 @@ class GeneralProductList extends Component {
 }
 
 
-class ProductList extends GeneralProductList {
+class WaitingProductList extends GeneralProductList {
     constructor(props) {
         super(props);
 
-        this.state.type = PRODUCT_STATUS_REV.Waiting;
+        this.state.type = PRODUCT_STATUS_REV.WAITING;
     }
 }
 
 class DispatchReadyProducts extends GeneralProductList {
     constructor(props) {
         super(props);
-        this.state.type = PRODUCT_STATUS_REV.Placed;
+        this.state.type = PRODUCT_STATUS_REV.PLACED;
     }
 }
 
 class DispatchedProducts extends GeneralProductList {
     constructor(props) {
         super(props);
-        this.state.type = PRODUCT_STATUS_REV.Dispatched;
+        this.state.type = PRODUCT_STATUS_REV.DISPATCHED;
     }
 }
 
-export { ProductList, DispatchedProducts, DispatchReadyProducts };
+export { WaitingProductList, DispatchedProducts, DispatchReadyProducts };

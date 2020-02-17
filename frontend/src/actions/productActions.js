@@ -22,3 +22,9 @@ export function getProductList(prodType, callback) {
         })
         .catch(err => callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
 }
+
+export function dispatchProduct(productId, callback) {
+    postData(`${vendorEndpoint}/dispatch-product`, { productId })
+        .then(x => callback(x.data))
+        .catch(err => console.log(err.response.data));
+}

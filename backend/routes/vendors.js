@@ -4,7 +4,8 @@ const express = require("express"),
     HttpStatus = require("http-status-codes"),
     { validateProduct } = require("../validation/product"),
     Product = require("../models/Product"),
-    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth");
+    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
+    { PRODUCT_STATUS_REV } = require("../config/config");
 
 // create a new product by vendor
 // eslint-disable-next-line no-unused-vars
@@ -22,11 +23,21 @@ const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, da
 
 router.post("/create-product", createProdFunc);
 
+router.post("/dispatch-product", checkAuthAndRedirect((req, routerRes, jwtResult) => {
+    const { productId } = req.body;
+
+    Product
+        .findByIdAndUpdate(productId, { status: PRODUCT_STATUS_REV.DISPATCHED })
+        .then(() => routerRes.json({}))
+        .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
+}));
+
 router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => {
     const { id: vendorId } = jwtResult;
 
     Product.find({ vendor: vendorId }, (err, res) => {
         if (err) {
+            // TODO: refactor this statement out
             routerRes.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
             return;
         }

@@ -23,13 +23,16 @@ class VendorNav extends Component {
                     <Link className="nav-link" to="/create">Create product</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/view-products">View my products</Link>
+                    <Link className="nav-link" to="/view-waiting">Waiting products</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/view-dispatch-ready">View dispatch-ready products</Link>
+                    <Link className="nav-link" to="/view-placed">Placed products</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/view-dispatched">View dispatched products</Link>
+                    <Link className="nav-link" to="/view-dispatched">Dispatched products</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/view-cancelled">Cancelled products</Link>
                 </li>
             </React.Fragment>
         );

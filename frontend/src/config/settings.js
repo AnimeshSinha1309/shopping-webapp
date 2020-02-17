@@ -18,7 +18,8 @@ const PORT = "9000",
     };
 
 for (const key of Object.keys(USER_TYPE)) { USER_TYPE_REV[USER_TYPE[key]] = key; }
-for (const key of Object.keys(PRODUCT_STATUS)) { PRODUCT_STATUS_REV[PRODUCT_STATUS[key]] = Number(key); }
+for (const key of Object.keys(PRODUCT_STATUS)) { PRODUCT_STATUS_REV[PRODUCT_STATUS[key].toUpperCase()] = Number(key); }
+
 
 export {
     PORT, USER_KEY, USER_TYPE, USER_TYPE_REV, endpoint, JWT_KEY, PRODUCT_STATUS_REV, PRODUCT_STATUS,
