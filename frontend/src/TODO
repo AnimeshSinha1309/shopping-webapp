@@ -1,2 +1,3 @@
 - navbar elements specific to user/vendor should be displayed
 - errors on login/register should be shown to user
+- dispatch ready products, and work on buttons in user list view

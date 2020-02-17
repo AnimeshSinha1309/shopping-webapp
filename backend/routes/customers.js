@@ -13,9 +13,11 @@ const express = require("express"),
 
 // create a new order by customer
 const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data) => {
-        const order = new Order(data);
+        const order = new Order(data),
+            remCount = data.quantityRem - data.count,
+            updateObj = remCount ? { quantityRem: remCount } : { status: 1 };
 
-        Product.findByIdAndUpdate(data.product, { quantityRem: data.quantityRem - data.count }).then(() => {
+        Product.findByIdAndUpdate(data.product, updateObj).then(() => {
             order.save()
                 .then((response) => {
                     routerRes.json(response);

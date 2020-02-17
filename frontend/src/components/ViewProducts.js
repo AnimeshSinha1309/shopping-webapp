@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { getProductList } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
+import { PRODUCT_STATUS_REV } from "../config/settings";
 
 class ProductListing extends Component {
     render() {
@@ -76,21 +77,22 @@ class GeneralProductList extends Component {
 class ProductList extends GeneralProductList {
     constructor(props) {
         super(props);
-        this.state.type = 0;
+
+        this.state.type = PRODUCT_STATUS_REV.Waiting;
     }
 }
 
 class DispatchReadyProducts extends GeneralProductList {
     constructor(props) {
         super(props);
-        this.state.type = 1;
+        this.state.type = PRODUCT_STATUS_REV.Placed;
     }
 }
 
 class DispatchedProducts extends GeneralProductList {
     constructor(props) {
         super(props);
-        this.state.type = 2;
+        this.state.type = PRODUCT_STATUS_REV.Dispatched;
     }
 }
 
