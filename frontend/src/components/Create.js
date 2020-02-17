@@ -3,9 +3,8 @@ import {
     Button, Form, FormGroup, Label, Input,
 } from "reactstrap";
 
+import PropTypes from "prop-types";
 import { createProduct } from "../actions/productActions";
-import { isVendor } from "../config/data";
-// import PropTypes from "prop-types";
 
 class CreateModal extends Component {
     onChange(e) {
@@ -22,16 +21,12 @@ class CreateModal extends Component {
             quantityRem: this.state.quantity,
         };
 
-        createProduct(data, (res) => {
-            console.log(res);
+        createProduct(data, () => {
+            this.props.history.push("/view-placed");
         });
     }
 
     render() {
-        if (!isVendor) {
-            return (<h1>Sorry, only vendors can create a product</h1>);
-        }
-
         return (
             <Form onSubmit={this.onSubmit.bind(this)} >
                 <FormGroup>
@@ -50,7 +45,7 @@ class CreateModal extends Component {
 }
 
 CreateModal.propTypes = {
-
+    history: PropTypes.objectOf(PropTypes.any),
 };
 
 

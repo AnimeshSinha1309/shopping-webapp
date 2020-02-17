@@ -1,34 +1,8 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { getProductList, dispatchProduct } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { PRODUCT_STATUS_REV } from "../config/settings";
-
-class ProductListing extends Component {
-    render() {
-        const { remaining } = this.props; let updateElm;
-
-        if (remaining) {
-            updateElm = (<React.Fragment> <span className="quantity-remaining"></span>
-                <button><i className="fas fa-bin"></i></button></React.Fragment>);
-        } else {
-            updateElm = <button><i className="fas fa-dispatch"></i></button>;
-        }
-
-        return (
-            <div>
-                <span className="name">{this.props.name}</span>
-                <span className="status"></span>
-                <span className="quantity"></span>
-                {updateElm}
-            </div>
-        );
-    }
-}
-
-ProductListing.propTypes = {
-    name: String,
-    remaining: Number,
-};
 
 class GeneralProductList extends Component {
     constructor(props) {
@@ -51,7 +25,7 @@ class GeneralProductList extends Component {
 
             if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
                 dispatchProduct(id, () => {
-                    window.location.href = "/view-dispatched";
+                    this.props.history.push("/view-dispatched");
                 });
             }
         }
@@ -80,8 +54,11 @@ class GeneralProductList extends Component {
     }
 }
 
+GeneralProductList.propTypes = {
+    history: PropTypes.objectOf(PropTypes.any),
+};
 
-class WaitingProductList extends GeneralProductList {
+class WaitingProducts extends GeneralProductList {
     constructor(props) {
         super(props);
 
@@ -103,4 +80,13 @@ class DispatchedProducts extends GeneralProductList {
     }
 }
 
-export { WaitingProductList, DispatchedProducts, DispatchReadyProducts };
+class CancelledProducts extends GeneralProductList {
+    constructor(props) {
+        super(props);
+        this.state.type = PRODUCT_STATUS_REV.CANCELLED;
+    }
+}
+
+export {
+    WaitingProducts, DispatchedProducts, DispatchReadyProducts, CancelledProducts,
+};

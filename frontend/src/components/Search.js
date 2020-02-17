@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Input, Form, Button } from "reactstrap";
+import PropTypes from "prop-types";
 import { searchProduct, orderProduct } from "../actions/orderActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { filterFields } from "../utils/helper";
@@ -32,7 +33,7 @@ class Search extends Component {
 
                 if (quantity >= min && quantity <= max) {
                     orderProduct(id, quantity, () => {
-                        window.location.href = "/view-orders";
+                        this.props.history.push("/view-orders");
                     });
                     break;
                 }
@@ -68,5 +69,8 @@ class Search extends Component {
     }
 }
 
+Search.propTypes = {
+    history: PropTypes.objectOf(PropTypes.any),
+};
 
 export { Search };
