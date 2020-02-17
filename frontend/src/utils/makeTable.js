@@ -6,8 +6,10 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
         return <h3>The list is empty</h3>;
     }
 
+    let keys = Object.keys(data[0]);
+    keys = keys.filter(x => x !== "_id");
+
     const rows = [],
-        keys = Object.keys(data[0]),
         headerRow = <tr key={123}>{
             keys.map((e, i) => <th key={i}>{e}</th>)
         }</tr>;
@@ -21,9 +23,12 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
             rowElms.push(<td key={index++}>{obj[key]}</td>);
         }
 
-        if (renderButton) { rowElms.push(<Button>{renderButton}</Button>); }
+        if (renderButton) { rowElms.push(<td key={index++}><Button>{renderButton}</Button></td>); }
 
-        rows.push(<tr key={index++}>{rowElms}</tr>);
+        // eslint-disable-next-line no-underscore-dangle
+        const elmRow = <tr key={index++} data-id={obj._id}>{rowElms}</tr>;
+
+        rows.push(elmRow);
     }
 
     const table = <Table onClick={clickHandler}><thead>{headerRow}</thead><tbody>{rows.map(x => x)}</tbody></Table>;

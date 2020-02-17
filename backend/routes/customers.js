@@ -11,9 +11,9 @@ const express = require("express"),
 
 // create a new order by customer
 const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data) => {
-        const prod = new Order(data);
+        const order = new Order(data);
 
-        prod.save()
+        order.save()
             .then((response) => {
                 routerRes.json(response);
             })

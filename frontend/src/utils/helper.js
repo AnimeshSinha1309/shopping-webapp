@@ -8,7 +8,7 @@ function extractFields(obj, blacklist = []) {
         fields = Object.keys(obj); // may need .toObject() since Mongoose DB has Document thingy with _doc property
 
     for (const field of fields) {
-        if (!/^_/.test(field) && blacklist.indexOf(field) === -1) {
+        if ((field === "_id" || !/^_/.test(field)) && blacklist.indexOf(field) === -1) {
             ret[field] = obj[field];
         }
     }
