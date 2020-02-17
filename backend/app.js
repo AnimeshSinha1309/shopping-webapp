@@ -12,6 +12,7 @@ const createError = require("http-errors"),
     // from one localhost port onto another
     cors = require("cors"),
 
+    customersRouter = require("./routes/customers"),
     vendorsRouter = require("./routes/vendors"),
     usersRouter = require("./routes/users"),
     apiRouter = require("./routes/api"),
@@ -41,6 +42,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
+app.use("/customers", customersRouter);
 app.use("/vendors", vendorsRouter);
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);

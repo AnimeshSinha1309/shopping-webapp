@@ -2,8 +2,11 @@
 const express = require("express"),
     router = express.Router(),
     HttpStatus = require("http-status-codes"),
+
     { validateOrder } = require("../validation/order"),
-    { Order } = require("../models/Order"),
+    { Vendor } = require("../models/User"),
+    Product = require("../models/Product"),
+    Order = require("../models/Order"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth");
 
 // create a new order by customer
@@ -20,8 +23,23 @@ const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data
 
 router.post("/create-order", createOrderFunc);
 
-router.get("/search", checkAuthAndRedirect(() => {
+router.post("/search", checkAuthAndRedirect((req, res) => {
+    const { productName } = req.body;
 
+    Product.find({ name: new RegExp(productName), status: 0 }).then((products) => {
+        let c = 0;
+
+        const resProds = [];
+        products.forEach((x) => {
+            Vendor.findById(x.vendor, (err, vend) => {
+                x.vendor = vend.name;
+                resProds.push(x);
+                c++;
+
+                if (c === products.length) { res.status(200).json(resProds); }
+            });
+        });
+    });
 }));
 
 module.exports = router;

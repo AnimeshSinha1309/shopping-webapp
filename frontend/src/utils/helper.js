@@ -18,4 +18,8 @@ function extractFields(obj, blacklist = []) {
     return ret;
 }
 
-module.exports = { extractFields };
+function filterFields(array, blacklist = []) {
+    return array.map(x => extractFields(x, blacklist));
+}
+
+module.exports = { filterFields };

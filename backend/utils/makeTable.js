@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Button } from "reactstrap";
 
-function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
+function makeTableFromObjectArray(data, clickHandler, renderButton = false) {
     if (data.length === 0) {
         return <h3>The list is empty</h3>;
     }
@@ -21,7 +21,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
             rowElms.push(<td key={index++}>{obj[key]}</td>);
         }
 
-        if (renderButton) { rowElms.push(<Button>{renderButton}</Button>); }
+        if (renderButton) { rowElms.push(<Button>Dispatch</Button>); }
 
         rows.push(<tr key={index++}>{rowElms}</tr>);
     }
