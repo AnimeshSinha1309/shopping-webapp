@@ -20,41 +20,4 @@ router.get("/", (req, res, next) => {
     res.send("API is working properly");
 });
 
-// get list of products, searchable by their name
-// req.params gets the :id things in the route url
-// req.query gets the ?a=b things in the main url
-router.get("/products", (req, res, next) => {
-    const { productName } = req.query;
-
-    Product.find({ name: new RegExp(productName) }, (error, products) => {
-        if (error) {
-            res.send(error);
-        }
-
-        res.json(products);
-    });
-});
-
-// search for products
-router.get("/search", (req, res, next) => {
-});
-
-// get status of all my orders
-router.get("/orders", (req, res, next) => {
-    Order.find({}, () => {
-
-    });
-});
-
-// get vendor list
-router.get("/vendors", (req, res, next) => {
-    Vendor.find({}, (error, vendors) => {
-        if (error) {
-            res.send(error);
-        }
-
-        res.json(vendors);
-    });
-});
-
 module.exports = router;
