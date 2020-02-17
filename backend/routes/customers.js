@@ -8,17 +8,20 @@ const express = require("express"),
     { Vendor } = require("../models/User"),
     Product = require("../models/Product"),
     Order = require("../models/Order"),
-    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth");
+    { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
+    { PRODUCT_STATUS } = require("../config/config");
 
 // create a new order by customer
 const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data) => {
         const order = new Order(data);
 
-        order.save()
-            .then((response) => {
-                routerRes.json(response);
-            })
-            .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
+        Product.findByIdAndUpdate(data.product, { quantityRem: data.quantityRem - data.count }).then(() => {
+            order.save()
+                .then((response) => {
+                    routerRes.json(response);
+                })
+                .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
+        });
     }, true),
     createOrderFunc = checkAuthAndRedirect(validatorFunc);
 
@@ -60,7 +63,7 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                 const { product: productID } = order;
 
                 Product.findById(productID).then((product) => {
-                    order._doc.status = product.status;
+                    order._doc.status = PRODUCT_STATUS[product.status];
                     order._doc.quantityRem = product.quantityRem;
 
                     order.product = product.name;

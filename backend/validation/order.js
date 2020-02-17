@@ -3,7 +3,7 @@ const Product = require("../models/Product"),
     { Customer } = require("../models/User");
 
 /* eslint-disable no-unused-vars */
-function validateOrder(data, callback) {
+function validateOrder(orderReq, callback) {
     const errors = {},
         fields = [
             "product", "customer", "count",
@@ -11,9 +11,9 @@ function validateOrder(data, callback) {
 
     // initialize to empty string if undefined
     for (const field of fields) {
-        if (!data[field]) {
+        if (!orderReq[field]) {
             errors[field] = `${fields[field]} field is required`;
-            data[field] = "";
+            orderReq[field] = "";
 
             callback({
                 errors, isValid: Object.keys(errors).length === 0,
@@ -23,7 +23,7 @@ function validateOrder(data, callback) {
     }
 
     // same product id should not exist
-    Order.find({ product: data.product, customer: data.customer }).then((order) => {
+    Order.find({ product: orderReq.product, customer: orderReq.customer }).then((order) => {
         if (order.length > 0) {
             errors.order = "Cannot order same product twice";
             callback({
@@ -31,22 +31,24 @@ function validateOrder(data, callback) {
             });
         } else {
             // quantity should be in range
-            Product.findById(data.product).then((prod) => {
-                if (data.count < 1 || data.count > prod.quantityRem) {
+            Product.findById(orderReq.product).then((prod) => {
+                if (orderReq.count < 1 || orderReq.count > prod.quantityRem) {
                     errors.count = `Order count be in range 1 to ${prod.quantityRem}`;
 
                     callback({
                         errors, isValid: Object.keys(errors).length === 0,
                     });
                 } else {
-                    Customer.findById(data.customer).then((cust) => {
+                    Customer.findById(orderReq.customer).then((cust) => {
                         if (!cust) {
-                            errors.customer = `Supplied customer id ${data.customer} does not exist`;
+                            errors.customer = `Supplied customer id ${orderReq.customer} does not exist`;
 
                             callback({
                                 errors, isValid: Object.keys(errors).length === 0,
                             });
                         } else {
+                            // set this, useful for the callback
+                            orderReq.quantityRem = prod.quantityRem;
                             callback({ isValid: true });
                         }
                     });

@@ -13,8 +13,6 @@ function extractFields(obj, blacklist = []) {
         }
     }
 
-    // console.log("vendor" in obj, fields, obj, typeof obj, obj.vendor, Object.entries(obj));
-
     return ret;
 }
 
