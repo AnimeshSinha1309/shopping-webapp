@@ -63,6 +63,7 @@
         ],
         "no-continue": "off",
         "linebreak-style": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "no-console": "off"
     }
 }

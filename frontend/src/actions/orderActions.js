@@ -10,7 +10,7 @@ export function searchProduct(productName, callback) {
 export function orderProduct(productID, quantity, callback) {
     postData(`${custEndpoint}/create-order`, { product: productID, count: quantity })
         .then(({ data }) => { callback(data); })
-        .catch((...args) => console.log(args));
+        .catch(err => console.log(err));
 }
 
 export function getOrders(callback) {
