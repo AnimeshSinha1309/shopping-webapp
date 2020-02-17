@@ -1,3 +1,5 @@
+const Product = require("../models/Product");
+
 function validateProduct(data) {
     const errors = {};
 
@@ -25,4 +27,34 @@ function validateProduct(data) {
     };
 }
 
-module.exports = { validateProduct };
+function validateDispatchProduct(data, callback) {
+    const errors = {},
+        { productId } = data;
+
+    if (!productId) {
+        errors.productId = "productId cannot be left empty";
+        callback({
+            errors, isValid: Object.keys(errors).length === 0,
+        });
+    } else {
+        Product.findById(productId)
+            .then((prod) => {
+                if (prod.quantityRem === 0) {
+                    callback({ isValid: true });
+                } else {
+                    errors.productId = `${productId} product isn't finished placing orders yet, remaining ${prod.quantityRem} quantity`;
+                    callback({
+                        errors, isValid: Object.keys(errors).length === 0,
+                    });
+                }
+            })
+            .catch(() => {
+                errors.productId = `${productId} product doesn't exist`;
+                callback({
+                    errors, isValid: Object.keys(errors).length === 0,
+                });
+            });
+    }
+}
+
+module.exports = { validateProduct, validateDispatchProduct };

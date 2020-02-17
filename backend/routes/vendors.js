@@ -2,7 +2,7 @@
 const express = require("express"),
     router = express.Router(),
     HttpStatus = require("http-status-codes"),
-    { validateProduct } = require("../validation/product"),
+    { validateProduct, validateDispatchProduct } = require("../validation/product"),
     Product = require("../models/Product"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
     { PRODUCT_STATUS_REV } = require("../config/config");
@@ -23,14 +23,16 @@ const validatorFunc = checkValidationAndRedirect(validateProduct, (routerRes, da
 
 router.post("/create-product", createProdFunc);
 
-router.post("/dispatch-product", checkAuthAndRedirect((req, routerRes, jwtResult) => {
-    const { productId } = req.body;
+
+const dispatcher = checkValidationAndRedirect(validateDispatchProduct, (routerRes, data) => {
+    const { productId } = data;
 
     Product
         .findByIdAndUpdate(productId, { status: PRODUCT_STATUS_REV.DISPATCHED })
         .then(() => routerRes.json({}))
         .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
-}));
+}, true);
+router.post("/dispatch-product", checkAuthAndRedirect(dispatcher));
 
 router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => {
     const { id: vendorId } = jwtResult;
