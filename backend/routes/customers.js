@@ -28,16 +28,19 @@ router.post("/search", checkAuthAndRedirect((req, res) => {
     const { productName } = req.body;
 
     Product.find({ name: new RegExp(productName), status: 0 }).then((products) => {
-        let c = 0;
-
         const resProds = [];
+
+        if (products.length === 0) {
+            res.json(resProds);
+            return;
+        }
+
         products.forEach((x) => {
             Vendor.findById(x.vendor, (err, vend) => {
                 x.vendor = vend.name;
                 resProds.push(x);
-                c++;
 
-                if (c === products.length) { res.status(200).json(resProds); }
+                if (resProds.length === products.length) { res.json(resProds); }
             });
         });
     });
@@ -48,6 +51,10 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
         .find({ customer: req.body.customer })
         .then((orders) => {
             const resOrders = [];
+
+            if (orders.length === 0) {
+                res.status(HttpStatus.OK).json(resOrders); return;
+            }
 
             orders.forEach((order) => {
                 const { product: productID } = order;
