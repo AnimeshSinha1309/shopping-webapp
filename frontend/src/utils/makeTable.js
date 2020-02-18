@@ -33,6 +33,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
                     elm = "NA";
                 }
             }
+
             rowElms.push(<td key={index++}>{elm}</td>);
         }
 
