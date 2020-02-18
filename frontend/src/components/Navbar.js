@@ -11,12 +11,11 @@ import history from "../history";
 import { LogOutBtn } from "../logOut";
 import About from "./About";
 import {
-    WaitingProducts, DispatchReadyProducts, DispatchedProducts, CancelledProducts,
-} from "./ViewProducts";
+    WaitingProducts, DispatchReadyProducts, DispatchedProducts, CancelledProducts, OrderList,
+} from "./ViewList";
 import { Search } from "./Search";
 import { USER_TYPE } from "../config/settings";
 import { HomePage } from "./HomePage";
-import { OrderList } from "./OrderList";
 
 let logOutBtn,
     navbarBtns;
@@ -57,7 +56,7 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
     routing = (<Router history={history}>
         <div>
             <div className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a className="navbar-brand" href="index.html">Shopping webapp</a>
+                <Link className="navbar-brand" to="/">Shopping webapp</Link>
 
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

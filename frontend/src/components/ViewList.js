@@ -7,7 +7,8 @@ import { PRODUCT_STATUS_REV } from "../config/settings";
 import {
     isCustomer,
 } from "../config/data";
-
+import { getOrders } from "../actions/orderActions";
+import { filterFields } from "../utils/helper";
 
 class GeneralProductList extends Component {
     constructor(props) {
@@ -40,7 +41,6 @@ class GeneralProductList extends Component {
                 }
             } else if (node.dataset) {
                 const copy = this.state.products.slice(0);
-
 
                 switch (node.dataset.sort) {
                 case "price":
@@ -139,6 +139,22 @@ class CancelledProducts extends GeneralProductList {
     }
 }
 
+class OrderList extends GeneralProductList {
+    constructor(props) {
+        super(props);
+        this.type = 42; // distinct from others
+    }
+
+    componentDidMount() {
+        getOrders((orders) => {
+            orders = filterFields(orders);
+
+            this.setState({ products: orders });
+        });
+    }
+}
+
+
 export {
-    WaitingProducts, DispatchedProducts, DispatchReadyProducts, CancelledProducts,
+    WaitingProducts, DispatchedProducts, DispatchReadyProducts, CancelledProducts, OrderList,
 };

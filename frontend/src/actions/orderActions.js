@@ -14,7 +14,9 @@ export function orderProduct(productID, quantity, callback) {
 }
 
 export function getOrders(callback) {
-    getData(`${custEndpoint}/view-orders`).then(({ data: orders }) => {
-        callback(orders);
-    });
+    getData(`${custEndpoint}/view-orders`)
+        .then(({ data: orders }) => {
+            callback(orders);
+        })
+        .catch(err => console.log(err.response));
 }

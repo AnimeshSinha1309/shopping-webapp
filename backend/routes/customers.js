@@ -65,24 +65,26 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
             orders.forEach((order) => {
                 const { product: productID } = order;
 
-                Product.findById(productID).then((product) => {
-                    order._doc.status = PRODUCT_STATUS[product.status];
-                    order._doc.quantityRem = product.quantityRem;
+                Product.findById(productID)
+                    .then((product) => {
+                        order._doc.status = PRODUCT_STATUS[product.status];
+                        order._doc.quantityRem = product.quantityRem;
 
-                    order.product = product.name;
-                    order.customer = undefined;
-                    const { vendor: vendorID } = product;
+                        order.product = product.name;
+                        order.customer = undefined;
+                        const { vendor: vendorID } = product;
 
-                    Vendor.findById(vendorID).then((vend) => {
-                        order._doc.vendor = vend.name;
+                        Vendor.findById(vendorID).then((vend) => {
+                            order._doc.vendor = vend.name;
 
-                        resOrders.push(order);
+                            resOrders.push(order);
 
-                        if (resOrders.length === orders.length) {
-                            res.status(HttpStatus.OK).json(resOrders);
-                        }
-                    });
-                });
+                            if (resOrders.length === orders.length) {
+                                res.status(HttpStatus.OK).json(resOrders);
+                            }
+                        });
+                    })
+                    .catch(err => res.status(HttpStatus.BAD_REQUEST).json({ ...err, notfound: productID }));
             });
         })
         .catch(err => res.status(HttpStatus.BAD_REQUEST).json(err));
