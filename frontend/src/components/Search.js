@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Input, Form } from "reactstrap";
 import PropTypes from "prop-types";
+import { MDBCol, MDBRow, MDBContainer } from "mdbreact";
 import { searchProduct, orderProduct } from "../actions/orderActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { filterFields } from "../utils/helper";
@@ -57,16 +58,20 @@ class Search extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Search for products on the marketplace!</h1>
-                <Form onSubmit={this.onQuery.bind(this)}>
-                    <Input type="text" placeholder="Enter seach query" id="searchquery" onChange={this.onQuery.bind(this)} />
-                </Form>
-                <p><i>Search results sorted by closest match, uses fuzzy matching on product name</i></p>
-                <div>
-                    {this.state.productlist}
-                </div>
-            </div>
+            <MDBContainer>
+                <MDBRow>
+                    <MDBCol size="12">
+                        <h1>Search for products on the marketplace!</h1>
+                        <Form onSubmit={this.onQuery.bind(this)}>
+                            <Input type="text" placeholder="Enter seach query" id="searchquery" onChange={this.onQuery.bind(this)} />
+                        </Form>
+                        <p><i>Search results sorted by closest match, uses fuzzy matching on product name</i></p>
+                        <div>
+                            {this.state.productlist}
+                        </div>
+                    </MDBCol>
+                </MDBRow>
+            </MDBContainer>
         );
     }
 }

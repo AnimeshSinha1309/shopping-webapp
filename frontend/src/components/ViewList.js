@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ButtonGroup, Button } from "reactstrap";
+import { MDBCol, MDBRow, MDBContainer } from "mdbreact";
 import { getProductList, dispatchProduct, cancelProduct } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { PRODUCT_STATUS_REV } from "../config/settings";
@@ -80,6 +81,7 @@ class GeneralProductList extends Component {
             default:
             }
             this.table = makeTableFromObjectArray(this.state.products, undefined, btnText);
+            console.log(this.state.products);
 
             if (this.state.products.length === 0) {
                 return this.table;
@@ -94,13 +96,17 @@ class GeneralProductList extends Component {
                 ];
 
             return (
-                <div onClick={this.onClick.bind(this)}>
-                    <ButtonGroup>
-                        {buttons}
-                        {lastButton}
-                    </ButtonGroup>
-                    {this.table}
-                </div>
+                <MDBContainer>
+                    <MDBRow>
+                        <MDBCol size="12" onClick={this.onClick.bind(this)}>
+                            <ButtonGroup>
+                                {buttons}
+                                {lastButton}
+                            </ButtonGroup>
+                            {this.table}
+                        </MDBCol>
+                    </MDBRow>
+                </MDBContainer>
             );
         }
 

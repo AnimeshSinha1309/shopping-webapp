@@ -55,7 +55,7 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
     CustomerAuth = requireAuth(USER_TYPE.customer),
     routing = (<Router history={history}>
         <div>
-            <div className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div className="mb-5 navbar navbar-expand-lg navbar-dark bg-dark">
                 <Link className="navbar-brand" to="/">Shopping webapp</Link>
 
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

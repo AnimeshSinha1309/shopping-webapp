@@ -6,7 +6,10 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
         return <h3>The list is empty</h3>;
     }
 
-    let keys = Object.keys(data[0]);
+    const dt2 = data.map(x => Object.keys(x).length);
+
+    // get keys from where we know they're the most
+    let keys = Object.keys(data[dt2.indexOf(Math.max(...dt2))]);
     keys = keys.filter(x => x !== "_id" && x !== "id");
 
     const rows = [],

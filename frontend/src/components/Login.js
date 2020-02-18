@@ -140,13 +140,6 @@ class Modal extends Component {
                                         </div>
                                     </form>
                                 </div>
-
-                                <div className="modal-footer">
-                                    <div className="options text-center text-md-right mt-1">
-                                        <p>Not a member? <a href="#" className="blue-text">Sign Up</a></p>
-                                        <p>Forgot <a href="#" className="blue-text">Password?</a></p>
-                                    </div>
-                                </div>
                             </div>
 
                             <div className="tab-pane fade" id="panel8" role="tabpanel">
@@ -168,12 +161,6 @@ class Modal extends Component {
                                             <button className="btn btn-info">Sign up <i className="fas fa-sign-in ml-1"></i></button>
                                         </div>
                                     </form>
-                                </div>
-
-                                <div className="modal-footer">
-                                    <div className="options text-right">
-                                        <p className="pt-1">Already have an account? <a href="#" className="blue-text">Log In</a></p>
-                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -25,3 +25,6 @@
     float: right;
 }
 
+a.nav-link[data-toggle="tab"]:not(.active){
+    color: white !important;
+}

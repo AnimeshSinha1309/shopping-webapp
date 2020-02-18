@@ -75,6 +75,7 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                     .then((product) => {
                         order._doc.status = PRODUCT_STATUS[product.status];
                         order._doc.quantityRem = product.quantityRem;
+                        order._doc.price = product.price;
 
                         if (product.image && product.image.data) {
                             order._doc.image = { data: product.image.data };
