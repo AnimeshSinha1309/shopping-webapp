@@ -6,6 +6,7 @@ import { MDBCol, MDBRow, MDBContainer } from "mdbreact";
 
 import PropTypes from "prop-types";
 import { createProduct } from "../actions/productActions";
+import { isValid } from "../../../backend/utils/errors";
 
 class CreateModal extends Component {
     onChange(e) {
@@ -26,9 +27,11 @@ class CreateModal extends Component {
         for (const field of copyFields) { data[field] = this.state[field]; }
 
         createProduct(data, (errors) => {
-            if (errors.isValid === false) {
+            if (isValid(errors)) {
+                this.props.history.push("/view-waiting");
+            } else {
                 // TODO
-            } else { this.props.history.push("/view-waiting"); }
+            }
         });
     }
 

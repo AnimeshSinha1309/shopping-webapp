@@ -5,6 +5,7 @@ import { MDBCol, MDBRow, MDBContainer } from "mdbreact";
 import { searchProduct, orderProduct } from "../actions/orderActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { filterFields } from "../utils/helper";
+import { isValid } from "../../../backend/utils/errors";
 
 
 class Search extends Component {
@@ -36,10 +37,10 @@ class Search extends Component {
 
                 if (quantity >= min && quantity <= max) {
                     orderProduct(id, quantity, (errors) => {
-                        if (errors.isValid === false) {
-                            // TODO
-                        } else {
+                        if (isValid(errors)) {
                             this.props.history.push("/view-orders");
+                        } else {
+                            // TODO
                         }
                     });
                     break;

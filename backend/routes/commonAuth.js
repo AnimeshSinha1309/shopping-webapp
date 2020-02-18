@@ -1,7 +1,8 @@
 
 const jwt = require("jsonwebtoken"),
     HttpStatus = require("http-status-codes"),
-    keys = require("../config/keys");
+    keys = require("../config/keys"),
+    { isValid, genErrors } = require("../utils/errors");
 /**
  *
  * @param {Function} validator takes data as argument and returns validation
@@ -13,15 +14,15 @@ function checkValidationAndRedirect(validator, func, cbType = false) {
         if (!cbType) {
             const validation = validator(data);
 
-            if (!validation.isValid) { res.status(HttpStatus.BAD_REQUEST).json({ error: validation.errors }); return; }
+            if (!isValid(validation)) { res.status(HttpStatus.BAD_REQUEST).json(validation); return; }
 
             func(res, data);
         } else {
-            validator(data, ({ errors, isValid }) => {
-                if (isValid) {
+            validator(data, (result) => {
+                if (isValid(result)) {
                     func(res, data);
                 } else {
-                    res.status(HttpStatus.BAD_REQUEST).json({ errors });
+                    res.status(HttpStatus.BAD_REQUEST).json(result);
                 }
             });
         }
@@ -34,7 +35,7 @@ function checkAuthAndRedirect(func) {
 
         // TODO: refactor this
         if (!token) {
-            res.status(HttpStatus.BAD_REQUEST).json({ error: "Missing authorization" });
+            res.status(HttpStatus.BAD_REQUEST).json(genErrors("Missing authorization"));
             return;
         }
 
@@ -44,7 +45,7 @@ function checkAuthAndRedirect(func) {
         jwt.verify(token, keys.secretOrKey, (err, result) => {
             if (err) {
                 console.log(err);
-                res.status(HttpStatus.BAD_REQUEST).json({ error: err });
+                res.status(HttpStatus.BAD_REQUEST).json(genErrors(err));
                 return;
             }
 

@@ -4,19 +4,15 @@ import { MDBCol, MDBRow, MDBContainer } from "mdbreact";
 
 class ErrorComp extends Component {
     render() {
-        const errorObj = this.props.errors,
-            errorList = [],
-            errors = Object.keys(errorObj);
+        let { errors } = this.props;
 
-        for (const error of errors) {
-            errorList.push(<p className="text-danger">{errorObj[error]}</p>);
-        }
+        errors = errors.map((error, idx) => <p className="text-danger" key={idx}>{error}</p>);
 
         return (
             <MDBContainer>
                 <MDBRow>
                     <MDBCol size="12">
-                        {errorList}
+                        {errors}
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
@@ -25,7 +21,7 @@ class ErrorComp extends Component {
 }
 
 ErrorComp.propTypes = {
-    errors: PropTypes.objectOf(PropTypes.string),
+    errors: PropTypes.arrayOf(PropTypes.string),
 };
 
 export { ErrorComp };

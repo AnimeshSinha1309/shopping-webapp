@@ -77,7 +77,7 @@ class Modal extends Component {
      */
     constructor(props, isRegister) {
         super(props);
-        this.state = { errors: {} };
+        this.state = { errors: [] };
 
         const onChangeHandler = this.onChange.bind(this);
 
