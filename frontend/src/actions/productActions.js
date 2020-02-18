@@ -7,7 +7,7 @@ const vendorEndpoint = `${endpoint}/vendors`;
 export function createProduct(data, callback) {
     postData(`${vendorEndpoint}/create-product`, data)
         .then(callback)
-        .catch((err) => { console.log(err.response.data); });
+        .catch(errorCatcher(callback));
 }
 
 export function getProductList(prodType, callback) {
