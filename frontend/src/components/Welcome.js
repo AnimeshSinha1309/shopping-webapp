@@ -14,7 +14,8 @@ class Welcome extends Component {
                         <h1>Hi { currentUserObj.name }, you are a { USER_TYPE_REV[currentUserObj.usertype] }</h1>
                     </MDBCol>
                 </MDBRow>
-            </MDBContainer>);
+            </MDBContainer>
+        );
     }
 }
 

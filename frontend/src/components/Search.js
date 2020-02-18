@@ -35,8 +35,12 @@ class Search extends Component {
                 const quantity = Number(input);
 
                 if (quantity >= min && quantity <= max) {
-                    orderProduct(id, quantity, () => {
-                        this.props.history.push("/view-orders");
+                    orderProduct(id, quantity, (errors) => {
+                        if (errors.isValid === false) {
+                            // TODO
+                        } else {
+                            this.props.history.push("/view-orders");
+                        }
                     });
                     break;
                 }
@@ -48,11 +52,15 @@ class Search extends Component {
         const elm = document.getElementById("searchquery");
 
         searchProduct(elm.value, (productlist) => {
-            // confidence added by mongoose-fuzzy-search
-            productlist = filterFields(productlist, ["confidenceScore"]);
-            const table = makeTableFromObjectArray(productlist, this.onOrderClick.bind(this), this.buttonName);
+            if (productlist.isValid === false) {
+                // TODO
+            } else {
+                // confidence added by mongoose-fuzzy-search
+                productlist = filterFields(productlist, ["confidenceScore"]);
+                const table = makeTableFromObjectArray(productlist, this.onOrderClick.bind(this), this.buttonName);
 
-            this.setState({ productlist: table });
+                this.setState({ productlist: table });
+            }
         });
     }
 

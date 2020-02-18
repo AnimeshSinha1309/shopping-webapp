@@ -2,11 +2,8 @@
 import axios from "axios";
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
-import {
-    GET_ERRORS,
-    USER_LOADING,
-} from "./types";
 import { USER_KEY, endpoint, JWT_KEY } from "../config/settings";
+import { errorCatcher } from "../utils/helper";
 
 const userEndpoint = `${endpoint}/users`;
 
@@ -18,13 +15,10 @@ export const registerUser = (userData, callback) => {
     axios
         .post(`${userEndpoint}/register`, userData)
         .then(callback)
-        .catch(err => (callback ? callback({
-            type: GET_ERRORS,
-            payload: err.response.data,
-        }) : undefined));
+        .catch(errorCatcher(callback));
 };
 
-export function loginUser(userData, history, callback) {
+export function loginUser(userData, callback) {
     axios
         .post(`${userEndpoint}/login`, userData)
         .then((res) => {
@@ -35,20 +29,9 @@ export function loginUser(userData, history, callback) {
             setCurrentUser(decoded);
             callback();
         })
-        .catch((err) => {
-            console.log(err);
-            return callback ? callback({
-                type: GET_ERRORS,
-                payload: err.response.data,
-            }) : undefined;
-        });
+        .catch(errorCatcher(callback));
 }
 
-export function setUserLoading(callback) {
-    callback({
-        type: USER_LOADING,
-    });
-}
 
 export function logoutUser(callback) {
     localStorage.removeItem(JWT_KEY);

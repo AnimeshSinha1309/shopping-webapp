@@ -1,7 +1,6 @@
-import HttpStatus from "http-status-codes";
 import { endpoint } from "../config/settings";
 import { postData, getData } from "./generalGetSet";
-import { filterFields } from "../utils/helper";
+import { filterFields, errorCatcher } from "../utils/helper";
 
 const vendorEndpoint = `${endpoint}/vendors`;
 
@@ -20,17 +19,17 @@ export function getProductList(prodType, callback) {
 
             callback(filterFields(prods, blackList));
         })
-        .catch(err => callback({ errors: err, code: HttpStatus.BAD_REQUEST }));
+        .catch(errorCatcher(callback));
 }
 
 export function dispatchProduct(productId, callback) {
     postData(`${vendorEndpoint}/dispatch-product`, { productId })
-        .then(x => callback(x.data))
-        .catch(err => console.log(err.response.data));
+        .then(({ data }) => callback(data))
+        .catch(errorCatcher(callback));
 }
 
 export function cancelProduct(productId, callback) {
     postData(`${vendorEndpoint}/cancel-product`, { productId })
-        .then(x => callback(x.data))
-        .catch(err => console.log(err.response.data));
+        .then(({ data }) => callback(data))
+        .catch(errorCatcher(callback));
 }

@@ -31,14 +31,22 @@ class GeneralProductList extends Component {
                 { id, name } = tr.dataset;
             if (node.innerHTML === "Dispatch") {
                 if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
-                    dispatchProduct(id, () => {
-                        this.props.history.push("/view-dispatched");
+                    dispatchProduct(id, (errors) => {
+                        if (errors.isValid === false) {
+                            // TODO
+                        } else {
+                            this.props.history.push("/view-dispatched");
+                        }
                     });
                 }
             } else if (node.innerHTML === "Cancel") {
                 if (window.confirm(`Are you sure you want to cancel ${name}?`)) {
-                    cancelProduct(id, () => {
-                        this.props.history.push("/view-cancelled");
+                    cancelProduct(id, (errors) => {
+                        if (errors.isValid === false) {
+                            // TODO
+                        } else {
+                            this.props.history.push("/view-cancelled");
+                        }
                     });
                 }
             } else if (node.dataset) {
@@ -65,7 +73,11 @@ class GeneralProductList extends Component {
 
     componentDidMount() {
         getProductList(this.type, (products) => {
-            this.setState({ products });
+            if (products.isValid === false) {
+                // TODO
+            } else {
+                this.setState({ products });
+            }
         });
     }
 
@@ -160,9 +172,13 @@ class OrderList extends GeneralProductList {
 
     componentDidMount() {
         getOrders((orders) => {
-            orders = filterFields(orders);
+            if (orders.isValid === false) {
+                orders = filterFields(orders);
 
-            this.setState({ products: orders });
+                this.setState({ products: orders });
+            } else {
+                // TODOs
+            }
         });
     }
 }

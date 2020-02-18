@@ -20,4 +20,11 @@ function filterFields(array, blacklist = []) {
     return array.map(x => extractFields(x, blacklist));
 }
 
-module.exports = { filterFields };
+function errorCatcher(callback) {
+    return err => (callback ? callback({
+        isValid: false,
+        errors: err.response,
+    }) : undefined);
+}
+
+module.exports = { filterFields, errorCatcher };

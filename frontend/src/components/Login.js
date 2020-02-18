@@ -3,8 +3,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerUser, loginUser } from "../actions/authActions";
-import history from "../history";
-import { GET_ERRORS } from "../actions/types";
 import { USER_TYPE } from "../config/settings";
 import "./Login.css";
 
@@ -83,7 +81,9 @@ class Modal extends Component {
             newUser[field] = this.state[field];
         }
         registerUser(newUser, (status) => {
-            if (status.type === GET_ERRORS) { console.log("failed", status); } else if (window.confirm("Successfully registered, now please login!")) {
+            if (status.isValid === false) {
+                console.log("failed", status.errors);
+            } else if (window.confirm("Successfully registered, now please login!")) {
                 window.location.reload();
             }
         });
@@ -96,10 +96,10 @@ class Modal extends Component {
             password: this.state.password,
         };
 
-        loginUser(userCreds, history, (status = {}) => {
-            if (status.type === GET_ERRORS) { console.log("failed", status); } else {
-                // doesn't work
-                // history.push("/");
+        loginUser(userCreds, (status = {}) => {
+            if (status.isValid === false) {
+                console.log("failed", status.errors);
+            } else {
                 window.location.reload();
             }
         });
@@ -119,11 +119,13 @@ class Modal extends Component {
                         <ul className="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
                             <li className="nav-item">
                                 <a className="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i className="fas fa-user mr-1"></i>
-                      Login</a>
+                                    Login
+                                </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" data-toggle="tab" href="#panel8" role="tab"><i className="fas fa-user-plus mr-1"></i>
-                      Register</a>
+                                    Register
+                                </a>
                             </li>
                         </ul>
 
@@ -171,6 +173,5 @@ class Modal extends Component {
         );
     }
 }
-
 
 export default Modal;

@@ -25,8 +25,10 @@ class CreateModal extends Component {
 
         for (const field of copyFields) { data[field] = this.state[field]; }
 
-        createProduct(data, () => {
-            this.props.history.push("/view-waiting");
+        createProduct(data, (errors) => {
+            if (errors.isValid === false) {
+                // TODO
+            } else { this.props.history.push("/view-waiting"); }
         });
     }
 
