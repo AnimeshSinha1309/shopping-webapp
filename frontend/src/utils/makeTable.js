@@ -21,8 +21,11 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
 
         for (const key of keys) {
             let elm = obj[key];
+
             if (key === "image") {
-                if (elm.data) {
+                if (!elm) {
+                    elm = "NA";
+                } else if (elm.data && elm.data.data) {
                     const imageData = elm.data.data.map(x => String.fromCharCode(x)).join("");
 
                     elm = <img src={imageData}></img>;

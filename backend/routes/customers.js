@@ -70,6 +70,10 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                         order._doc.status = PRODUCT_STATUS[product.status];
                         order._doc.quantityRem = product.quantityRem;
 
+                        if (product.image && product.image.data) {
+                            order._doc.image = { data: product.image.data };
+                        }
+
                         order.product = product.name;
                         order.customer = undefined;
                         const { vendor: vendorID } = product;
@@ -84,7 +88,9 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                             }
                         });
                     })
-                    .catch(err => res.status(HttpStatus.BAD_REQUEST).json({ ...err, notfound: productID }));
+                    .catch((err) => {
+                        res.status(HttpStatus.BAD_REQUEST).json({ ...err, notfound: productID });
+                    });
             });
         })
         .catch(err => res.status(HttpStatus.BAD_REQUEST).json(err));

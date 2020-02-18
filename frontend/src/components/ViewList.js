@@ -49,6 +49,7 @@ class GeneralProductList extends Component {
                 case "quantity":
                     copy.sort((a, b) => Number(a.quantityRem) - Number(b.quantityRem));
                     break;
+                    // TODO
                 // case "seller":
                 //     copy.sort((a, b) => a.quantityRem - b.quantityRem);
                 //     break;

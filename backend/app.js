@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const createError = require("http-errors"),
     express = require("express"),
-    mongoose = require("mongoose"),
+    mongoose = require("mongoose").set("debug", true),
     path = require("path"),
     cookieParser = require("cookie-parser"),
     bodyParser = require("body-parser"),
