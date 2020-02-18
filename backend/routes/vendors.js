@@ -2,7 +2,7 @@
 const express = require("express"),
     router = express.Router(),
     HttpStatus = require("http-status-codes"),
-    { validateProduct, validateDispatchProduct } = require("../validation/product"),
+    { validateProduct, validateDispatchProduct, validateCancelProduct } = require("../validation/product"),
     Product = require("../models/Product"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
     { PRODUCT_STATUS_REV } = require("../config/config");
@@ -51,5 +51,13 @@ router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => 
         routerRes.json(res);
     });
 }));
+
+
+const cancelFunc = checkValidationAndRedirect(validateCancelProduct, (routerRes, data) => {
+    Product.findByIdAndUpdate(data.productId, { status: 3 })
+        .then(resp => routerRes.json(resp))
+        .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
+}, true);
+router.post("/cancel-product", checkAuthAndRedirect(cancelFunc));
 
 module.exports = router;

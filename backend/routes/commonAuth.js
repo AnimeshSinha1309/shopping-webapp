@@ -55,7 +55,6 @@ function checkAuthAndRedirect(func) {
                 req.body.customer = result.id;
             }
 
-
             func(req, res, result);
         });
     };

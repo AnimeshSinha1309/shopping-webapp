@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ButtonGroup, Button } from "reactstrap";
-import { getProductList, dispatchProduct } from "../actions/productActions";
+import { getProductList, dispatchProduct, cancelProduct } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { PRODUCT_STATUS_REV } from "../config/settings";
 import {
@@ -24,13 +24,18 @@ class GeneralProductList extends Component {
         const node = ev.target;
 
         if (node.tagName === "BUTTON") {
+            const tr = node.parentElement.parentElement,
+                { id, name } = tr.dataset;
             if (node.innerHTML === "Dispatch") {
-                const tr = node.parentElement.parentElement,
-                    { id, name } = tr.dataset;
-
                 if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
                     dispatchProduct(id, () => {
                         this.props.history.push("/view-dispatched");
+                    });
+                }
+            } else if (node.innerHTML === "Cancel") {
+                if (window.confirm(`Are you sure you want to cancel ${name}?`)) {
+                    cancelProduct(id, () => {
+                        this.props.history.push("/view-cancelled");
                     });
                 }
             } else if (node.dataset) {
@@ -66,7 +71,12 @@ class GeneralProductList extends Component {
      */
     render() {
         if (this.state.products) {
-            const btnText = this.type === 1 ? "Dispatch" : "";
+            let btnText = "";
+            switch (this.type) {
+            case PRODUCT_STATUS_REV.WAITING: btnText = "Cancel"; break;
+            case PRODUCT_STATUS_REV.PLACED: btnText = "Dispatch"; break;
+            default:
+            }
             this.table = makeTableFromObjectArray(this.state.products, undefined, btnText);
 
             if (this.state.products.length === 0) {
@@ -76,7 +86,6 @@ class GeneralProductList extends Component {
             const lastButton = isCustomer
                     ? <Button data-sort="seller">Sort by seller rating</Button>
                     : <span></span>,
-
                 buttons = [
                     <Button key={0} data-sort="price">Sort by price</Button>,
                     <Button key={1} data-sort="quantity">Sort by quantity left</Button>,

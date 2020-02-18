@@ -28,3 +28,9 @@ export function dispatchProduct(productId, callback) {
         .then(x => callback(x.data))
         .catch(err => console.log(err.response.data));
 }
+
+export function cancelProduct(productId, callback) {
+    postData(`${vendorEndpoint}/cancel-product`, { productId })
+        .then(x => callback(x.data))
+        .catch(err => console.log(err.response.data));
+}
