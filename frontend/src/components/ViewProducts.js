@@ -4,6 +4,10 @@ import { ButtonGroup, Button } from "reactstrap";
 import { getProductList, dispatchProduct } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
 import { PRODUCT_STATUS_REV } from "../config/settings";
+import {
+    isCustomer,
+} from "../config/data";
+
 
 class GeneralProductList extends Component {
     constructor(props) {
@@ -68,12 +72,21 @@ class GeneralProductList extends Component {
             if (this.state.products.length === 0) {
                 return this.table;
             }
+
+            const lastButton = isCustomer
+                    ? <Button data-sort="seller">Sort by seller rating</Button>
+                    : <span></span>,
+
+                buttons = [
+                    <Button key={0} data-sort="price">Sort by price</Button>,
+                    <Button key={1} data-sort="quantity">Sort by quantity left</Button>,
+                ];
+
             return (
                 <div onClick={this.onClick.bind(this)}>
                     <ButtonGroup>
-                        <Button data-sort="price">Sort by price</Button>
-                        <Button data-sort="quantity">Sort by quantity left</Button>
-                        <Button data-sort="seller">Sort by seller rating</Button>
+                        {buttons}
+                        {lastButton}
                     </ButtonGroup>
                     {this.table}
                 </div>
