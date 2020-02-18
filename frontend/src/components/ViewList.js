@@ -74,10 +74,10 @@ class GeneralProductList extends Component {
 
     componentDidMount() {
         getProductList(this.type, (products) => {
-            if (products.isValid === false) {
-                // TODO
-            } else {
+            if (isValid(products)) {
                 this.setState({ products });
+            } else {
+                // TODO
             }
         });
     }
@@ -96,7 +96,6 @@ class GeneralProductList extends Component {
             default:
             }
             this.table = makeTableFromObjectArray(this.state.products, undefined, btnText);
-            console.log(this.state.products);
 
             if (this.state.products.length === 0) {
                 inner = this.table;

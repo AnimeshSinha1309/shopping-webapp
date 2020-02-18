@@ -83,8 +83,7 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
             </div>
             {/* switch helps us specify a default case if no route path matches */}
             <Switch>
-                <Route path="/" exact component={HomePage}></Route>
-                <Route path="/login" exact render={props => <HomePage {...props} login></HomePage>}></Route>
+                <Route path="/(|login)" exact render={props => <HomePage {...props} login></HomePage>}></Route>
                 <Route path="/register" exact render={props => <HomePage {...props} register></HomePage>}></Route>
                 <Route path="/?required=:id" exact component={HomePage}></Route>
 
