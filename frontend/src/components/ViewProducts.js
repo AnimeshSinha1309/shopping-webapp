@@ -65,6 +65,9 @@ class GeneralProductList extends Component {
             const btnText = this.type === 1 ? "Dispatch" : "";
             this.table = makeTableFromObjectArray(this.state.products, undefined, btnText);
 
+            if (this.state.products.length === 0) {
+                return this.table;
+            }
             return (
                 <div onClick={this.onClick.bind(this)}>
                     <ButtonGroup>
