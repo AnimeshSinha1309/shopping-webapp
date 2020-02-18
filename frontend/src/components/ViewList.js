@@ -73,6 +73,8 @@ class GeneralProductList extends Component {
      * Asynchronous render function
      */
     render() {
+        let inner;
+
         if (this.state.products) {
             let btnText = "";
             switch (this.type) {
@@ -84,33 +86,36 @@ class GeneralProductList extends Component {
             console.log(this.state.products);
 
             if (this.state.products.length === 0) {
-                return this.table;
+                inner = this.table;
+            } else {
+                const lastButton = isCustomer
+                        ? <Button data-sort="seller">Sort by seller rating</Button>
+                        : <span></span>,
+                    buttons = [
+                        <Button key={0} data-sort="price">Sort by price</Button>,
+                        <Button key={1} data-sort="quantity">Sort by quantity left</Button>,
+                    ];
+
+
+                inner = (<React.Fragment>
+                    <ButtonGroup>
+                        {buttons}
+                        {lastButton}
+                    </ButtonGroup>
+                    {this.table}
+                </React.Fragment>);
             }
+        } else { inner = (<div>Loading...</div>); }
 
-            const lastButton = isCustomer
-                    ? <Button data-sort="seller">Sort by seller rating</Button>
-                    : <span></span>,
-                buttons = [
-                    <Button key={0} data-sort="price">Sort by price</Button>,
-                    <Button key={1} data-sort="quantity">Sort by quantity left</Button>,
-                ];
+        const wrapper = <MDBContainer>
+            <MDBRow>
+                <MDBCol size="12" onClick={this.onClick.bind(this)}>
+                    {inner}
+                </MDBCol>
+            </MDBRow>
+        </MDBContainer>;
 
-            return (
-                <MDBContainer>
-                    <MDBRow>
-                        <MDBCol size="12" onClick={this.onClick.bind(this)}>
-                            <ButtonGroup>
-                                {buttons}
-                                {lastButton}
-                            </ButtonGroup>
-                            {this.table}
-                        </MDBCol>
-                    </MDBRow>
-                </MDBContainer>
-            );
-        }
-
-        return (<div>Loading...</div>);
+        return wrapper;
     }
 }
 
