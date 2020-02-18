@@ -77,7 +77,7 @@ class Modal extends Component {
      */
     constructor(props, isRegister) {
         super(props);
-        this.state = { errors: {} };
+        this.state = { errors: [] };
 
         const onChangeHandler = this.onChange.bind(this);
 
@@ -128,7 +128,7 @@ class Modal extends Component {
     submitCallback(status = {}) {
         if (status.isValid === false) {
             this.setState({ errors: status.errors });
-        } else if (window.confirm("Success! The page will now reload")) {
+        } else {
             window.location.reload();
         }
     }

@@ -22,7 +22,6 @@ function filterFields(array, blacklist = []) {
 
 function errorCatcher(callback) {
     return err => (callback ? callback({
-        isValid: false,
         errors: err.response.data,
     }) : undefined);
 }

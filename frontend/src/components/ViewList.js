@@ -11,6 +11,7 @@ import {
 import { getOrders } from "../actions/orderActions";
 import { filterFields } from "../utils/helper";
 import "./ViewList.css";
+import { isValid } from "../utils/errors";
 
 class GeneralProductList extends Component {
     constructor(props) {
@@ -32,20 +33,20 @@ class GeneralProductList extends Component {
             if (node.innerHTML === "Dispatch") {
                 if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
                     dispatchProduct(id, (errors) => {
-                        if (errors.isValid === false) {
-                            // TODO
-                        } else {
+                        if (isValid(errors)) {
                             this.props.history.push("/view-dispatched");
+                        } else {
+                            // TODO
                         }
                     });
                 }
             } else if (node.innerHTML === "Cancel") {
                 if (window.confirm(`Are you sure you want to cancel ${name}?`)) {
                     cancelProduct(id, (errors) => {
-                        if (errors.isValid === false) {
-                            // TODO
-                        } else {
+                        if (isValid(errors)) {
                             this.props.history.push("/view-cancelled");
+                        } else {
+                            // TODO
                         }
                     });
                 }
@@ -172,12 +173,13 @@ class OrderList extends GeneralProductList {
 
     componentDidMount() {
         getOrders((orders) => {
-            if (orders.isValid === false) {
+            if (isValid(orders)) {
                 orders = filterFields(orders);
 
                 this.setState({ products: orders });
             } else {
-                // TODOs
+                // TODO
+                console.log(orders);
             }
         });
     }

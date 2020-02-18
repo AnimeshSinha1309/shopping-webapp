@@ -1,26 +1,18 @@
 const validator = require("validator");
 
 function validateLoginInput(data) {
-    const errors = {},
-        fields = {
-            email: "Email", password: "Password",
-        };
+    const errors = [];
 
-    // initialize to empty string if undefined
-    for (const field of Object.keys(fields)) {
-        if (!data[field]) {
-            errors[field] = `${fields[field]} field is required`;
-            data[field] = "";
-        }
+    if (!data.password) {
+        errors.push("Password is required");
+        data.password = "";
     }
 
     if (!validator.isEmail(data.email)) {
-        errors.email = `${fields.email} is invalid`;
+        errors.push("Email is invalid");
     }
 
-    return {
-        errors, isValid: Object.keys(errors).length === 0,
-    };
+    return { errors };
 }
 
 module.exports = validateLoginInput;

@@ -1,7 +1,8 @@
 - errors on login/register, and errors in general, should be shown to user
 - work on buttons in user list view
 - this page is only for is messed up
-- view my orders mein product image should show
+- .catch should have correct handlers everywhere, test thoroughly, actually display the errors that were received
+- /login /register should redirect to home is logged in
 
 Clarifs:
 

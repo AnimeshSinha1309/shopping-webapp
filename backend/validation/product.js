@@ -1,11 +1,12 @@
 const Product = require("../models/Product"),
-    { PRODUCT_STATUS_REV } = require("../config/config");
+    { PRODUCT_STATUS_REV } = require("../config/config"),
+    { genErrors, isValid } = require("../utils/errors");
 
 function validateProduct(data) {
-    const errors = {};
+    const errors = [];
 
     if (!data.name) {
-        errors.name = "name cannot be left empty";
+        errors.push("Name cannot be left empty");
     }
 
     const values = {
@@ -17,67 +18,48 @@ function validateProduct(data) {
         data[value] = Number.parseInt(data[value], 10);
 
         if (Number.isNaN(data[value])) {
-            errors[value] = `${value} must be a number`;
+            errors.push(`${value} must be a number`);
         } else if (data[value] < low || data[value] > high) {
-            errors[value] = `${value} must be in range ${low} to ${high}`;
+            errors.push(`${value} must be in range ${low} to ${high}`);
         }
     }
 
-    return {
-        errors, isValid: Object.keys(errors).length === 0,
-    };
+    return { errors };
 }
 function validteProductExists(data, callback) {
-    const errors = {},
-        { productId } = data;
+    const { productId } = data;
 
     if (!productId) {
-        errors.productId = "productId cannot be left empty";
-        callback({
-            errors, isValid: false,
-        });
+        callback(genErrors("productId cannot be left empty"));
     } else {
         Product.findById(productId)
             .then((prod) => {
-                callback({ prod, productId, isValid: true });
+                callback({ prod, productId });
             })
             .catch(() => {
-                errors.productId = `${productId} product doesn't exist`;
-                callback({
-                    errors, isValid: false,
-                });
+                callback(genErrors(`${productId} product doesn't exist`));
             });
     }
 }
 function validateDispatchProduct(data, callback) {
-    validteProductExists(data, ({
-        productId, prod, errors, isValid,
-    }) => {
-        if (!isValid) {
-            callback({ errors, isValid });
-        } else if (prod.quantityRem === 0 && prod.status === PRODUCT_STATUS_REV.PLACED) {
-            callback({ isValid: true });
+    validteProductExists(data, (obj) => {
+        if (!isValid(obj)) {
+            callback({ errors: obj.errors });
+        } else if (obj.prod.quantityRem === 0 && obj.prod.status === PRODUCT_STATUS_REV.PLACED) {
+            callback({});
         } else {
-            errors.productId = `${productId} product isn't finished placing orders yet, remaining ${prod.quantityRem} quantity`;
-            callback({
-                errors, isValid: false,
-            });
+            callback(genErrors(`${obj.productId} product isn't finished placing orders yet, remaining ${obj.prod.quantityRem} quantity`));
         }
     });
 }
 function validateCancelProduct(data, callback) {
-    validteProductExists(data, ({
-        productId, prod, errors, isValid,
-    }) => {
-        if (!isValid) {
-            callback({ errors, isValid });
-        } else if (prod.quantityRem > 0 && prod.status === PRODUCT_STATUS_REV.WAITING) {
-            callback({ isValid: true });
+    validteProductExists(data, (obj) => {
+        if (!isValid(obj)) {
+            callback({ errors: obj.errors });
+        } else if (obj.prod.quantityRem > 0 && obj.prod.status === PRODUCT_STATUS_REV.WAITING) {
+            callback();
         } else {
-            errors.productId = `${productId} product product has all orders placed, you cannot cancel it now`;
-            callback({
-                errors, isValid: false,
-            });
+            callback(genErrors(`${obj.productId} product product has all orders placed, you cannot cancel it now`));
         }
     });
 }
