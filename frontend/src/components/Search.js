@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Form, Button } from "reactstrap";
+import { Input, Form } from "reactstrap";
 import PropTypes from "prop-types";
 import { searchProduct, orderProduct } from "../actions/orderActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
