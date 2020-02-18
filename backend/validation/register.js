@@ -11,6 +11,9 @@ function validateRegisterInput(data) {
     for (const field of Object.keys(fields)) {
         if (!data[field]) {
             errors[field] = `${fields[field]} field is required`;
+            if (field === "usertype") {
+                errors[field] += " (vendor or customer)";
+            }
             data[field] = "";
         } else if (field === "usertype" && data[field] !== "0" && data[field] !== "1") {
             errors.usertype = "User type must be either vendor or customer";
@@ -29,7 +32,7 @@ function validateRegisterInput(data) {
     }
 
     if (!validator.equals(data.password, data.password2)) {
-        errors.password2 = "Passwords must match";
+        errors.password2 = "Confirm password must match";
     }
 
     return {

@@ -25,7 +25,10 @@ if (currentUser) {
     navbarBtns = isVendor ? <VendorNav></VendorNav> : <CustomerNav></CustomerNav>;
 } else {
     logOutBtn = <span></span>;
-    navbarBtns = <React.Fragment></React.Fragment>;
+    navbarBtns = <React.Fragment>
+        <Link className="nav-link" to="/login">Login</Link>
+        <Link className="nav-link" to="/register">Register</Link>
+    </React.Fragment>;
 }
 
 /**
@@ -81,6 +84,8 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
             {/* switch helps us specify a default case if no route path matches */}
             <Switch>
                 <Route path="/" exact component={HomePage}></Route>
+                <Route path="/login" exact render={props => <HomePage {...props} login></HomePage>}></Route>
+                <Route path="/register" exact render={props => <HomePage {...props} register></HomePage>}></Route>
                 <Route path="/?required=:id" exact component={HomePage}></Route>
 
                 {/* Vendor routes */}

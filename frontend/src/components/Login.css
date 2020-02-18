@@ -24,7 +24,3 @@
 .radio-input-container div:nth-of-type(2){
     float: right;
 }
-
-a.nav-link[data-toggle="tab"]:not(.active){
-    color: white !important;
-}

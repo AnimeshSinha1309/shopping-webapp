@@ -9,7 +9,7 @@ class ErrorComp extends Component {
             errors = Object.keys(errorObj);
 
         for (const error of errors) {
-            errorList.push(<span className="text-danger">{error}: {errorObj[error]}</span>);
+            errorList.push(<p className="text-danger">{errorObj[error]}</p>);
         }
 
         return (
