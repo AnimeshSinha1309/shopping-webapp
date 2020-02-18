@@ -29,10 +29,9 @@ const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data
 
 router.post("/create-order", createOrderFunc);
 
-router.post("/search", checkAuthAndRedirect((req, res) => {
-    const { productName } = req.body;
 
-    Product.fuzzySearch(productName).then((products) => {
+router.post("/search", checkAuthAndRedirect((req, res) => {
+    function productListHandler(products) {
         products = products.filter(x => x.status === PRODUCT_STATUS_REV.WAITING);
         const resProds = [];
 
@@ -49,7 +48,14 @@ router.post("/search", checkAuthAndRedirect((req, res) => {
                 if (resProds.length === products.length) { res.json(resProds); }
             });
         });
-    });
+    }
+    const { productName } = req.body;
+
+    if (productName === "") {
+        Product.find({}).then(productListHandler);
+    } else {
+        Product.fuzzySearch(productName).then(productListHandler);
+    }
 }));
 
 router.get("/view-orders", checkAuthAndRedirect((req, res) => {

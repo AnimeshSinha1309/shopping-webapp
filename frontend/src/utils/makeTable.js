@@ -29,6 +29,8 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
                     const imageData = elm.data.data.map(x => String.fromCharCode(x)).join("");
 
                     elm = <img src={imageData}></img>;
+                    rowElms.push(<td className="image" key={index++}>{elm}</td>);
+                    continue;
                 } else {
                     elm = "NA";
                 }
@@ -37,7 +39,9 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
             rowElms.push(<td key={index++}>{elm}</td>);
         }
 
-        if (renderButton) { rowElms.push(<td key={index++}><Button>{renderButton}</Button></td>); }
+        if (renderButton) {
+            rowElms.push(<td key={index++}><Button>{renderButton}</Button></td>);
+        }
 
         // eslint-disable-next-line no-underscore-dangle
         const elmRow = <tr key={index++} data-id={obj._id} data-max={obj.quantityRem} data-name={obj.name}>{rowElms}</tr>;

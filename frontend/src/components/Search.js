@@ -11,6 +11,8 @@ class Search extends Component {
         super(props);
         this.buttonName = "Order";
         this.state = { productlist: [] };
+
+        setTimeout(this.onQuery.bind(this), 200);
     }
 
     /**
@@ -41,9 +43,7 @@ class Search extends Component {
         }
     }
 
-    onQuery(e) {
-        e.preventDefault();
-
+    onQuery() {
         const elm = document.getElementById("searchquery");
 
         searchProduct(elm.value, (productlist) => {
@@ -60,8 +60,7 @@ class Search extends Component {
             <div>
                 <h1>Search for products on the marketplace!</h1>
                 <Form onSubmit={this.onQuery.bind(this)}>
-                    <Input type="text" placeholder="Enter seach query" id="searchquery"></Input>
-                    <Button type="submit">Search</Button>
+                    <Input type="text" placeholder="Enter seach query" id="searchquery" onChange={this.onQuery.bind(this)} />
                 </Form>
                 <p><i>Search results sorted by closest match, uses fuzzy matching on product name</i></p>
                 <div>

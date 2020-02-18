@@ -9,6 +9,7 @@ import {
 } from "../config/data";
 import { getOrders } from "../actions/orderActions";
 import { filterFields } from "../utils/helper";
+import "./ViewList.css";
 
 class GeneralProductList extends Component {
     constructor(props) {
