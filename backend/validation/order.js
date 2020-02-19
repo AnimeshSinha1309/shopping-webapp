@@ -1,7 +1,8 @@
 const Product = require("../models/Product"),
     Order = require("../models/Order"),
     { Customer } = require("../models/User"),
-    { genErrors } = require("../utils/errors");
+    { genErrors } = require("../utils/errors"),
+    { PRODUCT_STATUS_REV } = require("../config/config");
 
 /* eslint-disable no-unused-vars */
 function validateOrder(orderReq, callback) {
@@ -45,4 +46,27 @@ function validateOrder(orderReq, callback) {
     });
 }
 
-module.exports = { validateOrder };
+function validateOrderEdit({ orderId, newQuantity }, callback) {
+    if (!orderId) {
+        callback(genErrors("Order id is required"));
+    } else if (!newQuantity || Number.isNaN(Number(newQuantity)) || newQuantity <= 0) {
+        callback(genErrors("A positive number new quantity is required"));
+    } else {
+        Order.findById(orderId)
+            .then((order) => {
+                Product.findById(order.product)
+                    .then((prod) => {
+                        const newCount = (prod.quantityRem + order.count - newQuantity);
+                        if (prod.status !== PRODUCT_STATUS_REV.WAITING) {
+                            callback(genErrors("Product is not in waiting state"));
+                        } else if (newCount < 0) {
+                            callback(genErrors("New quantity surpasses product limit"));
+                        } else {
+                            callback({});
+                        }
+                    });
+            })
+            .catch(() => callback(`${orderId} order not found`));
+    }
+}
+module.exports = { validateOrder, validateOrderEdit };

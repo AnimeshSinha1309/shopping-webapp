@@ -8,7 +8,7 @@ import { PRODUCT_STATUS_REV } from "../config/settings";
 import {
     isCustomer,
 } from "../config/data";
-import { getOrders } from "../actions/orderActions";
+import { getOrders, editOrder } from "../actions/orderActions";
 import { filterFields } from "../utils/helper";
 import "./ViewList.css";
 import { isValid } from "../utils/errors";
@@ -30,13 +30,14 @@ class GeneralProductList extends Component {
         if (node.tagName === "BUTTON") {
             const tr = node.parentElement.parentElement,
                 { id, name } = tr.dataset;
+
             if (node.innerHTML === "Dispatch") {
                 if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
                     dispatchProduct(id, (errors) => {
                         if (isValid(errors)) {
                             this.props.history.push("/view-dispatched");
                         } else {
-                            // TODO
+                            alert(`Errors: ${errors.errors.join(", ")}`);
                         }
                     });
                 }
@@ -46,9 +47,23 @@ class GeneralProductList extends Component {
                         if (isValid(errors)) {
                             this.props.history.push("/view-cancelled");
                         } else {
-                            // TODO
+                            alert(`Errors: ${errors.errors.join(", ")}`);
                         }
                     });
+                }
+            } else if (node.innerHTML === "Edit") {
+                const quant = window.prompt(`Enter new quantity for product ${name}`);
+
+                if (!Number.isNaN(Number(quant))) {
+                    editOrder(id, quant, (errors) => {
+                        if (isValid(errors)) {
+                            window.location.reload();
+                        } else {
+                            alert(`Errors: ${errors.errors.join(", ")}`);
+                        }
+                    });
+                } else {
+                    alert("Please enter valid number");
                 }
             } else if (node.dataset) {
                 const copy = this.state.products.slice(0);
@@ -93,8 +108,10 @@ class GeneralProductList extends Component {
             switch (this.type) {
             case PRODUCT_STATUS_REV.WAITING: btnText = "Cancel"; break;
             case PRODUCT_STATUS_REV.PLACED: btnText = "Dispatch"; break;
+            case 42: btnText = "Edit"; break;
             default:
             }
+
             this.table = makeTableFromObjectArray(this.state.products, undefined, btnText);
 
             if (this.state.products.length === 0) {

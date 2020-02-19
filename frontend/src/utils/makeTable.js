@@ -39,7 +39,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
                     elm = "NA";
                 }
             } else if (key === "status") {
-                elm = PRODUCT_STATUS[Number(elm)];
+                if (!Number.isNaN(Number(elm))) { elm = PRODUCT_STATUS[Number(elm)]; }
             }
 
             rowElms.push(<td key={index++}>{elm}</td>);
@@ -50,7 +50,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
         }
 
         // eslint-disable-next-line no-underscore-dangle
-        const elmRow = <tr key={index++} data-id={obj._id} data-max={obj.quantityRem} data-name={obj.name}>{rowElms}</tr>;
+        const elmRow = <tr key={index++} data-name={obj.product} data-id={obj._id} data-max={obj.quantityRem}>{rowElms}</tr>;
 
         rows.push(elmRow);
     }

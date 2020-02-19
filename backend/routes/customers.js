@@ -4,7 +4,7 @@ const express = require("express"),
     router = express.Router(),
     HttpStatus = require("http-status-codes"),
 
-    { validateOrder } = require("../validation/order"),
+    { validateOrder, validateOrderEdit } = require("../validation/order"),
     { Vendor } = require("../models/User"),
     Product = require("../models/Product"),
     Order = require("../models/Order"),
@@ -15,7 +15,7 @@ const express = require("express"),
 const validatorFunc = checkValidationAndRedirect(validateOrder, (routerRes, data) => {
         const order = new Order(data),
             remCount = data.quantityRem - data.count,
-            updateObj = remCount ? { quantityRem: remCount } : { status: 1 };
+            updateObj = remCount ? { quantityRem: remCount } : { quantityRem: remCount, status: 1 };
 
         Product.findByIdAndUpdate(data.product, updateObj).then(() => {
             order.save()
@@ -111,5 +111,25 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
         })
         .catch(err => res.status(HttpStatus.BAD_REQUEST).json(err));
 }));
+
+const editOrder = checkValidationAndRedirect(validateOrderEdit, (routerRes, data) => {
+    Order.findById(data.orderId)
+        .then((order) => {
+            const delta = -Number(data.newQuantity) + order.count;
+
+            order.update({ count: Number(data.newQuantity) })
+                .then(() => {
+                    Product.findById(order.product)
+                        .then((prod) => {
+                            const remCount = prod.quantityRem + delta,
+                                updateObj = remCount ? { quantityRem: remCount } : { quantityRem: remCount, status: 1 };
+                            prod.update(updateObj)
+                                .then(() => routerRes.json({}));
+                        });
+                });
+        });
+}, true);
+
+router.post("/edit-order", checkAuthAndRedirect(editOrder));
 
 module.exports = router;

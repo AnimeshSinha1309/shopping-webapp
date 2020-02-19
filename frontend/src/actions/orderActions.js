@@ -21,3 +21,9 @@ export function getOrders(callback) {
         .then(({ data }) => callback(data))
         .catch(errorCatcher(callback));
 }
+
+export function editOrder(orderId, newQuantity, callback) {
+    postData(`${custEndpoint}/edit-order`, { orderId, newQuantity })
+        .then(({ data }) => { callback(data); })
+        .catch(errorCatcher(callback));
+}
