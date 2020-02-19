@@ -27,3 +27,8 @@ export function editOrder(orderId, newQuantity, callback) {
         .then(({ data }) => { callback(data); })
         .catch(errorCatcher(callback));
 }
+export function rateVendor(vendorId, rating, callback) {
+    postData(`${custEndpoint}/rate-vendor`, { vendorId, rating })
+        .then(({ data }) => { callback(data); })
+        .catch(errorCatcher(callback));
+}

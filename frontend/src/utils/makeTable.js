@@ -2,7 +2,7 @@ import React from "react";
 import { Table, Button } from "reactstrap";
 import { PRODUCT_STATUS } from "../config/settings";
 
-function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
+function makeTableFromObjectArray(data, clickHandler, renderButton = []) {
     if (data.length === 0) {
         return <h3>The list is empty</h3>;
     }
@@ -11,7 +11,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
 
     // get keys from where we know they're the most
     let keys = Object.keys(data[dt2.indexOf(Math.max(...dt2))]);
-    keys = keys.filter(x => x !== "_id" && x !== "id");
+    keys = keys.filter(x => x !== "_id" && x !== "id" && x !== "vendorid");
 
     const rows = [],
         headerRow = <tr key={123}>{
@@ -45,12 +45,12 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
             rowElms.push(<td key={index++}>{elm}</td>);
         }
 
-        if (renderButton) {
-            rowElms.push(<td key={index++}><Button>{renderButton}</Button></td>);
+        for (const btn of renderButton) {
+            rowElms.push(<td key={index++}><Button>{btn}</Button></td>);
         }
 
         // eslint-disable-next-line no-underscore-dangle
-        const elmRow = <tr key={index++} data-name={obj.product} data-id={obj._id} data-max={obj.quantityRem}>{rowElms}</tr>;
+        const elmRow = <tr key={index++} data-name={obj.product} data-vendorid={obj.vendorid} data-id={obj._id} data-max={obj.quantityRem}>{rowElms}</tr>;
 
         rows.push(elmRow);
     }

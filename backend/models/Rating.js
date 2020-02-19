@@ -2,13 +2,29 @@ const { model, Schema } = require("mongoose");
 
 
 // Schema
-const ratingSchema = new Schema({
+const reviewSchema = new Schema({
         vendor: {
             type: String,
             required: true,
         },
         customer: {
-            type: Number,
+            type: String,
+            required: true,
+        },
+        review: {
+            type: String,
+            required: true,
+        },
+    }),
+    Review = model("Review", reviewSchema),
+
+    prodRatingSchema = new Schema({
+        product: {
+            type: String,
+            required: true,
+        },
+        customer: {
+            type: String,
             required: true,
         },
         rating: {
@@ -16,7 +32,22 @@ const ratingSchema = new Schema({
             required: true,
         },
     }),
-    Rating = model("Rating", ratingSchema);
+    ProdRating = model("ProductRating", prodRatingSchema),
+    vendRatingSchema = new Schema({
+        vendor: {
+            type: String,
+            required: true,
+        },
+        customer: {
+            type: String,
+            required: true,
+        },
+        rating: {
+            type: Number,
+            required: true,
+        },
+    }),
+    VendRating = model("VendorRating", vendRatingSchema);
 
 
-module.exports = Rating;
+module.exports = { ProdRating, VendRating, Review };

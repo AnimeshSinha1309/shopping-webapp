@@ -8,7 +8,8 @@ import { PRODUCT_STATUS_REV } from "../config/settings";
 import {
     isCustomer,
 } from "../config/data";
-import { getOrders, editOrder } from "../actions/orderActions";
+import { rateVendor, getOrders, editOrder } from "../actions/orderActions";
+
 import { filterFields } from "../utils/helper";
 import "./ViewList.css";
 import { isValid } from "../utils/errors";
@@ -29,7 +30,7 @@ class GeneralProductList extends Component {
 
         if (node.tagName === "BUTTON") {
             const tr = node.parentElement.parentElement,
-                { id, name } = tr.dataset;
+                { id, name, vendorid } = tr.dataset;
 
             if (node.innerHTML === "Dispatch") {
                 if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
@@ -56,6 +57,20 @@ class GeneralProductList extends Component {
 
                 if (!Number.isNaN(Number(quant))) {
                     editOrder(id, quant, (errors) => {
+                        if (isValid(errors)) {
+                            window.location.reload();
+                        } else {
+                            alert(`Errors: ${errors.errors.join(", ")}`);
+                        }
+                    });
+                } else {
+                    alert("Please enter valid number");
+                }
+            } else if (node.innerHTML === "Rate vendor") {
+                const quant = window.prompt("Enter rating 1 (lowest) to 5 (highest)");
+
+                if (!Number.isNaN(Number(quant))) {
+                    rateVendor(vendorid, quant, (errors) => {
                         if (isValid(errors)) {
                             window.location.reload();
                         } else {
@@ -108,7 +123,7 @@ class GeneralProductList extends Component {
             switch (this.type) {
             case PRODUCT_STATUS_REV.WAITING: btnText = "Cancel"; break;
             case PRODUCT_STATUS_REV.PLACED: btnText = "Dispatch"; break;
-            case 42: btnText = "Edit"; break;
+            case 42: btnText = ["Edit", "Rate vendor"]; break;
             default:
             }
 

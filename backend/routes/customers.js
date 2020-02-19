@@ -8,6 +8,7 @@ const express = require("express"),
     { Vendor } = require("../models/User"),
     Product = require("../models/Product"),
     Order = require("../models/Order"),
+    { VendRating } = require("../models/Rating"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
     { PRODUCT_STATUS, PRODUCT_STATUS_REV } = require("../config/config");
 
@@ -96,12 +97,24 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
 
                         Vendor.findById(vendorID).then((vend) => {
                             order._doc.vendor = vend.name;
+                            order._doc.vendorid = vend.id;
 
-                            resOrders.push(order);
+                            VendRating.find({ vendor: vendorID }).then((vendrating) => {
+                                let sum = 0,
+                                    len = 0;
+                                for (const r of vendrating) {
+                                    sum += r.rating;
+                                    len++;
+                                }
 
-                            if (resOrders.length === orders.length) {
-                                res.status(HttpStatus.OK).json(resOrders);
-                            }
+
+                                order._doc.rating = len > 0 ? (sum / len).toPrecision(2) : 0;
+                                resOrders.push(order);
+
+                                if (resOrders.length === orders.length) {
+                                    res.status(HttpStatus.OK).json(resOrders);
+                                }
+                            });
                         });
                     })
                     .catch((err) => {
@@ -129,7 +142,23 @@ const editOrder = checkValidationAndRedirect(validateOrderEdit, (routerRes, data
                 });
         });
 }, true);
-
 router.post("/edit-order", checkAuthAndRedirect(editOrder));
+
+router.post("/rate-vendor", checkAuthAndRedirect((req, res) => {
+    const { vendorId, rating, customer } = req.body;
+
+    VendRating.find({ vendor: vendorId, customer })
+        .then((vend) => {
+            console.log(vend, vendorId, customer);
+
+            if (vend.length > 0) {
+                VendRating.update({ vendor: vendorId, customer }, { rating }).then(() => res.send({}));
+            } else {
+                const vr = new VendRating({ vendor: vendorId, customer, rating });
+
+                vr.save().then(() => res.send({}));
+            }
+        });
+}));
 
 module.exports = router;
