@@ -4,6 +4,7 @@ const express = require("express"),
     HttpStatus = require("http-status-codes"),
     { validateProduct, validateDispatchProduct, validateCancelProduct } = require("../validation/product"),
     Product = require("../models/Product"),
+    { VendRating } = require("../models/Rating"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
     { PRODUCT_STATUS_REV } = require("../config/config");
 
@@ -59,5 +60,11 @@ const cancelFunc = checkValidationAndRedirect(validateCancelProduct, (routerRes,
         .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
 }, true);
 router.post("/cancel-product", checkAuthAndRedirect(cancelFunc));
+
+router.get("/review", (req, routerRes) => {
+    VendRating
+        .find({ vendor: req.query.vendor })
+        .then(ratings => routerRes.json(ratings));
+});
 
 module.exports = router;

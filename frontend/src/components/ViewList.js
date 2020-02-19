@@ -8,7 +8,9 @@ import { PRODUCT_STATUS_REV } from "../config/settings";
 import {
     isCustomer,
 } from "../config/data";
-import { rateVendor, getOrders, editOrder } from "../actions/orderActions";
+import {
+    reviewVendor, getOrders, editOrder, reviewProduct,
+} from "../actions/orderActions";
 
 import { filterFields } from "../utils/helper";
 import "./ViewList.css";
@@ -30,7 +32,9 @@ class GeneralProductList extends Component {
 
         if (node.tagName === "BUTTON") {
             const tr = node.parentElement.parentElement,
-                { id, name, vendorid } = tr.dataset;
+                {
+                    id, name, vendorid, status, productid: productId,
+                } = tr.dataset;
 
             if (node.innerHTML === "Dispatch") {
                 if (window.confirm(`Are you sure you want to dispatch ${name}?`)) {
@@ -70,7 +74,27 @@ class GeneralProductList extends Component {
                 const quant = window.prompt("Enter rating 1 (lowest) to 5 (highest)");
 
                 if (!Number.isNaN(Number(quant))) {
-                    rateVendor(vendorid, quant, (errors) => {
+                    const review = window.prompt("Enter review");
+
+                    reviewVendor(vendorid, quant, review, (errors) => {
+                        if (isValid(errors)) {
+                            window.location.reload();
+                        } else {
+                            alert(`Errors: ${errors.errors.join(", ")}`);
+                        }
+                    });
+                } else {
+                    alert("Please enter valid number");
+                }
+            } else if (node.innerHTML === "Rate product") {
+                const quant = window.prompt("Enter rating 1 (lowest) to 5 (highest)");
+
+                if (Number(status) !== PRODUCT_STATUS_REV.DISPATCHED) {
+                    alert("Can only review dispatched produtcs");
+                } else if (!Number.isNaN(Number(quant))) {
+                    const review = window.prompt("Enter review");
+
+                    reviewProduct(productId, quant, review, (errors) => {
                         if (isValid(errors)) {
                             window.location.reload();
                         } else {
@@ -121,9 +145,9 @@ class GeneralProductList extends Component {
         if (this.state.products) {
             let btnText = "";
             switch (this.type) {
-            case PRODUCT_STATUS_REV.WAITING: btnText = "Cancel"; break;
-            case PRODUCT_STATUS_REV.PLACED: btnText = "Dispatch"; break;
-            case 42: btnText = ["Edit", "Rate vendor"]; break;
+            case PRODUCT_STATUS_REV.WAITING: btnText = ["Cancel"]; break;
+            case PRODUCT_STATUS_REV.PLACED: btnText = ["Dispatch"]; break;
+            case 42: btnText = ["Edit", "Rate vendor", "Rate product"]; break;
             default:
             }
 

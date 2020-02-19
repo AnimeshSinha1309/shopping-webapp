@@ -8,7 +8,7 @@ const express = require("express"),
     { Vendor } = require("../models/User"),
     Product = require("../models/Product"),
     Order = require("../models/Order"),
-    { VendRating } = require("../models/Rating"),
+    { VendRating, ProdRating } = require("../models/Rating"),
     { checkAuthAndRedirect, checkValidationAndRedirect } = require("../routes/commonAuth"),
     { PRODUCT_STATUS, PRODUCT_STATUS_REV } = require("../config/config");
 
@@ -92,6 +92,7 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                         }
 
                         order.product = product.name;
+                        order._doc.productid = product._id;
                         order.customer = undefined;
                         const { vendor: vendorID } = product;
 
@@ -145,16 +146,37 @@ const editOrder = checkValidationAndRedirect(validateOrderEdit, (routerRes, data
 router.post("/edit-order", checkAuthAndRedirect(editOrder));
 
 router.post("/rate-vendor", checkAuthAndRedirect((req, res) => {
-    const { vendorId, rating, customer } = req.body;
+    const {
+        vendorId, rating, customer, review,
+    } = req.body;
 
     VendRating.find({ vendor: vendorId, customer })
         .then((vend) => {
-            console.log(vend, vendorId, customer);
-
             if (vend.length > 0) {
-                VendRating.update({ vendor: vendorId, customer }, { rating }).then(() => res.send({}));
+                VendRating.update({ vendor: vendorId, customer }, { rating, review }).then(() => res.send({}));
             } else {
-                const vr = new VendRating({ vendor: vendorId, customer, rating });
+                const vr = new VendRating({
+                    vendor: vendorId, customer, rating, review,
+                });
+
+                vr.save().then(() => res.send({}));
+            }
+        });
+}));
+
+router.post("/review-product", checkAuthAndRedirect((req, res) => {
+    const {
+        review, productId, rating, customer,
+    } = req.body;
+
+    ProdRating.find({ product: productId, customer })
+        .then((vend) => {
+            if (vend.length > 0) {
+                ProdRating.update({ product: productId, customer }, { rating, review }).then(() => res.send({}));
+            } else {
+                const vr = new ProdRating({
+                    product: productId, customer, rating, review,
+                });
 
                 vr.save().then(() => res.send({}));
             }

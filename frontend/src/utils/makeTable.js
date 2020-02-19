@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Table, Button } from "reactstrap";
-import { PRODUCT_STATUS } from "../config/settings";
+import { PRODUCT_STATUS_REV, PRODUCT_STATUS } from "../config/settings";
 
 function makeTableFromObjectArray(data, clickHandler, renderButton = []) {
     if (data.length === 0) {
@@ -11,7 +12,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = []) {
 
     // get keys from where we know they're the most
     let keys = Object.keys(data[dt2.indexOf(Math.max(...dt2))]);
-    keys = keys.filter(x => x !== "_id" && x !== "id" && x !== "vendorid");
+    keys = keys.filter(x => x !== "_id" && x !== "id" && x !== "vendorid" && x !== "productid");
 
     const rows = [],
         headerRow = <tr key={123}>{
@@ -40,6 +41,9 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = []) {
                 }
             } else if (key === "status") {
                 if (!Number.isNaN(Number(elm))) { elm = PRODUCT_STATUS[Number(elm)]; }
+            } else if (key === "vendor" && obj.vendorid) {
+                const path = `/vendor-review?vendor=${obj.vendorid}`;
+                elm = <Link to={path}>{elm}</Link>;
             }
 
             rowElms.push(<td key={index++}>{elm}</td>);
@@ -50,7 +54,7 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = []) {
         }
 
         // eslint-disable-next-line no-underscore-dangle
-        const elmRow = <tr key={index++} data-name={obj.product} data-vendorid={obj.vendorid} data-id={obj._id} data-max={obj.quantityRem}>{rowElms}</tr>;
+        const elmRow = <tr key={index++} data-status={PRODUCT_STATUS_REV[obj.status && obj.status.toUpperCase()]} data-name={obj.product || obj.name} data-vendorid={obj.vendorid} data-productid={obj.productid} data-id={obj._id} data-max={obj.quantityRem}>{rowElms}</tr>;
 
         rows.push(elmRow);
     }

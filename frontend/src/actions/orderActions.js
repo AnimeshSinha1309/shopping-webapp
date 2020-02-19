@@ -27,8 +27,14 @@ export function editOrder(orderId, newQuantity, callback) {
         .then(({ data }) => { callback(data); })
         .catch(errorCatcher(callback));
 }
-export function rateVendor(vendorId, rating, callback) {
-    postData(`${custEndpoint}/rate-vendor`, { vendorId, rating })
+export function reviewVendor(vendorId, rating, review, callback) {
+    postData(`${custEndpoint}/rate-vendor`, { vendorId, rating, review })
+        .then(({ data }) => { callback(data); })
+        .catch(errorCatcher(callback));
+}
+
+export function reviewProduct(productId, rating, review, callback) {
+    postData(`${custEndpoint}/review-product`, { productId, rating, review })
         .then(({ data }) => { callback(data); })
         .catch(errorCatcher(callback));
 }
