@@ -14,7 +14,7 @@ class Search extends Component {
         this.buttonName = "Order";
         this.state = { productlist: [] };
 
-        setTimeout(this.onQuery.bind(this), 200);
+        setTimeout(this.searchProds.bind(this), 200);
     }
 
     /**
@@ -49,7 +49,7 @@ class Search extends Component {
         }
     }
 
-    onQuery() {
+    searchProds() {
         const elm = document.getElementById("searchquery");
 
         searchProduct(elm.value, (productlist) => {
@@ -65,6 +65,11 @@ class Search extends Component {
         });
     }
 
+    onQuery(e) {
+        e.preventDefault();
+        this.searchProds();
+    }
+
     render() {
         return (
             <MDBContainer>
@@ -74,7 +79,8 @@ class Search extends Component {
                         <Form onSubmit={this.onQuery.bind(this)}>
                             <Input type="text" placeholder="Enter seach query" id="searchquery" onChange={this.onQuery.bind(this)} />
                         </Form>
-                        <p><i>Search results sorted by closest match, uses fuzzy matching on product name</i></p>
+                        <p>Only Waiting products not previously ordered by you are shown.
+                            <i>Search results sorted by closest match, uses fuzzy matching on product name</i></p>
                         <div>
                             {this.state.productlist}
                         </div>

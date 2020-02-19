@@ -1,5 +1,6 @@
 import React from "react";
 import { Table, Button } from "reactstrap";
+import { PRODUCT_STATUS } from "../config/settings";
 
 function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
     if (data.length === 0) {
@@ -37,6 +38,8 @@ function makeTableFromObjectArray(data, clickHandler, renderButton = "") {
                 } else {
                     elm = "NA";
                 }
+            } else if (key === "status") {
+                elm = PRODUCT_STATUS[Number(elm)];
             }
 
             rowElms.push(<td key={index++}>{elm}</td>);

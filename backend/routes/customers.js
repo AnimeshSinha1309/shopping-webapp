@@ -34,6 +34,7 @@ router.post("/search", checkAuthAndRedirect((req, res) => {
     function productListHandler(products) {
         products = products.filter(x => x.status === PRODUCT_STATUS_REV.WAITING);
         const resProds = [];
+        let target = products.length;
 
         if (products.length === 0) {
             res.json(resProds);
@@ -43,12 +44,20 @@ router.post("/search", checkAuthAndRedirect((req, res) => {
         products.forEach((x) => {
             Vendor.findById(x.vendor, (err, vend) => {
                 x.vendor = vend.name;
-                resProds.push(x);
 
-                if (resProds.length === products.length) { res.json(resProds); }
+                Order.find({ customer: req.body.customer, product: x.id }, (err2, orders) => {
+                    if (orders.length > 0) {
+                        target--;
+                    } else {
+                        resProds.push(x);
+                    }
+
+                    if (resProds.length === target) { res.json(resProds); }
+                });
             });
         });
     }
+
     const { productName } = req.body;
 
     if (productName === "") {

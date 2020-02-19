@@ -21,7 +21,7 @@ function filterFields(array, blacklist = []) {
 }
 
 function errorCatcher(callback) {
-    return err => (callback ? callback(err.response.data) : undefined);
+    return err => (callback ? callback(err.response ? err.response.data : err) : undefined);
 }
 
 module.exports = { filterFields, errorCatcher };
