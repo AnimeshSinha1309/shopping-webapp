@@ -177,6 +177,7 @@ class GeneralProductList extends Component {
 
         const wrapper = <MDBContainer>
             <MDBRow>
+                <h1>{this.headerText}</h1>
                 <MDBCol size="12" onClick={this.onClick.bind(this)}>
                     {inner}
                 </MDBCol>
@@ -195,6 +196,7 @@ class WaitingProducts extends GeneralProductList {
     constructor(props) {
         super(props);
 
+        this.headerText = "Waiting products";
         this.type = PRODUCT_STATUS_REV.WAITING;
     }
 }
@@ -202,6 +204,7 @@ class WaitingProducts extends GeneralProductList {
 class DispatchReadyProducts extends GeneralProductList {
     constructor(props) {
         super(props);
+        this.headerText = "Placed products";
         this.type = PRODUCT_STATUS_REV.PLACED;
     }
 }
@@ -209,6 +212,7 @@ class DispatchReadyProducts extends GeneralProductList {
 class DispatchedProducts extends GeneralProductList {
     constructor(props) {
         super(props);
+        this.headerText = "Dispatched products";
         this.type = PRODUCT_STATUS_REV.DISPATCHED;
     }
 }
@@ -216,6 +220,7 @@ class DispatchedProducts extends GeneralProductList {
 class CancelledProducts extends GeneralProductList {
     constructor(props) {
         super(props);
+        this.headerText = "Cancelled products";
         this.type = PRODUCT_STATUS_REV.CANCELLED;
     }
 }
@@ -223,6 +228,7 @@ class CancelledProducts extends GeneralProductList {
 class OrderList extends GeneralProductList {
     constructor(props) {
         super(props);
+        this.headerText = "Your orders";
         this.type = 42; // distinct from others
     }
 

@@ -16,18 +16,16 @@ class DisplayRating extends Component {
     componentDidMount() {
         if (window.location.search) {
             const vendor = window.location.search.match(/vendor=(.+)/)[1];
-            console.log(vendor);
-
 
             getData(`${endpoint}/vendors/review`, { vendor }).then((reviews) => {
                 if (reviews.data.length > 0) {
                     this.setState({ reviews: makeTableFromObjectArray(filterFields(reviews.data, ["vendor", "customer"])) });
                 } else {
-                    this.setState({ reviews: <h1>No ratings found</h1> });
+                    this.setState({ reviews: <h3>No ratings found</h3> });
                 }
             });
         } else {
-            this.setState({ reviews: <h1>No vendor given</h1> });
+            this.setState({ reviews: <h3>No vendor given</h3> });
         }
     }
 
@@ -37,6 +35,7 @@ class DisplayRating extends Component {
                 <MDBContainer>
                     <MDBRow>
                         <MDBCol size="8">
+                            <h1>Vendor reviews</h1>
                             {this.state.reviews}
                         </MDBCol>
                     </MDBRow>
