@@ -53,14 +53,14 @@ class Search extends Component {
         const elm = document.getElementById("searchquery");
 
         searchProduct(elm.value, (productlist) => {
-            if (productlist.isValid === false) {
-                // TODO
-            } else {
+            if (isValid(productlist)) {
                 // confidence added by mongoose-fuzzy-search
                 productlist = filterFields(productlist, ["confidenceScore"]);
-                const table = makeTableFromObjectArray(productlist, this.onOrderClick.bind(this), this.buttonName);
+                const table = makeTableFromObjectArray(productlist, this.onOrderClick.bind(this), [this.buttonName]);
 
                 this.setState({ productlist: table });
+            } else {
+                // TODO
             }
         });
     }
