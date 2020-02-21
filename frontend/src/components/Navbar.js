@@ -88,7 +88,8 @@ const VendorAuth = requireAuth(USER_TYPE.vendor),
                 <Route path="/(|login)" exact render={props => <HomePage {...props} login></HomePage>}></Route>
                 <Route path="/register" exact render={props => <HomePage {...props} register></HomePage>}></Route>
                 <Route path="/?required=:id" exact component={HomePage}></Route>
-                <Route path="/vendor-review" component={DisplayRating}></Route>
+                <Route path="/vendor-review" render={props => <DisplayRating {...props} vendor></DisplayRating>}></Route>
+                <Route path="/product-review" render={props => <DisplayRating {...props} product></DisplayRating>}></Route>
 
                 {/* Vendor routes */}
                 <VendorAuth path="/create" component={CreateModal}></VendorAuth>
