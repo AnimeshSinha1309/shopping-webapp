@@ -1,12 +1,1 @@
-- work on buttons in user list view
-- this page is only for is messed up
-- .catch should have correct handlers everywhere, test thoroughly
-
-Clarifs:
-
-1. what is meant by
-
-"In the case of Waiting State, the following also needs to be
-displayed/implemented (5 marks)
-● Quantity left for the order to get placed
-● Option to edit the order if not in the dispatched state"
+- "this page is only for" is messed up
