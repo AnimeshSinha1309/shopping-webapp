@@ -104,6 +104,8 @@ class GeneralProductList extends Component {
                 } else {
                     alert("Please enter valid number");
                 }
+            } else if (node.innerHTML === "View reviews") {
+                window.location.href = `/product-review?product=${id}`;
             } else if (node.dataset) {
                 const copy = this.state.products.slice(0);
 
@@ -144,6 +146,7 @@ class GeneralProductList extends Component {
             switch (this.type) {
             case PRODUCT_STATUS_REV.WAITING: btnText = ["Cancel"]; break;
             case PRODUCT_STATUS_REV.PLACED: btnText = ["Dispatch"]; break;
+            case PRODUCT_STATUS_REV.DISPATCHED: btnText = ["View reviews"]; break;
             case 42: btnText = ["Edit", "Rate vendor", "Rate product"]; break;
             default:
             }

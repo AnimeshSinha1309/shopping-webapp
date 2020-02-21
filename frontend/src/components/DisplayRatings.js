@@ -16,30 +16,36 @@ class DisplayRating extends Component {
 
     componentDidMount() {
         if (window.location.search) {
-            if (this.props.vendor) {
-                const vendor = window.location.search.match(/vendor=(.+)/)[1];
+            try {
+                if (this.props.vendor) {
+                    const vendor = window.location.search.match(/vendor=(.+)/)[1];
 
-                getData(`${endpoint}/vendors/review`, { vendor }).then((reviews) => {
-                    if (reviews.data.length > 0) {
-                        this.setState({ reviews: makeTableFromObjectArray(filterFields(reviews.data, ["vendor", "customer"])) });
-                    } else {
-                        this.setState({ reviews: <h3>No ratings found</h3> });
-                    }
-                });
-            } else if (this.props.product) {
-                const product = window.location.search.match(/product=(.+)/)[1];
+                    getData(`${endpoint}/vendors/review`, { vendor }).then((reviews) => {
+                        if (reviews.data.length > 0) {
+                            this.setState({ reviews: makeTableFromObjectArray(filterFields(reviews.data, ["vendor", "customer"])) });
+                        } else {
+                            this.setState({ reviews: <h3>No ratings found</h3> });
+                        }
+                    });
+                } else if (this.props.product) {
+                    const product = window.location.search.match(/product=(.+)/)[1];
 
-                getData(`${endpoint}/vendors/review-product`, { product }).then((reviews) => {
-                    if (reviews.data.length > 0) {
-                        this.setState({ reviews: makeTableFromObjectArray(filterFields(reviews.data, ["product", "customer"])) });
-                    } else {
-                        this.setState({ reviews: <h3>No ratings found</h3> });
-                    }
-                });
+                    getData(`${endpoint}/vendors/review-product`, { product }).then((reviews) => {
+                        if (reviews.data.length > 0) {
+                            this.setState({ reviews: makeTableFromObjectArray(filterFields(reviews.data, ["product", "customer"])) });
+                        } else {
+                            this.setState({ reviews: <h3>No ratings found</h3> });
+                        }
+                    });
+                }
+
+                return;
+            } catch (e) {
+                // nothing
             }
-        } else {
-            this.setState({ reviews: <h3>No {this.props.vendor ? "vendor" : "product"} given</h3> });
         }
+
+        this.setState({ reviews: <h3>No {this.props.vendor ? "vendor" : "product"} given</h3> });
     }
 
     render() {
@@ -48,7 +54,7 @@ class DisplayRating extends Component {
                 <MDBContainer>
                     <MDBRow>
                         <MDBCol size="8">
-                            <h1>Vendor reviews</h1>
+                            <h1> {this.props.vendor ? "Vendor" : "Product"} reviews</h1>
                             {this.state.reviews}
                         </MDBCol>
                     </MDBRow>
