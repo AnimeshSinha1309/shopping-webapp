@@ -102,7 +102,7 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                             order._doc.vendor = vend.name;
                             order._doc.vendorid = vend.id;
 
-                            order._doc.rating = (vend.rating && vend.rating[0]) || 0;
+                            order._doc.rating = vend.rating || 0;
 
                             resOrders.push(order);
 

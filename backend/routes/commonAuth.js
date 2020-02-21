@@ -33,7 +33,6 @@ function checkAuthAndRedirect(func) {
     return function (req, res) {
         let token = req.headers.authorization;
 
-        // TODO: refactor this
         if (!token) {
             res.status(HttpStatus.BAD_REQUEST).json(genErrors("Missing authorization"));
             return;

@@ -114,10 +114,9 @@ class GeneralProductList extends Component {
                 case "quantity":
                     copy.sort((a, b) => Number(a.quantityRem) - Number(b.quantityRem));
                     break;
-                    // TODO
-                // case "seller":
-                //     copy.sort((a, b) => a.quantityRem - b.quantityRem);
-                //     break;
+                case "seller":
+                    copy.sort((a, b) => -Number(a.rating) + Number(b.rating));
+                    break;
                 default:
                 }
 
@@ -130,8 +129,6 @@ class GeneralProductList extends Component {
         getProductList(this.type, (products) => {
             if (isValid(products)) {
                 this.setState({ products });
-            } else {
-                // TODO
             }
         });
     }
@@ -238,9 +235,6 @@ class OrderList extends GeneralProductList {
                 orders = filterFields(orders);
 
                 this.setState({ products: orders });
-            } else {
-                // TODO
-                console.log(orders);
             }
         });
     }

@@ -40,8 +40,6 @@ class Search extends Component {
                         orderProduct(id, quantity, (errors) => {
                             if (isValid(errors)) {
                                 this.props.history.push("/view-orders");
-                            } else {
-                            // TODO
                             }
                         });
                         break;
@@ -79,8 +77,6 @@ class Search extends Component {
                 productlist = filterFields(productlist, ["confidenceScore"]);
 
                 this.setState({ productlist });
-            } else {
-                // TODO
             }
         });
     }
