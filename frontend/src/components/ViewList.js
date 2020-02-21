@@ -76,13 +76,17 @@ class GeneralProductList extends Component {
                 if (!Number.isNaN(Number(quant))) {
                     const review = window.prompt("Enter review");
 
-                    reviewVendor(vendorid, quant, review, (errors) => {
-                        if (isValid(errors)) {
-                            window.location.reload();
-                        } else {
-                            alert(`Errors: ${errors.errors.join(", ")}`);
-                        }
-                    });
+                    if (review.length > 0) {
+                        reviewVendor(vendorid, quant, review, (errors) => {
+                            if (isValid(errors)) {
+                                window.location.reload();
+                            } else {
+                                alert(`Errors: ${errors.errors.join(", ")}`);
+                            }
+                        });
+                    } else {
+                        alert("Please enter review");
+                    }
                 } else {
                     alert("Please enter valid number");
                 }
@@ -93,14 +97,17 @@ class GeneralProductList extends Component {
                     alert("Can only review dispatched produtcs");
                 } else if (!Number.isNaN(Number(quant))) {
                     const review = window.prompt("Enter review");
-
-                    reviewProduct(productId, quant, review, (errors) => {
-                        if (isValid(errors)) {
-                            window.location.reload();
-                        } else {
-                            alert(`Errors: ${errors.errors.join(", ")}`);
-                        }
-                    });
+                    if (review.length > 0) {
+                        reviewProduct(productId, quant, review, (errors) => {
+                            if (isValid(errors)) {
+                                window.location.reload();
+                            } else {
+                                alert(`Errors: ${errors.errors.join(", ")}`);
+                            }
+                        });
+                    } else {
+                        alert("Please enter review");
+                    }
                 } else {
                     alert("Please enter valid number");
                 }
