@@ -44,7 +44,6 @@ router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => 
 
     Product.find({ vendor: vendorId }, (err, res) => {
         if (err) {
-            // TODO: refactor this statement out
             routerRes.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
             return;
         }

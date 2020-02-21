@@ -129,7 +129,7 @@ class Modal extends Component {
         if (status.isValid === false) {
             this.setState({ errors: status.errors });
         } else {
-            window.location.reload();
+            window.location.href = "/login";
         }
     }
 
@@ -179,6 +179,7 @@ class Register extends Modal {
         for (const field of fields) {
             newUser[field] = this.state[field];
         }
+        newUser.rating = 0;
 
         registerUser(newUser, this.submitCallback.bind(this));
     }

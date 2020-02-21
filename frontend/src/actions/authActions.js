@@ -11,12 +11,12 @@ function setCurrentUser(decoded) {
     localStorage[USER_KEY] = JSON.stringify(decoded);
 }
 
-export const registerUser = (userData, callback) => {
+export function registerUser(userData, callback) {
     axios
         .post(`${userEndpoint}/register`, userData)
         .then(callback)
         .catch(errorCatcher(callback));
-};
+}
 
 export function loginUser(userData, callback) {
     axios

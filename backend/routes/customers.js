@@ -45,6 +45,8 @@ router.post("/search", checkAuthAndRedirect((req, res) => {
         products.forEach((x) => {
             Vendor.findById(x.vendor, (err, vend) => {
                 x.vendor = vend.name;
+                x._doc.rating = vend.rating || 0;
+                // console.log(x, vend);
 
                 Order.find({ customer: req.body.customer, product: x.id }, (err2, orders) => {
                     if (orders.length > 0) {
@@ -100,22 +102,13 @@ router.get("/view-orders", checkAuthAndRedirect((req, res) => {
                             order._doc.vendor = vend.name;
                             order._doc.vendorid = vend.id;
 
-                            VendRating.find({ vendor: vendorID }).then((vendrating) => {
-                                let sum = 0,
-                                    len = 0;
-                                for (const r of vendrating) {
-                                    sum += r.rating;
-                                    len++;
-                                }
+                            order._doc.rating = (vend.rating && vend.rating[0]) || 0;
 
+                            resOrders.push(order);
 
-                                order._doc.rating = len > 0 ? (sum / len).toPrecision(2) : 0;
-                                resOrders.push(order);
-
-                                if (resOrders.length === orders.length) {
-                                    res.status(HttpStatus.OK).json(resOrders);
-                                }
-                            });
+                            if (resOrders.length === orders.length) {
+                                res.status(HttpStatus.OK).json(resOrders);
+                            }
                         });
                     })
                     .catch((err) => {
@@ -150,16 +143,28 @@ router.post("/rate-vendor", checkAuthAndRedirect((req, res) => {
         vendorId, rating, customer, review,
     } = req.body;
 
+    function updateVendorRating() {
+        VendRating
+            .find({ vendor: vendorId })
+            .then((ratings) => {
+                const sum = ratings.reduce((a, b) => a + b.rating, 0),
+                    ratingGiven = ratings.length > 0 ? sum / ratings.length : 0;
+
+                Vendor.findByIdAndUpdate(vendorId, { rating: ratingGiven })
+                    .then(() => res.send({}));
+            });
+    }
+
     VendRating.find({ vendor: vendorId, customer })
-        .then((vend) => {
-            if (vend.length > 0) {
-                VendRating.update({ vendor: vendorId, customer }, { rating, review }).then(() => res.send({}));
+        .then((vendrate) => {
+            if (vendrate.length > 0) {
+                VendRating.update({ vendor: vendorId, customer }, { rating, review }).then(updateVendorRating);
             } else {
                 const vr = new VendRating({
                     vendor: vendorId, customer, rating, review,
                 });
 
-                vr.save().then(() => res.send({}));
+                vr.save().then(updateVendorRating);
             }
         });
 }));
@@ -170,8 +175,8 @@ router.post("/review-product", checkAuthAndRedirect((req, res) => {
     } = req.body;
 
     ProdRating.find({ product: productId, customer })
-        .then((vend) => {
-            if (vend.length > 0) {
+        .then((prodrate) => {
+            if (prodrate.length > 0) {
                 ProdRating.update({ product: productId, customer }, { rating, review }).then(() => res.send({}));
             } else {
                 const vr = new ProdRating({

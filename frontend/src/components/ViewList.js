@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { ButtonGroup, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import { MDBCol, MDBRow, MDBContainer } from "mdbreact";
 import { getProductList, dispatchProduct, cancelProduct } from "../actions/productActions";
 import { makeTableFromObjectArray } from "../utils/makeTable";
@@ -157,19 +157,19 @@ class GeneralProductList extends Component {
                 inner = this.table;
             } else {
                 const lastButton = isCustomer
-                        ? <Button data-sort="seller">Sort by seller rating</Button>
+                        ? <Button key={2} data-sort="seller">Sort by seller rating</Button>
                         : <span></span>,
                     buttons = [
                         <Button key={0} data-sort="price">Sort by price</Button>,
                         <Button key={1} data-sort="quantity">Sort by quantity left</Button>,
+                        lastButton,
                     ];
 
 
                 inner = (<React.Fragment>
-                    <ButtonGroup>
+                    <div>
                         {buttons}
-                        {lastButton}
-                    </ButtonGroup>
+                    </div>
                     {this.table}
                 </React.Fragment>);
             }
