@@ -55,8 +55,10 @@ router.get("/product-list", checkAuthAndRedirect((req, routerRes, jwtResult) => 
 
 
 const cancelFunc = checkValidationAndRedirect(validateCancelProduct, (routerRes, data) => {
-    Product.findByIdAndUpdate(data.productId, { status: 3 })
-        .then(resp => routerRes.json(resp))
+    const { productId } = data;
+
+    Product.findByIdAndUpdate(productId, { status: PRODUCT_STATUS_REV.CANCELLED })
+        .then(() => routerRes.json())
         .catch(err => routerRes.status(HttpStatus.BAD_REQUEST).send(err));
 }, true);
 router.post("/cancel-product", checkAuthAndRedirect(cancelFunc));

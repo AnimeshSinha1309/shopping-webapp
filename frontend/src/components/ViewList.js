@@ -165,7 +165,7 @@ class GeneralProductList extends Component {
             } else {
                 const lastButton = isCustomer
                         ? <Button key={2} data-sort="seller">Sort by seller rating</Button>
-                        : <span></span>,
+                        : <span key={2}></span>,
                     buttons = [
                         <Button key={0} data-sort="price">Sort by price</Button>,
                         <Button key={1} data-sort="quantity">Sort by quantity left</Button>,
