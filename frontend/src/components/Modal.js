@@ -8,6 +8,7 @@ import { registerUser, loginUser } from "../actions/authActions";
 import { USER_TYPE } from "../config/settings";
 import "./Login.css";
 import { ErrorComp } from "./Error";
+import { isValid } from "../utils/errors";
 
 class Textbox extends Component {
     render() {
@@ -126,7 +127,9 @@ class Modal extends Component {
     }
 
     submitCallback(status = {}) {
-        if (status.isValid === false) {
+        const validation = isValid(status);
+
+        if (!validation) {
             this.setState({ errors: status.errors });
         } else {
             window.location.href = "/login";
