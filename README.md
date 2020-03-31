@@ -1,6 +1,7 @@
 # Shopping webapp
 
-I used [this guide](https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/) to unite my Express and React app.
+To understand functionality of this app, read the spec.pdf file. I used [this guide](https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/) to unite my Express and React app.
+The app undergoes linting at every commit and also has been made keeping quality standards in mind.
 
 ------
 
